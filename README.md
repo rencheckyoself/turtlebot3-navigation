@@ -2,8 +2,11 @@
 
 ## Michael Rencheck
 
-## Submitted:
-
+## WIP:
+- Task A
 - Task B
+- Task C
+
+## Submitted:
 
 ## Completed:
