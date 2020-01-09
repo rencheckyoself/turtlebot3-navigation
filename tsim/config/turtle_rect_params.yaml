@@ -1,0 +1,7 @@
+x: 3 # The x coordinate of the lower left corner of a rectangle
+y: 2 # The y coordinate of the lower left corner of a rectangle
+width: 4 # The width of the rectangle
+height: 5 # The height of the rectangle
+trans_vel: 2 # The translational velocity of the robot
+rot_vel: 1 # The rotational velocity of the robot
+frequency: 100 # The frequency of the control loop

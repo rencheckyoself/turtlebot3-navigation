@@ -1,12 +1,13 @@
 # ME495 Sensing, Navigation, and Machine Learning
-
 ## Michael Rencheck
 
-## WIP:
-- Task A
-- Task B
-- Task C
+## Submitting:
 
-## Submitted:
+- Task A
 
 ## Completed:
+
+## WIP:
+
+- Task B
+- Task C
