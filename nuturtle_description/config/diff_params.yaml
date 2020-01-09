@@ -1,0 +1,5 @@
+wheel_width: 0.25 # The width of the wheels
+wheel_radius: .5 # The radius of the wheels
+wheel_base: 1.25 # The distance between the centers wheels
+chassis_length: 2 # The length of the main chassis link
+chassis_thickness: .25 # The thickness of the plate that forms the chassis

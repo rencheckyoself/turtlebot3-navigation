@@ -2,7 +2,7 @@
 <package format="2">
   <name>nuturtle_description</name>
   <version>0.0.1</version>
-  <description>contains all urdf files as well as basic debugging, testing, and vizualisation for the robots used in this repo</description>
+  <description>All urdf files as well as basic debugging, testing, and vizualisation for the robots used in this repo</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

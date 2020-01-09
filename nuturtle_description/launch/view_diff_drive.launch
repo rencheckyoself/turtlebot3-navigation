@@ -1,0 +1,20 @@
+<launch>
+  <!-- This file was used to test the urdf model during construction -->
+
+  <!-- load the urdf with xacro file-->
+  <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" />
+
+  <!-- The robot_state_publisher reads the urdf from /robot_description parameter
+       and listens to joint information on the /joint_states topic -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Default: launch joint state publisher with gui -->
+  <arg name="use_gui" default="True" doc="Launch the joint_state_publisher gui to publish joint angles"/>
+  <!-- The joint state publisher will be launched with a gui -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="$(arg use_gui)" />
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find nuturtle_description)/config/view_urdf.rviz"/>
+
+</launch>

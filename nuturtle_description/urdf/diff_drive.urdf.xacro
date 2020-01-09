@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diff_drive">
+
+
+  <!-- Load in parameters from the YAML file -->
+  <xacro:property name="props" value="${load_yaml('$(find nuturtle_description)/config/diff_params.yaml')}"/>
+
+  <!-- Set parameters -->
+  <xacro:property name="wheel_width" value="${props['wheel_width']}"/>
+  <xacro:property name="wheel_radius" value="${props['wheel_radius']}"/>
+  <xacro:property name="wheel_base" value="${props['wheel_base']}"/>
+  <xacro:property name="chassis_length" value="${props['chassis_length']}"/>
+  <xacro:property name="chassis_thickness" value="${props['chassis_thickness']}"/>
+  <xacro:property name="chassis_width" value="${(wheel_base - wheel_width)}"/>
+  <xacro:property name="castor_radius" value="${((wheel_radius - (chassis_thickness/2))/2)}"/>
+  <xacro:property name="base_shift" value="${chassis_length/2 - wheel_radius}"/>
+
+  <!-- Macro to create wheels -->
+  <xacro:macro name="wheel_temp" params="wheel_side offset">
+    <link name="wheel_${wheel_side}">
+      <visual>
+        <geometry>
+            <cylinder length="${wheel_width}" radius="${wheel_radius}" />
+        </geometry>
+        <material name="black_mat">
+          <color rgba=".05 .05 .05 .95" />
+        </material>
+        <origin rpy="${pi/2} 0 0" xyz="0 ${offset * (wheel_width/2)} 0"/>
+      </visual>
+    </link>
+
+    <joint name="${wheel_side}_wheel_axel" type="continuous">
+      <origin xyz="${base_shift-.25*chassis_length} ${offset * (chassis_width/2)} ${wheel_radius}" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="wheel_${wheel_side}" />
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Macro to create casters -->
+  <xacro:macro name="caster_temp" params="caster_side offset">
+    <link name="caster_${caster_side}">
+      <visual>
+        <geometry>
+            <sphere radius="${castor_radius}" />
+        </geometry>
+        <material name="white_mat">
+          <color rgba=".9 .9 .9 .95" />
+        </material>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+    </link>
+
+    <joint name="${caster_side}_castor_joint" type="fixed">
+      <origin xyz="${base_shift + (chassis_length/2 - castor_radius)} 0 ${castor_radius}" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="caster_${caster_side}" />
+    </joint>
+  </xacro:macro>
+
+  <!-- The body of the robot-->
+  <link name="base_link" >
+    <visual>
+
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_thickness}" />
+      </geometry>
+
+      <origin rpy="0 0 0" xyz="${chassis_length/2 - wheel_radius} 0 ${wheel_radius}"/>
+
+      <material name="green_mat">
+        <color rgba="0 1 0 1" />
+      </material>
+
+    </visual>
+  </link>
+
+  <!-- Wheel Creation -->
+  <xacro:wheel_temp wheel_side="left" offset="1"/>
+  <xacro:wheel_temp wheel_side="right" offset="-1"/>
+
+  <!-- Caster Creation -->
+  <xacro:caster_temp caster_side="bottom" offset="-1"/>
+
+</robot>
