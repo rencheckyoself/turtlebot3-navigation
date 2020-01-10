@@ -1,5 +1,6 @@
 <launch>
-  <!-- This file was used to test the urdf model during construction -->
+  <!-- This launch file is used to display the diff drive robot created by the
+  diff drive xacro file -->
 
   <!-- load the urdf with xacro file-->
   <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" />
@@ -10,11 +11,16 @@
 
   <!-- Default: launch joint state publisher with gui -->
   <arg name="use_gui" default="True" doc="Launch the joint_state_publisher gui to publish joint angles"/>
+
   <!-- The joint state publisher will be launched with a gui -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="use_gui" value="$(arg use_gui)" />
   </node>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find nuturtle_description)/config/view_urdf.rviz"/>
+  <!-- Launch rviz as a required node -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/view_urdf.rviz"/>
+
+  <!-- Load the robot params in the Parameter Server -->
+  <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
 
 </launch>
