@@ -7,7 +7,7 @@ namespace rigid2d
 {
   std::ostream & operator<<(std::ostream & os, const Vector2D & v)
   {
-    os << "2D Vector, x portion= " << v.x << " and y portion= " << v.y << "\n";
+    os << "2D Vector, x: " << v.x << " y: " << v.y << "\n";
     return os;
   }
 
@@ -95,7 +95,7 @@ namespace rigid2d
     Vector2D v_prime;
 
     v_prime.x = ctheta * v.x - stheta * v.y + x;
-    v_prime.y = stheta * v.x - stheta * v.y + y;
+    v_prime.y = stheta * v.x + ctheta * v.y + y;
 
     return v_prime;
   }
