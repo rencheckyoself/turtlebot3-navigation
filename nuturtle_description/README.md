@@ -1,5 +1,5 @@
 # Description
-This package contains files to create robot descriptions suitable for simulation. It contains various urdf files and basic debugging, testing, and visualization code for the robots used in the other packages.
+This package contains files to create robot descriptions suitable for simulation. It contains various urdf/xacro files and basic debugging, testing, and visualization code for the robots used in the other packages.
 
 # How to run:
 Copy the following into a console window: </br>
