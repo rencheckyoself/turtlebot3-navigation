@@ -1,3 +1,14 @@
+/// \file
+/// \brief A brief description of what the file does
+///
+/// PARAMETERS:
+///     parameter_name (parameter_type): description of the parameter
+/// PUBLISHES:
+///     topic_name (topic_type): description of topic
+/// SUBSCRIBES:
+///     topic_name (topic_type): description of the topic
+/// SERVICES:
+///     service_name (service_type): description of the service
 
 #include "ros/ros.h"
 #include "std_srvs/Empty.h"
@@ -9,6 +20,10 @@
 
 // Read in yaml file and print via ros info
 
+void callback_reset_traj()
+{
+
+}
 
 int main(int argc, char **argv)
 {
@@ -18,6 +33,8 @@ int main(int argc, char **argv)
 
   ros::ServiceClient client_telabs = n.serviceClient<turtlesim::TeleportAbsolute>("turtle1/teleport_absolute");
   ros::ServiceClient client_pen = n.serviceClient<turtlesim::SetPen>("turtle1/set_pen");
+
+  ros::ServiceServer reset = n.advertiseService("reset_traj", callback_reset_traj);
 
   ros::Publisher pub_vel = n.advertise<geometry_msgs::Twist>("turtle1/cmd_vel", 2);
 

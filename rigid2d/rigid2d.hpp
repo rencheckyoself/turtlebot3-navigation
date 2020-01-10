@@ -93,12 +93,8 @@ namespace rigid2d
     {
     public:
         /// \brief Create an identity transformation
-        Transform2D()
-        {
-          int mat[3][3] = {{1,0,0}, {0,1,0}, {0,0,1}};
-        }
+        Transform2D();
 
-        /*
         /// \brief create a transformation that is a pure translation
         /// \param trans - the vector by which to translate
         explicit Transform2D(const Vector2D & trans);
@@ -136,10 +132,8 @@ namespace rigid2d
         /// directly initialize, useful for forming the inverse
         Transform2D(double theta, double ctheta, double stheta, double x, double y);
         double theta, ctheta, stheta, x, y; // angle, sin, cos, x, and y
-        */
     };
 
-    /*
     /// \brief should print a human readable version of the transform:
     /// An example output:
     /// dtheta (degrees): 90 dx: 3 dy: 5
@@ -152,12 +146,13 @@ namespace rigid2d
     /// as 3 numbers (degrees, dx, dy) separated by spaces or newlines
     std::istream & operator>>(std::istream & is, Transform2D & tf);
 
+
     /// \brief multiply two transforms together, returning their composition
     /// \param lhs - the left hand operand
     /// \param rhs - the right hand operand
     /// \return the composition of the two transforms
     /// HINT: This function can be implemented in terms of *=
     Transform2D operator*(Transform2D lhs, const Transform2D & rhs);
-    */
+
 }
 #endif
