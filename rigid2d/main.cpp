@@ -42,43 +42,55 @@ int main(void)
   operator<<(cout, t_ac.inv());
 
   Vector2D vec;
+  Twist2D tws;
   char frame;
 
-  // Get vector and frame from the user
+  // Get vector, twist, and frame from the user
   cout << "\n";
   operator>>(cin, vec);
+  cout << "\n";
+  operator>>(cin, tws);
 
-  cout << "Enter a frame for the vector: ";
+  cout << "Enter a frame for the vector and twist: ";
   cin >> frame;
 
   // Print the vector in each frame
   switch (frame)
   {
     case 'a':
-      cout << "\n" << "Frame a: ";
+      cout << "\n" << "Frame a: \n";
       operator<<(cout, vec);
-      cout << "Frame b: ";
+      operator<<(cout, tws);
+      cout << "Frame b: \n";
       operator<<(cout, t_ab.inv().operator()(vec));
-      cout << "Frame c: ";
+      operator<<(cout, t_ab.inv().operator()(tws));
+      cout << "Frame c: \n";
       operator<<(cout, t_ac.inv().operator()(vec));
+      operator<<(cout, t_ac.inv().operator()(tws));
 
     break;
     case 'b':
-      cout << "\n" << "Frame a: ";
+      cout << "\n" << "Frame a: \n";
       operator<<(cout, t_ab.operator()(vec));
-      cout << "Frame b: ";
+      operator<<(cout, t_ab.operator()(tws));
+      cout << "Frame b: \n";
       operator<<(cout, vec);
-      cout << "Frame c: ";
+      operator<<(cout, tws);
+      cout << "Frame c: \n";
       operator<<(cout, t_bc.inv().operator()(vec));
+      operator<<(cout, t_bc.inv().operator()(tws));
     break;
 
     case 'c':
-      cout << "\n" << "Frame a: ";
+      cout << "\n" << "Frame a: \n";
       operator<<(cout, t_ac.operator()(vec));
-      cout << "Frame b: ";
+      operator<<(cout, t_ac.operator()(tws));
+      cout << "Frame b: \n";
       operator<<(cout, t_bc.operator()(vec));
-      cout << "Frame c: ";
+      operator<<(cout, t_bc.operator()(tws));
+      cout << "Frame c: \n";
       operator<<(cout, vec);
+      operator<<(cout, tws);
     break;
     default:
       cout << frame << " is not a valid frame, please enter a, b, or c.\n";

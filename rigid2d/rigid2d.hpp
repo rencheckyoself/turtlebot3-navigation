@@ -91,6 +91,27 @@ namespace rigid2d
     /// https://en.cppreference.com/w/cpp/io/basic_istream/get
     std::istream & operator>>(std::istream & is, Vector2D & v);
 
+    /// \brief A 2-Dimensional Twist
+    struct Twist2D
+    {
+    public:
+
+      // angular x and y, linear x and y
+      double wx = 0.0;
+      double wy = 0.0;
+      double vx = 0.0;
+      double vy = 0.0;
+
+    };
+
+    /// \brief output a 2 dimensional twist as [wx wy vx vy]
+    /// os - stream to output to
+    /// tw - the twist to print
+    std::ostream & operator<<(std::ostream & os, const Twist2D & tw);
+
+    /// \brief input a 2 dimensional twist
+    /// tw [out] - output twist
+    std::istream & operator>>(std::istream & is, Twist2D & tw);
 
     /// \brief a rigid body transformation in 2 dimensions
     class Transform2D
@@ -117,6 +138,11 @@ namespace rigid2d
         /// \param v - the vector to transform
         /// \return a vector in the new coordinate system
         Vector2D operator()(Vector2D v) const;
+
+        /// \brief apply a transformation to a Twist2D
+        /// \param v - the twist to transform
+        /// \return a twist in the new frame
+        Twist2D operator()(Twist2D tw) const;
 
         /// \brief invert the transformation
         /// \return the inverse transformation.
@@ -149,7 +175,6 @@ namespace rigid2d
     /// Should be able to read input either as output by operator<< or
     /// as 3 numbers (degrees, dx, dy) separated by spaces or newlines
     std::istream & operator>>(std::istream & is, Transform2D & tf);
-
 
     /// \brief multiply two transforms together, returning their composition
     /// \param lhs - the left hand operand
