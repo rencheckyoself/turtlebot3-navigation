@@ -7,7 +7,7 @@ namespace rigid2d
 {
   std::ostream & operator<<(std::ostream & os, const Vector2D & v)
   {
-    os << "2D Vector, x: " << v.x << " y: " << v.y << "\n";
+    os << "2D Vector, [" << v.x << ", " << v.y << "]\n";
     return os;
   }
 
@@ -51,6 +51,19 @@ namespace rigid2d
   {
     lhs.operator*=(rhs);
     return lhs;
+  }
+
+  Vector2D Vector2D::normalize() const
+  {
+    float mag;
+    Vector2D unit_vec;
+
+    mag = pow(x*x + y*y, 0.5);
+
+    unit_vec.x = x/mag;
+    unit_vec.y = y/mag;
+
+    return unit_vec;
   }
 
   // Public

@@ -70,6 +70,10 @@ namespace rigid2d
     {
         double x = 0.0;
         double y = 0.0;
+
+        /// \brief output a unit vector corresponding to the [xcomponent ycomponent]
+        /// \return the unit vector corresponding to the current x and y values of the Vector2D
+        Vector2D normalize() const;
     };
 
     /// \brief output a 2 dimensional vector as [xcomponent ycomponent]

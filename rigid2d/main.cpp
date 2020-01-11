@@ -9,32 +9,18 @@ using namespace rigid2d;
 int main(void)
 {
 
-  // Vector2D vec;
-  //
-  // vec.x = 1;
-  // vec.y = 2;
-  //
-  // cout << almost_equal(1.1, 1.0) << "\n";
-  // cout << deg2rad(180) << "\n";
-  // cout << rad2deg(PI) << "\n";
-  // cout << vec.x << "\n";
-  // cout << vec.y << "\n";
-  //
-  // operator>>(cin, vec);
-  // operator<<(cout, vec);
-  //
-  // Transform2D testing1;
-  // Transform2D testing2;
-
   Transform2D t_ab;
   Transform2D t_bc;
   Transform2D t_ac;
 
+  // User inputs T_ab and T_bc
   cout << "Enter data for T_ab: \n";
   operator>>(cin, t_ab);
   cout << "\n" << "Enter data for T_bc: \n";
   operator>>(cin, t_bc);
 
+
+  // Print all Transforms between the three frames
   cout << "\n" << "Transform T_ab: \n";
   operator<<(cout, t_ab);
 
@@ -58,12 +44,14 @@ int main(void)
   Vector2D vec;
   char frame;
 
+  // Get vector and frame from the user
   cout << "\n";
   operator>>(cin, vec);
 
   cout << "Enter a frame for the vector: ";
   cin >> frame;
 
+  // Print the vector in each frame
   switch (frame)
   {
     case 'a':
@@ -95,15 +83,4 @@ int main(void)
     default:
       cout << frame << " is not a valid frame, please enter a, b, or c.\n";
   }
-
 }
-
-// Get input from user, T_ab and T_bc
-
-
-
-// Compute various transforms
-
-// enter a vector and the frame
-
-// Compute the vector in all frames.
