@@ -7,19 +7,19 @@ namespace rigid2d
 {
   std::ostream & operator<<(std::ostream & os, const Vector2D & v)
   {
-    os << "2D Vector, [" << v.x << ", " << v.y << "]\n";
+    os << "2D Vector- [" << v.x << ", " << v.y << "]\n";
     return os;
   }
 
   std::ostream & operator<<(std::ostream & os, const Twist2D & tw)
   {
-    os << "2D Twist, [" << tw.wx << ", " << tw.wy << ", " << tw.vx << ", " << tw.vy << "]\n";
+    os << "2D Twist- [" << tw.wx << ", " << tw.wy << ", " << tw.vx << ", " << tw.vy << "]\n";
     return os;
   }
 
   std::ostream & operator<<(std::ostream & os, const Transform2D & tf)
   {
-    os << "2D Transform, dtheta(degrees): " << rad2deg(tf.theta) << " x: " << tf.x << " y: " << tf.y << "\n";
+    os << "2D Transform- theta(degrees): " << rad2deg(tf.theta) << " x: " << tf.x << " y: " << tf.y << "\n";
     return os;
   }
 
