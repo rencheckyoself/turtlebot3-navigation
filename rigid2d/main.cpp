@@ -1,3 +1,6 @@
+/// \file
+/// \brief Manipulates 2D Transforms, Vectors, and Twists to test the ridig2d files.
+///
 
 #include <iostream>
 #include "rigid2d.hpp"
@@ -54,7 +57,7 @@ int main(void)
   cout << "Enter a frame for the vector and twist: ";
   cin >> frame;
 
-  // Print the vector in each frame
+  // Print the vector & twist in each frame
   switch (frame)
   {
     case 'a':

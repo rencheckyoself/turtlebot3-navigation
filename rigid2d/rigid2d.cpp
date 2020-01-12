@@ -1,7 +1,7 @@
-
+/// \file
+/// \brief Source file for rigid2D library
 #include "rigid2d.hpp"
 #include <iostream>
-
 
 namespace rigid2d
 {

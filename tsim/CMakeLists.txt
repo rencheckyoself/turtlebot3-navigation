@@ -71,7 +71,6 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   geometry_msgs
-  tsim
   turtlesim
   # Or other packages containing msgs
 )
@@ -167,9 +166,9 @@ target_link_libraries(${PROJECT_NAME}_turtle_rect ${catkin_LIBRARIES})
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-# install(TARGETS ${PROJECT_NAME}_node
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS ${PROJECT_NAME}_turtle_rect
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html

@@ -3,12 +3,9 @@
 
 ## Submitting:
 
-- Task A.000 - A.004
-- Task B.000 - B.001
+- Task B.000 - B.004
+- Task C.000 - C.004
 
 ## Completed:
 
-## WIP:
-
-- Task B (remaining)
-- Task C (all)
+- Task A.000 - A.004
