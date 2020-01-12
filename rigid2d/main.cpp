@@ -36,7 +36,7 @@ int main(void)
   cout << "\n" << "Transform T_cb: \n";
   cout << t_bc.inv();
 
-  t_ac = operator*(t_ab, t_bc);
+  t_ac = t_ab * t_bc;
 
   cout << "\n" << "Transform T_ac: \n";
   cout << t_ac;

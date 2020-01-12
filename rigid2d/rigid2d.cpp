@@ -147,7 +147,7 @@ namespace rigid2d
   Transform2D Transform2D::inv() const
   {
 
-    Transform2D inv_trans(theta, ctheta, -stheta, x * ctheta + y * stheta, -x * stheta + y * ctheta);
+    Transform2D inv_trans(theta, ctheta, -stheta, -x * ctheta - y * stheta, x * stheta - y * ctheta);
 
     return inv_trans;
   }
