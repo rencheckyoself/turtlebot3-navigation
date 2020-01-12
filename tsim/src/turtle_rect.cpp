@@ -139,7 +139,7 @@ int main(int argc, char **argv)
   int hor_cycles, ver_cycles, turn_cycles, direction;
   PoseVals change;
 
-  double lin_thresh = 0.1;
+  double lin_thresh = 0.05;
   double ang_thresh = 0.05;
 
   direction = 1;
@@ -167,6 +167,8 @@ int main(int argc, char **argv)
       // Reset State
       // Wait for turtlesim services and teleport turtle to the starting position
       teleport_turtle();
+
+      ros::Duration(1.0).sleep();
 
       calc_error();
 
