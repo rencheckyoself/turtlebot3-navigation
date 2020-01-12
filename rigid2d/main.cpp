@@ -18,31 +18,31 @@ int main(void)
 
   // User inputs T_ab and T_bc
   cout << "Enter data for T_ab: \n";
-  operator>>(cin, t_ab);
+  cin >> t_ab;
   cout << "\n" << "Enter data for T_bc: \n";
-  operator>>(cin, t_bc);
+  cin >> t_bc;
 
 
   // Print all Transforms between the three frames
   cout << "\n" << "Transform T_ab: \n";
-  operator<<(cout, t_ab);
+  cout << t_ab;
 
   cout << "\n" << "Transform T_ba: \n";
-  operator<<(cout, t_ab.inv());
+  cout << t_ab.inv();
 
   cout << "\n" << "Transform T_bc: \n";
-  operator<<(cout, t_bc);
+  cout << t_bc;
 
   cout << "\n" << "Transform T_cb: \n";
-  operator<<(cout, t_bc.inv());
+  cout << t_bc.inv();
 
   t_ac = operator*(t_ab, t_bc);
 
   cout << "\n" << "Transform T_ac: \n";
-  operator<<(cout, t_ac);
+  cout << t_ac;
 
   cout << "\n" << "Transform T_ca: \n";
-  operator<<(cout, t_ac.inv());
+  cout << t_ac.inv();
 
   Vector2D vec;
   Twist2D tws;
@@ -50,9 +50,9 @@ int main(void)
 
   // Get vector, twist, and frame from the user
   cout << "\n";
-  operator>>(cin, vec);
+  cin >> vec;
   cout << "\n";
-  operator>>(cin, tws);
+  cin >> tws;
 
   cout << "Enter a frame for the vector and twist: ";
   cin >> frame;
@@ -60,41 +60,45 @@ int main(void)
   // Print the vector & twist in each frame
   switch (frame)
   {
+    case 'A':
     case 'a':
       cout << "\n" << "Frame a: \n";
-      operator<<(cout, vec);
-      operator<<(cout, tws);
+      cout << vec;
+      cout << tws;
       cout << "Frame b: \n";
-      operator<<(cout, t_ab.inv().operator()(vec));
-      operator<<(cout, t_ab.inv().operator()(tws));
+      cout << t_ab.inv()(vec);
+      cout << t_ab.inv()(tws);
       cout << "Frame c: \n";
-      operator<<(cout, t_ac.inv().operator()(vec));
-      operator<<(cout, t_ac.inv().operator()(tws));
-
+      cout << t_ac.inv()(vec);
+      cout << t_ac.inv()(tws);
     break;
+
+    case 'B':
     case 'b':
       cout << "\n" << "Frame a: \n";
-      operator<<(cout, t_ab.operator()(vec));
-      operator<<(cout, t_ab.operator()(tws));
+      cout << t_ab(vec);
+      cout << t_ab(tws);
       cout << "Frame b: \n";
-      operator<<(cout, vec);
-      operator<<(cout, tws);
+      cout << vec;
+      cout << tws;
       cout << "Frame c: \n";
-      operator<<(cout, t_bc.inv().operator()(vec));
-      operator<<(cout, t_bc.inv().operator()(tws));
+      cout << t_bc.inv()(vec);
+      cout << t_bc.inv()(tws);
     break;
 
+    case 'C':
     case 'c':
       cout << "\n" << "Frame a: \n";
-      operator<<(cout, t_ac.operator()(vec));
-      operator<<(cout, t_ac.operator()(tws));
+      cout << t_ac(vec);
+      cout << t_ac(tws);
       cout << "Frame b: \n";
-      operator<<(cout, t_bc.operator()(vec));
-      operator<<(cout, t_bc.operator()(tws));
+      cout << t_bc(vec);
+      cout << t_bc(tws);
       cout << "Frame c: \n";
-      operator<<(cout, vec);
-      operator<<(cout, tws);
+      cout << vec;
+      cout << tws;
     break;
+
     default:
       cout << frame << " is not a valid frame, please enter a, b, or c.\n";
   }
