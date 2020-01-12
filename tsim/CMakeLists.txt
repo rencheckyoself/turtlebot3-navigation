@@ -8,9 +8,10 @@ project(tsim)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
   message_generation
   roscpp
-  std_msgs
+  turtlesim
 )
 
 ## System dependencies are found with CMake's conventions
@@ -69,7 +70,10 @@ add_message_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
+  geometry_msgs
+  tsim
+  turtlesim
+  # Or other packages containing msgs
 )
 
 ################################################
@@ -104,7 +108,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES tsim
- CATKIN_DEPENDS message_runtime roscpp
+ CATKIN_DEPENDS geometry_msgs message_runtime roscpp turtlesim
 #  DEPENDS system_lib
 )
 

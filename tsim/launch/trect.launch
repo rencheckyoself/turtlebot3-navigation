@@ -1,9 +1,17 @@
 <launch>
-
+  <!-- Launch Turtle Sim -->
   <node name="roaming_turtle" pkg="turtlesim" type="turtlesim_node"/>
 
+  <!-- Load in parameters from yaml file -->
   <rosparam command="load" file="$(find tsim)/config/turtle_rect_params.yaml"/>
 
+  <!-- Launch the node to control the turtle -->
   <node name="turtle_rect" pkg="tsim" type="turtle_rect" output="screen"/>
+
+  <!-- Defualt: launches a plot of the positional error -->
+  <arg name="plot_gui" default="True" doc="A plot of the positional error will be displayed upon launch. Set to False to disable."/>
+  <group if="$(arg plot_gui)">
+    <node name="error_plot" pkg="rqt_plot" type="rqt_plot" args="/pose_error" />
+  </group>
 
 </launch>

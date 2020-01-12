@@ -50,6 +50,7 @@
   <build_depend>messgae_generation</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>std_srvs</build_depend>
+  <build_depend>turtlesim</build_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>std_srvs</build_export_depend>
