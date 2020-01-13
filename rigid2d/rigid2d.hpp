@@ -96,9 +96,8 @@ namespace rigid2d
     {
     public:
 
-      // angular x and y, linear x and y
-      double wx = 0.0;
-      double wy = 0.0;
+      // angular z, linear x and y
+      double wz = 0.0;
       double vx = 0.0;
       double vy = 0.0;
 

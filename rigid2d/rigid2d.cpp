@@ -13,7 +13,7 @@ namespace rigid2d
 
   std::ostream & operator<<(std::ostream & os, const Twist2D & tw)
   {
-    os << "2D Twist, [" << tw.wx << ", " << tw.wy << ", " << tw.vx << ", " << tw.vy << "]\n";
+    os << "2D Twist, [" << tw.wz << ", " << tw.vx << ", " << tw.vy << "]\n";
     return os;
   }
 
@@ -34,10 +34,8 @@ namespace rigid2d
 
   std::istream & operator>>(std::istream & is, Twist2D & tw)
   {
-    std::cout << "Enter wx value of twist: ";
-    is >> tw.wx;
-    std::cout << "Enter wy value of twist: ";
-    is >> tw.wy;
+    std::cout << "Enter wz value of twist: ";
+    is >> tw.wz;
     std::cout << "Enter vx value of twist: ";
     is >> tw.vx;
     std::cout << "Enter vy value of twist: ";
@@ -136,10 +134,9 @@ namespace rigid2d
   {
     Twist2D tw_prime;
 
-    tw_prime.wx = ctheta * tw.wx - stheta * tw.wy;
-    tw_prime.wy = stheta * tw.wx + ctheta * tw.wy;
-    tw_prime.vx = tw.wx * (x*ctheta - y*stheta) + tw.wy * (-x*stheta - y*ctheta) + tw.vx * ctheta - tw.vy * stheta;
-    tw_prime.vy = tw.wx * (y*ctheta + x*stheta) + tw.wy * (-y*stheta + x*ctheta) + tw.vx * stheta + tw.vy * ctheta;
+    tw_prime.wz = tw.wz;
+    tw_prime.vx = tw.vx * ctheta - tw.vy * stheta;
+    tw_prime.vy = tw.vx * stheta + tw.vy * ctheta;
 
     return tw_prime;
   }

@@ -6,28 +6,28 @@ Transform T_ab:
 2D Transform, theta(degrees): 90 x: 1 y: 1
 
 Transform T_ba: 
-2D Transform, theta(degrees): 90 x: 1 y: -1
+2D Transform, theta(degrees): 90 x: -1 y: 1
 
 Transform T_bc: 
-2D Transform, theta(degrees): 45 x: 2 y: 2
+2D Transform, theta(degrees): 0 x: 2 y: 2
 
 Transform T_cb: 
-2D Transform, theta(degrees): 45 x: 2.82843 y: 2.22045e-16
+2D Transform, theta(degrees): 0 x: -2 y: -2
 
 Transform T_ac: 
-2D Transform, theta(degrees): 135 x: -1 y: 3
+2D Transform, theta(degrees): 90 x: -1 y: 3
 
 Transform T_ca: 
-2D Transform, theta(degrees): 135 x: 2.82843 y: -1.41421
+2D Transform, theta(degrees): 90 x: -3 y: -1
 
 Enter x value of vector: Enter y value of vector: 
-Enter wx value of twist: Enter wy value of twist: Enter vx value of twist: Enter vy value of twist: Enter a frame for the vector and twist: 
+Enter wz value of twist: Enter vx value of twist: Enter vy value of twist: Enter a frame for the vector and twist: 
 Frame a: 
-2D Vector, [-2.41421, 3]
-2D Twist, [-4.24264, 4.44089e-16, -1.33227e-15, -12.7279]
+2D Vector, [-4, 6]
+2D Twist, [1, -2, 2]
 Frame b: 
-2D Vector, [2, 3.41421]
-2D Twist, [4.44089e-16, 4.24264, -8.48528, 12.7279]
+2D Vector, [5, 5]
+2D Twist, [1, 2, 2]
 Frame c: 
-2D Vector, [1, 1]
-2D Twist, [3, 3, 3, 3]
+2D Vector, [3, 3]
+2D Twist, [1, 2, 2]
