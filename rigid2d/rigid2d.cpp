@@ -135,8 +135,8 @@ namespace rigid2d
     Twist2D tw_prime;
 
     tw_prime.wz = tw.wz;
-    tw_prime.vx = tw.vx * ctheta - tw.vy * stheta;
-    tw_prime.vy = tw.vx * stheta + tw.vy * ctheta;
+    tw_prime.vx = tw.vx * ctheta - tw.vy * stheta + tw.wz * y;
+    tw_prime.vy = tw.vx * stheta + tw.vy * ctheta - tw.wz * x;
 
     return tw_prime;
   }
