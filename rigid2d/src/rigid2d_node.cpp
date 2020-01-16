@@ -3,7 +3,7 @@
 ///
 
 #include <iostream>
-#include "rigid2d.hpp"
+#include "rigid2d/rigid2d.hpp"
 
 using std::cout;
 using std::cin;
