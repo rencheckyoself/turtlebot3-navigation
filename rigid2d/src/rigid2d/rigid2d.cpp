@@ -70,6 +70,18 @@ namespace rigid2d
     return lhs;
   }
 
+  Vector2D::Vector2D()
+  {
+    x = 0.0;
+    y = 0.0;
+  }
+
+  Vector2D::Vector2D(double xcomp, double ycomp)
+  {
+    x = xcomp;
+    y = ycomp;
+  }
+
   Vector2D Vector2D::normalize() const
   {
     float mag;
@@ -81,6 +93,20 @@ namespace rigid2d
     unit_vec.y = y/mag;
 
     return unit_vec;
+  }
+
+  Twist2D::Twist2D()
+  {
+    wz = 0.0;
+    vx = 0.0;
+    vy = 0.0;
+  }
+
+  Twist2D::Twist2D(double ang, double linx, double liny)
+  {
+    wz = ang;
+    vx = linx;
+    vy = liny;
   }
 
   // Public

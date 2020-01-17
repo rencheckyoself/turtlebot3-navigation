@@ -3,6 +3,7 @@ project(rigid2d)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++17 -Wall -Werror)
+set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -194,10 +195,10 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_rigid2d.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+catkin_add_gtest(${PROJECT_NAME}_rigid2_testing test/test_rigid2d.cpp)
+if(TARGET ${PROJECT_NAME}_rigid2_testing)
+  target_link_libraries(${PROJECT_NAME}_rigid2_testing ${PROJECT_NAME} gtest_main)
+endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

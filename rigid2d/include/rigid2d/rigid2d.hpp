@@ -71,6 +71,14 @@ namespace rigid2d
         double x = 0.0;
         double y = 0.0;
 
+        /// \brief create an empty vector
+        Vector2D();
+
+        /// \brief create a vector
+        /// \param xcomp - the x vector component
+        /// \param ycomp - the y vector component
+        Vector2D(double xcomp, double ycomp);
+
         /// \brief output a unit vector corresponding to the [xcomponent ycomponent]
         /// \return the unit vector corresponding to the current x and y values of the Vector2D
         Vector2D normalize() const;
@@ -100,6 +108,15 @@ namespace rigid2d
       double wz = 0.0;
       double vx = 0.0;
       double vy = 0.0;
+
+      /// \brief create an empty twist
+      Twist2D();
+
+      /// \brief create a twist
+      /// \param ang - the angular component
+      /// \param xlin - the x velocity component
+      /// \param ylin - the y velocity component
+      Twist2D(double ang, double linx, double liny);
 
     };
 
