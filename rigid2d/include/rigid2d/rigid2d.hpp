@@ -68,8 +68,8 @@ namespace rigid2d
     /// \brief A 2-Dimensional Vector
     struct Vector2D
     {
-        double x = 0.0;
-        double y = 0.0;
+        double x;
+        double y;
 
         /// \brief create an empty vector
         Vector2D();
@@ -82,7 +82,56 @@ namespace rigid2d
         /// \brief output a unit vector corresponding to the [xcomponent ycomponent]
         /// \return the unit vector corresponding to the current x and y values of the Vector2D
         Vector2D normalize() const;
+
+        /// \brief calculate the length of the vector based on the components
+        /// \return the length of this vector
+        double length() const;
+
+        /// \brief calculate the angle of the vector based on the components
+        /// \return the angle of this vector in degrees
+        double angle() const;
+
+        /// \brief calculate the distance between this vector and another
+        /// \param vec - vector to find the distance to
+        /// \return the distance between the two vectors
+        double distance(Vector2D vec) const;
+
+        /// \brief add this vector with another and store the result
+        /// in this object
+        /// \param rhs - the vector to add by
+        /// \returns a reference to the newly transformed operator
+        Vector2D & operator+=(const Vector2D & rhs);
+
+        /// \brief subtract this vector with another and store the result
+        /// in this object
+        /// \param rhs - the vector to subtract by
+        /// \returns a reference to the newly transformed operator
+        Vector2D & operator-=(const Vector2D & rhs);
+
+        /// \brief multiply(scalar) this vector with another and store the result
+        /// in this object
+        /// \param rhs - the vector to multiply by
+        /// \returns a reference to the newly transformed operator
+        Vector2D & operator*=(const Vector2D & rhs);
     };
+
+    /// \brief add two vectors together, returning their composition
+    /// \param lhs - the left hand operand
+    /// \param rhs - the right hand operand
+    /// \return the composition of the two vectors
+    Vector2D operator+(Vector2D lhs, const Vector2D & rhs);
+
+    /// \brief subtract two vectors together, returning their composition
+    /// \param lhs - the left hand operand
+    /// \param rhs - the right hand operand
+    /// \return the composition of the two vectors
+    Vector2D operator-(Vector2D lhs, const Vector2D & rhs);
+
+    /// \brief multiply(scalar) two vectors together, returning their composition
+    /// \param lhs - the left hand operand
+    /// \param rhs - the right hand operand
+    /// \return the composition of the two vectors
+    Vector2D operator*(Vector2D lhs, const Vector2D & rhs);
 
     /// \brief output a 2 dimensional vector as [xcomponent ycomponent]
     /// os - stream to output to
@@ -172,7 +221,7 @@ namespace rigid2d
         /// \param tw - the twist to follow
         /// \param dt - the length of the timestep in seconds
         /// \return None. This transform is modified.
-        void integrateTwist(Twist2D tw, double dt=1);
+        void integrateTwist(const Twist2D tw, double dt=1);
 
         /// \brief compose this transform with another and store the result
         /// in this object
@@ -206,7 +255,6 @@ namespace rigid2d
     /// \param lhs - the left hand operand
     /// \param rhs - the right hand operand
     /// \return the composition of the two transforms
-    /// HINT: This function can be implemented in terms of *=
     Transform2D operator*(Transform2D lhs, const Transform2D & rhs);
 
 }

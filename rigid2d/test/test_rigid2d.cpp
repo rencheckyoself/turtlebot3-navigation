@@ -53,6 +53,26 @@ TEST(rigid2dLibrary, TransformIO)
   ASSERT_EQ(ss_out.str(),output);
 }
 
+TEST(rigid2dLibrary, VectorLength)
+{
+  rigid2d::Vector2D vec(1.0, 1.0);
+  double len;
+
+  len = vec.length();
+
+  ASSERT_EQ(len, pow(2, .5));
+}
+
+TEST(rigid2dLibrary, VectorAngle)
+{
+  rigid2d::Vector2D vec(1.0, 1.0);
+  double ang;
+
+  ang = vec.angle();
+
+  ASSERT_EQ(ang, 45);
+}
+
 TEST(rigid2dLibrary, VectorNormalization)
 {
   rigid2d::Vector2D vec(1.0, 1.0), unit_vec;
@@ -61,6 +81,61 @@ TEST(rigid2dLibrary, VectorNormalization)
 
   ASSERT_PRED3(rigid2d::almost_equal, unit_vec.x, 0.707107, 1e-5);
   ASSERT_PRED3(rigid2d::almost_equal, unit_vec.y, 0.707107, 1e-5);
+}
+
+TEST(rigid2dLibrary, VectorDistance)
+{
+  rigid2d::Vector2D a(1.0, 1.0), b(2,2);
+  double dist;
+
+  dist = a.distance(b);
+
+  ASSERT_EQ(dist, pow(2, .5));
+}
+
+TEST(rigid2dLibrary, VectorAddition)
+{
+  rigid2d::Vector2D a(1,1), b(2,2), c;
+
+  a += b;
+
+  ASSERT_EQ(a.x, 3);
+  ASSERT_EQ(a.y, 3);
+
+  c = a + b;
+
+  ASSERT_EQ(c.x, 5);
+  ASSERT_EQ(c.y, 5);
+}
+
+TEST(rigid2dLibrary, VectorSubtraction)
+{
+  rigid2d::Vector2D a(1,1), b(2,2), c;
+
+  a -= b;
+
+  ASSERT_EQ(a.x, -1);
+  ASSERT_EQ(a.y, -1);
+
+  c = a - b;
+
+  ASSERT_EQ(c.x, -3);
+  ASSERT_EQ(c.y, -3);
+}
+
+TEST(rigid2dLibrary, VectorMultiplication)
+{
+  rigid2d::Vector2D a(1,1), b(2,2), c;
+
+  a *= b;
+
+  ASSERT_EQ(a.x, 2);
+  ASSERT_EQ(a.y, 2);
+
+  c = a * b;
+
+  ASSERT_EQ(c.x, 4);
+  ASSERT_EQ(c.y, 4);
 }
 
 TEST(rigid2dLibrary, VectorTransform)
@@ -128,6 +203,8 @@ TEST(rigid2dLibrary, IntegrateTwist)
   ss_out << tf;
   ASSERT_EQ(ss_out.str(), output);
 }
+
+
 
 TEST(rigid2dLibrary, operator_Star)
 {

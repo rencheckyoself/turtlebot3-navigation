@@ -5,6 +5,7 @@
 
 namespace rigid2d
 {
+  // IO Functions ==============================================================
   std::ostream & operator<<(std::ostream & os, const Vector2D & v)
   {
     os << "2D Vector, [" << v.x << ", " << v.y << "]\n";
@@ -64,12 +65,7 @@ namespace rigid2d
     return is;
   }
 
-  Transform2D operator*(Transform2D lhs, const Transform2D & rhs)
-  {
-    lhs *= rhs ;
-    return lhs;
-  }
-
+  // Vector2D Methods ==========================================================
   Vector2D::Vector2D()
   {
     x = 0.0;
@@ -87,7 +83,8 @@ namespace rigid2d
     float mag;
     Vector2D unit_vec;
 
-    mag = pow(x*x + y*y, 0.5);
+    // mag = pow(x*x + y*y, 0.5);
+    mag = this->length();
 
     unit_vec.x = x/mag;
     unit_vec.y = y/mag;
@@ -95,6 +92,69 @@ namespace rigid2d
     return unit_vec;
   }
 
+  double Vector2D::length() const
+  {
+    return pow(x*x + y*y, 0.5);
+  }
+
+  double Vector2D::angle() const
+  {
+    return rad2deg(std::atan(y/x));
+  }
+
+  double Vector2D::distance(Vector2D vec) const
+  {
+    double xdiff, ydiff;
+
+    xdiff = std::fabs(vec.x - x);
+    ydiff = std::fabs(vec.y - y);
+
+    return pow(xdiff*xdiff + ydiff*ydiff, 0.5);
+  }
+
+  Vector2D & Vector2D::operator+=(const Vector2D & rhs)
+  {
+    x += rhs.x;
+    y += rhs.y;
+
+    return *this;
+  }
+
+  Vector2D & Vector2D::operator-=(const Vector2D & rhs)
+  {
+    x -= rhs.x;
+    y -= rhs.y;
+
+    return *this;
+  }
+
+  Vector2D & Vector2D::operator*=(const Vector2D & rhs)
+  {
+    x *= rhs.x;
+    y *= rhs.y;
+
+    return *this;
+  }
+
+  Vector2D operator+(Vector2D lhs, const Vector2D & rhs)
+  {
+    lhs += rhs ;
+    return lhs;
+  }
+
+  Vector2D operator-(Vector2D lhs, const Vector2D & rhs)
+  {
+    lhs -= rhs ;
+    return lhs;
+  }
+
+  Vector2D operator*(Vector2D lhs, const Vector2D & rhs)
+  {
+    lhs *= rhs ;
+    return lhs;
+  }
+
+  // Twist2D Methods ===========================================================
   Twist2D::Twist2D()
   {
     wz = 0.0;
@@ -109,7 +169,6 @@ namespace rigid2d
     vy = liny;
   }
 
-  // Public
   Transform2D::Transform2D()
   {
     x = 0;
@@ -179,7 +238,7 @@ namespace rigid2d
     return disp;
   }
 
-  void Transform2D::integrateTwist(Twist2D tw, double dt)
+  void Transform2D::integrateTwist(const Twist2D tw, double dt)
   {
     theta += (tw.wz*dt);
     ctheta = std::cos(theta);
@@ -205,6 +264,12 @@ namespace rigid2d
     stheta = sth_buf;
 
     return *this;
+  }
+
+  Transform2D operator*(Transform2D lhs, const Transform2D & rhs)
+  {
+    lhs *= rhs ;
+    return lhs;
   }
 
   // Private
