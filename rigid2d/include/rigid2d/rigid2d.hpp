@@ -45,6 +45,23 @@ namespace rigid2d
         return rad * (180/PI);
     }
 
+    /// \brief maps an angle to the range [-pi, pi)
+    /// \param rad - any angle
+    /// \return angle mapped to the range [-pi, pi)
+    constexpr double normalize_angle(double rad)
+    {
+      double ang = 0;
+      int i = 0;
+
+      i = (rad + PI)/(2 * PI);
+      ang = rad + PI - (i * 2 * PI);
+      if(ang < 0)
+      {
+        ang += 2*PI;
+      }
+      return ang - PI;
+    }
+
     /// static_assertions test compile time assumptions.
     /// You should write at least one more test for each function
     /// You should also purposely (and temporarily) make one of these tests fail
@@ -63,7 +80,13 @@ namespace rigid2d
 
     static_assert(almost_equal(deg2rad(rad2deg(2.1)), 2.1), "deg2rad failed");
 
-
+    static_assert(almost_equal(normalize_angle(0),0), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(PI),-PI, 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(-PI),-PI, 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(1.5*PI),-PI/2, 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(2.5*PI),PI/2, 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(-1.5*PI),PI/2, 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(-2.5*PI),-PI/2, 1e-4), "normalized angle falied");
 
     /// \brief A 2-Dimensional Vector
     struct Vector2D

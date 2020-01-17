@@ -2,7 +2,6 @@
 #include "rigid2d/rigid2d.hpp"
 #include <sstream>
 
-
 TEST(rigid2dLibrary, VectorIO)
 {
 
