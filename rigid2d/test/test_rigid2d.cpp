@@ -114,10 +114,24 @@ TEST(rigid2dLibrary, TransformDisplacement)
   ASSERT_EQ(tw.vy, vec.y);
 }
 
+TEST(rigid2dLibrary, IntegrateTwist)
+{
+  rigid2d::Twist2D tw(1,1,1);
+  rigid2d::Vector2D vec(1,1);
+  rigid2d::Transform2D tf(vec, rigid2d::PI/2);
+
+  std::stringstream ss_out;
+  std::string output("2D Transform, theta(degrees): 147.296 x: 2 y: 2\n");
+
+  tf.integrateTwist(tw);
+
+  ss_out << tf;
+  ASSERT_EQ(ss_out.str(), output);
+}
+
 TEST(rigid2dLibrary, operator_Star)
 {
   rigid2d::Vector2D va(1.0, 1.0), vb(2.0, 2.0);
-
   rigid2d::Transform2D tab(va, rigid2d::PI/2), tbc(vb, 0);
 
   std::stringstream ss_out;
@@ -133,7 +147,6 @@ TEST(rigid2dLibrary, operator_Star)
 TEST(rigid2dLibrary, operator_StarEquals)
 {
   rigid2d::Vector2D va(1.0, 1.0), vb(2.0, 2.0);
-
   rigid2d::Transform2D tab(va, rigid2d::PI/2), tbc(vb, 0), tac;
 
   std::stringstream ss_out1, ss_out2;

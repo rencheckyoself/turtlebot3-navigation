@@ -168,6 +168,12 @@ namespace rigid2d
         /// \return the angle and translation of the transform
         Twist2D displacement() const;
 
+        /// \brief advnace the current transform by a twist for one time unit
+        /// \param tw - the twist to follow
+        /// \param dt - the length of the timestep in seconds
+        /// \return None. This transform is modified.
+        void integrateTwist(Twist2D tw, double dt=1);
+
         /// \brief compose this transform with another and store the result
         /// in this object
         /// \param rhs - the first transform to apply

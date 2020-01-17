@@ -179,6 +179,15 @@ namespace rigid2d
     return disp;
   }
 
+  void Transform2D::integrateTwist(Twist2D tw, double dt)
+  {
+    theta += (tw.wz*dt);
+    ctheta = std::cos(theta);
+    stheta = std::sin(theta);
+    x += (tw.vx*dt);
+    y += (tw.vy*dt);
+  }
+
   Transform2D & Transform2D::operator*=(const Transform2D & rhs)
   {
     double x_buf, y_buf, cth_buf, sth_buf;
