@@ -164,6 +164,10 @@ namespace rigid2d
         /// \return the inverse transformation.
         Transform2D inv() const;
 
+        /// \brief retrieve information about the transform
+        /// \return the angle and translation of the transform
+        Twist2D displacement() const;
+
         /// \brief compose this transform with another and store the result
         /// in this object
         /// \param rhs - the first transform to apply

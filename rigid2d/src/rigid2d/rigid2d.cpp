@@ -169,10 +169,14 @@ namespace rigid2d
 
   Transform2D Transform2D::inv() const
   {
-
     Transform2D inv_trans(theta, ctheta, -stheta, -x * ctheta - y * stheta, x * stheta - y * ctheta);
-
     return inv_trans;
+  }
+
+  Twist2D Transform2D::displacement() const
+  {
+    Twist2D disp(rad2deg(theta), x, y);
+    return disp;
   }
 
   Transform2D & Transform2D::operator*=(const Transform2D & rhs)

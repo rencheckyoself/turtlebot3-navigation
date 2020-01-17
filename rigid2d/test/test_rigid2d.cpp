@@ -101,6 +101,19 @@ TEST(rigid2dLibrary, TransformInverse)
   ASSERT_EQ(vec2p.y, -2);
 }
 
+TEST(rigid2dLibrary, TransformDisplacement)
+{
+  rigid2d::Twist2D tw;
+  rigid2d::Vector2D vec(1,1);
+  rigid2d::Transform2D tf(vec, rigid2d::PI/2);
+
+  tw = tf.displacement();
+
+  ASSERT_EQ(tw.wz, 90);
+  ASSERT_EQ(tw.vx, vec.x);
+  ASSERT_EQ(tw.vy, vec.y);
+}
+
 TEST(rigid2dLibrary, operator_Star)
 {
   rigid2d::Vector2D va(1.0, 1.0), vb(2.0, 2.0);
