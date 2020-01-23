@@ -3,6 +3,9 @@
 
 ## Submitting:
 
+  - Task C.005 - C.010
+  - Task E.000 - E.005
+  - Task B.005 - B.006
 
 ## Completed:
 

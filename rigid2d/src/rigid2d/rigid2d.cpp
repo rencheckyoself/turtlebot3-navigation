@@ -169,6 +169,22 @@ namespace rigid2d
     vy = liny;
   }
 
+  // Pose2D Methods ===========================================================
+  Pose2D::Pose2D()
+  {
+    th = 0;
+    x = 0;
+    y = 0;
+  }
+
+  Pose2D::Pose2D(double ang, double xpos, double ypos)
+  {
+    th = ang;
+    x = xpos;
+    y = ypos;
+  }
+
+  // Transform2D Methods ===========================================================
   Transform2D::Transform2D()
   {
     x = 0;
@@ -238,13 +254,41 @@ namespace rigid2d
     return disp;
   }
 
-  void Transform2D::integrateTwist(const Twist2D tw, double dt)
+  Transform2D Transform2D::integrateTwist(const Twist2D tw, double dt) const
   {
-    theta += (tw.wz*dt);
-    ctheta = std::cos(theta);
-    stheta = std::sin(theta);
-    x += (tw.vx*dt);
-    y += (tw.vy*dt);
+    Transform2D T_wbp;
+    Pose2D pose(tw.wz * dt, tw.vx * dt, tw.vy * dt);
+
+    if(pose.th == 0)
+    {
+      Vector2D vec_bp(pose.x, pose.y);
+      Transform2D T_bbp(vec_bp);
+
+      T_wbp = T_bbp * *this;
+    }
+
+    else
+    {
+      Transform2D T_bbp;
+      Vector2D vec_s( pose.y / pose.th, -pose.x / pose.th);
+
+      // Create the transform of the current transform relative to the point of rotation.
+      Transform2D T_sb(vec_s);
+
+      // Rotate at the point of rotation
+      Transform2D T_ssp(pose.th);
+
+      // Get the Transform  of the new frame after applying the twist relative to the current frame
+      // Note: T_sb == T_spbp
+
+      T_bbp = T_sb.inv() * T_ssp * T_sb;
+
+      // T_wbp = T_wb * T_bbp
+      T_wbp = *this * T_bbp;
+    }
+
+
+    return T_wbp;
   }
 
   Transform2D & Transform2D::operator*=(const Transform2D & rhs)
@@ -255,7 +299,7 @@ namespace rigid2d
     sth_buf = stheta*rhs.ctheta + ctheta*rhs.stheta;
 
     x_buf = ctheta*rhs.x - stheta*rhs.y + x;
-    y_buf = stheta*rhs.x - ctheta*rhs.y + y;
+    y_buf = stheta*rhs.x + ctheta*rhs.y + y;
 
     theta = std::acos(cth_buf);
     x = x_buf;

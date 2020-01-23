@@ -192,6 +192,26 @@ namespace rigid2d
 
     };
 
+    /// \brief A 2-Dimensional Pose
+    struct Pose2D
+    {
+    public:
+
+      // heading, x, and y
+      double th = 0.0;
+      double x = 0.0;
+      double y = 0.0;
+
+      /// \brief create an empty pose
+      Pose2D();
+
+      /// \brief create a pose
+      /// \param ang - the angular heading
+      /// \param xpos - the x position
+      /// \param ypos - the y position
+      Pose2D(double ang, double xpos, double ypos);
+    };
+
     /// \brief output a 2 dimensional twist as [wx wy vx vy]
     /// os - stream to output to
     /// tw - the twist to print
@@ -244,7 +264,7 @@ namespace rigid2d
         /// \param tw - the twist to follow
         /// \param dt - the length of the timestep in seconds
         /// \return None. This transform is modified.
-        void integrateTwist(const Twist2D tw, double dt=1);
+        Transform2D integrateTwist(const Twist2D tw, double dt=1) const;
 
         /// \brief compose this transform with another and store the result
         /// in this object

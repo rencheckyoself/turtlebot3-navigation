@@ -188,21 +188,37 @@ TEST(rigid2dLibrary, TransformDisplacement)
   ASSERT_EQ(tw.vy, vec.y);
 }
 
-TEST(rigid2dLibrary, IntegrateTwist)
+TEST(rigid2dLibrary, IntegrateTwistNoRot)
 {
-  rigid2d::Twist2D tw(1,1,1);
+  rigid2d::Twist2D tw(0,1,1);
   rigid2d::Vector2D vec(1,1);
   rigid2d::Transform2D tf(vec, rigid2d::PI/2);
+  rigid2d::Transform2D out_tf;
 
   std::stringstream ss_out;
-  std::string output("2D Transform, theta(degrees): 147.296 x: 2 y: 2\n");
+  std::string output("2D Transform, theta(degrees): 90 x: 2 y: 2\n");
 
-  tf.integrateTwist(tw);
+  out_tf = tf.integrateTwist(tw);
 
-  ss_out << tf;
+  ss_out << out_tf;
   ASSERT_EQ(ss_out.str(), output);
 }
 
+TEST(rigid2dLibrary, IntegrateTwistWithRot)
+{
+  rigid2d::Twist2D tw(1,1,1);
+  rigid2d::Vector2D vec(-1, 3);
+  rigid2d::Transform2D tf(vec, rigid2d::PI/2);
+  rigid2d::Transform2D out_tf;
+
+  std::stringstream ss_out;
+  std::string output("2D Transform, theta(degrees): 147.296 x: -2.30117 y: 3.38177\n");
+
+  out_tf = tf.integrateTwist(tw);
+
+  ss_out << out_tf;
+  ASSERT_EQ(ss_out.str(), output);
+}
 
 
 TEST(rigid2dLibrary, operator_Star)
