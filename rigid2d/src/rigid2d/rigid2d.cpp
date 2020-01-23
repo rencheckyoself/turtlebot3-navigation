@@ -1,7 +1,7 @@
 /// \file
-/// \brief Source file for rigid2D library
-#include "rigid2d/rigid2d.hpp"
+/// \brief Source file for rigid2D 2D Transformation library
 #include <iostream>
+#include "rigid2d/rigid2d.hpp"
 
 namespace rigid2d
 {
@@ -221,6 +221,15 @@ namespace rigid2d
     y = trans.y;
   }
 
+  Transform2D::Transform2D(const Pose2D pose)
+  {
+    theta = pose.th;
+    ctheta = std::cos(pose.th);
+    stheta = std::sin(pose.th);
+    x = pose.x;
+    y = pose.y;
+  }
+
   Vector2D Transform2D::operator()(Vector2D v) const
   {
     Vector2D v_prime;
@@ -248,9 +257,9 @@ namespace rigid2d
     return inv_trans;
   }
 
-  Twist2D Transform2D::displacement() const
+  Pose2D Transform2D::displacement() const
   {
-    Twist2D disp(rad2deg(theta), x, y);
+    Pose2D disp(rad2deg(theta), x, y);
     return disp;
   }
 
@@ -286,7 +295,6 @@ namespace rigid2d
       // T_wbp = T_wb * T_bbp
       T_wbp = *this * T_bbp;
     }
-
 
     return T_wbp;
   }

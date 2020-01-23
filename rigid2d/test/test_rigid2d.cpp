@@ -177,15 +177,15 @@ TEST(rigid2dLibrary, TransformInverse)
 
 TEST(rigid2dLibrary, TransformDisplacement)
 {
-  rigid2d::Twist2D tw;
+  rigid2d::Pose2D pose;
   rigid2d::Vector2D vec(1,1);
   rigid2d::Transform2D tf(vec, rigid2d::PI/2);
 
-  tw = tf.displacement();
+  pose = tf.displacement();
 
-  ASSERT_EQ(tw.wz, 90);
-  ASSERT_EQ(tw.vx, vec.x);
-  ASSERT_EQ(tw.vy, vec.y);
+  ASSERT_EQ(pose.th, 90);
+  ASSERT_EQ(pose.x, vec.x);
+  ASSERT_EQ(pose.y, vec.y);
 }
 
 TEST(rigid2dLibrary, IntegrateTwistNoRot)

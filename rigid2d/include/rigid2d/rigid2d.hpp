@@ -242,6 +242,11 @@ namespace rigid2d
         /// \param rot - the rotation, in radians
         Transform2D(const Vector2D & trans, double radians);
 
+        /// \brief Create a transformation with a translational and rotational
+        /// component
+        /// \param pose - the translation and rotation
+        Transform2D(const Pose2D);
+
         /// \brief apply a transformation to a Vector2D
         /// \param v - the vector to transform
         /// \return a vector in the new coordinate system
@@ -258,7 +263,7 @@ namespace rigid2d
 
         /// \brief retrieve information about the transform
         /// \return the angle and translation of the transform
-        Twist2D displacement() const;
+        Pose2D displacement() const;
 
         /// \brief advnace the current transform by a twist for one time unit
         /// \param tw - the twist to follow
