@@ -15,8 +15,8 @@ namespace rigid2d
   /// \brief Wheel velocities for a diff drive robot.
   struct WheelVelocities
   {
-      double ul = 0;
       double ur = 0;
+      double ul = 0;
   };
 
   class DiffDrive
@@ -33,37 +33,37 @@ namespace rigid2d
       DiffDrive(Pose2D pose, double wheel_base, double wheel_radius);
 
       /// \brief determine the wheel velocities required to make the robot
-      ///        move with the desired linear and angular velocities
+      ///        move with the desired linear and angular velocities. See doc directory for derivation.
       /// \param twist - the desired twist in the body frame of the robot
       /// \returns - the wheel velocities to use
-      /// \throws std::exception
+      /// \throws std::exception when yb != 0
+      // Need to Add Exception Handling
       WheelVelocities twistToWheels(Twist2D twist);
 
       /// \brief determine the body twist of the robot from its wheel velocities
       /// \param vel - the velocities of the wheels, assumed to be held constant
       ///  for one time unit
-      /// \returns twist in the original body frame of the
-      // UNIFINISHED--------------------------------
-      Twist2D wheelsToTwist(WheelVelocities vel);
+      /// \returns twist in the original body frame of the robot
+      Twist2D wheelsToTwist(WheelVelocities vel) const;
 
       /// \brief Update the robot's odometry based on the current encoder readings
       /// \param left - the left encoder angle (in radians)
       /// \param right - the right encoder angle (in radians)
       /// \return the velocities of each wheel, assuming that they have been
       /// constant since the last call to updateOdometry
-      // UNIFINISHED--------------------------------
-      // WheelVelocities updateOdometry
+      void updateOdometry(double left, double right);
 
       /// \brief update the odometry of the diff drive robot, assuming that
       /// it follows the given body twist for one time  unit
       /// \param cmd - the twist command to send to the robot
-      // UNIFINISHED--------------------------------
       void feedforward(Twist2D cmd);
 
       /// \brief get the current pose of the robot
       Pose2D pose() const;
 
       /// \brief get the wheel speeds, based on the last encoder update
+      /// \returns the velocity of the wheels, which is equivalent to
+      /// displacement because \Delta T = 1
       WheelVelocities wheelVelocities() const;
 
       /// \brief reset the robot to the given position/orientation

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include "rigid2d/rigid2d.hpp"
 #include <sstream>
+#include "rigid2d/rigid2d.hpp"
+#include "rigid2d/diff_drive.hpp"
 
 TEST(rigid2dLibrary, VectorIO)
 {
@@ -252,4 +253,74 @@ TEST(rigid2dLibrary, operator_StarEquals)
 
   ss_out2 << tab;
   EXPECT_EQ(ss_out2.str(), output2);
+}
+
+TEST(diffdriveLibrary, TwistToWheels)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Twist2D tw(1,1,0);
+  rigid2d::WheelVelocities vel;
+
+  vel = bot.twistToWheels(tw);
+
+  ASSERT_EQ(vel.ur, 12.5);
+  ASSERT_EQ(vel.ul, 7.5);
+}
+
+TEST(diffdriveLibrary, WheelsToTwist)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Twist2D tw;
+  rigid2d::WheelVelocities vel;
+
+  vel.ur = 12.5;
+  vel.ul = 7.5;
+
+  tw = bot.wheelsToTwist(vel);
+
+  ASSERT_EQ(tw.vx, 1);
+  ASSERT_EQ(tw.wz, 1);
+  ASSERT_EQ(tw.vy, 0);
+}
+
+TEST(diffdriveLibrary, OdomTransOnly)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Pose2D pose;
+
+  bot.updateOdometry(1,1);
+
+  pose = bot.pose();
+
+  ASSERT_EQ(pose.x, 0.1);
+  ASSERT_EQ(pose.y, 0);
+  ASSERT_EQ(pose.th, 0);
+}
+
+TEST(diffdriveLibrary, OdomRotOnly)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Pose2D pose;
+
+  bot.updateOdometry(-5*rigid2d::PI/2, 5*rigid2d::PI/2);
+
+  pose = bot.pose();
+
+  ASSERT_EQ(pose.x, 0);
+  ASSERT_EQ(pose.y, 0);
+  ASSERT_EQ(pose.th, 180);
+}
+
+TEST(diffdriveLibrary, OdomTransAndRot)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Pose2D pose;
+
+  bot.updateOdometry(-1, 2);
+
+  pose = bot.pose();
+
+  ASSERT_PRED3(rigid2d::almost_equal, pose.x, 0.0470, 1e-4);
+  ASSERT_PRED3(rigid2d::almost_equal, pose.y, 0.0145, 1e-4);
+  ASSERT_PRED3(rigid2d::almost_equal, pose.th, 34.3775, 1e-4);
 }
