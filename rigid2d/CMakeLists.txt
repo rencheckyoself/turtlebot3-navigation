@@ -2,14 +2,21 @@ cmake_minimum_required(VERSION 2.8.3)
 project(rigid2d)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++17 -Wall -Werror)
+add_compile_options(-Wall -Werror)
 set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
-
+find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
+  message_generation
+	nav_msgs
+  roscpp
+	rostest
+	sensor_msgs
+  tf2
+)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -65,9 +72,10 @@ find_package(catkin REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
+# generate_messages(DEPENDENCIES
+#   geometry_msgs
+# 	nav_msgs
+# 	sensor_msgs
 # )
 
 ################################################
@@ -102,7 +110,7 @@ find_package(catkin REQUIRED)
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES ${PROJECT_NAME}
- # CATKIN_DEPENDS other_catkin_pkg
+ CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs roscpp sensor_msgs tf2
 #  DEPENDS system_lib
 )
 
@@ -119,8 +127,8 @@ include_directories(
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/${PROJECT_NAME}/${PROJECT_NAME}.cpp
   src/${PROJECT_NAME}/diff_drive.cpp
+	src/${PROJECT_NAME}/${PROJECT_NAME}.cpp
   src/${PROJECT_NAME}/waypoints.cpp
 )
 
@@ -133,12 +141,13 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}_node.cpp)
+add_executable(${PROJECT_NAME}_odometer_node src/odometer.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -146,6 +155,11 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
+	${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(${PROJECT_NAME}_odometer_node
 	${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
@@ -166,7 +180,7 @@ target_link_libraries(${PROJECT_NAME}_node
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_node
+install(TARGETS ${PROJECT_NAME}_node ${PROJECT_NAME}_odometer_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -197,9 +211,12 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-catkin_add_gtest(${PROJECT_NAME}_rigid2_testing test/test_rigid2d.cpp)
+if(CATKIN_ENABLE_TESTING)
+	catkin_add_gtest(${PROJECT_NAME}_${PROJECT_NAME}_testing test/test_${PROJECT_NAME}.cpp)
+endif()
+
 if(TARGET ${PROJECT_NAME}_rigid2_testing)
-  target_link_libraries(${PROJECT_NAME}_rigid2_testing ${PROJECT_NAME} gtest_main)
+  target_link_libraries(${PROJECT_NAME}_${PROJECT_NAME}_testing ${PROJECT_NAME} gtest_main)
 endif()
 
 ## Add folders to be run by python nosetests

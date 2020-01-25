@@ -7,6 +7,18 @@
 namespace rigid2d
 {
 
+  WheelVelocities::WheelVelocities()
+  {
+    ul = 0;
+    ur = 0;
+  }
+
+  WheelVelocities::WheelVelocities(double left, double right)
+  {
+    ul = left;
+    ur = right;
+  }
+
   DiffDrive::DiffDrive()
   {
     pos.x = 0;
@@ -83,8 +95,8 @@ namespace rigid2d
   void DiffDrive::updateOdometry(double left, double right)
   {
     WheelVelocities move;
-    move.ul = left;
-    move.ur = right;
+    move.ul = left - prev_enc.ul;
+    move.ur = right - prev_enc.ur;
 
     feedforward(wheelsToTwist(move));
   }

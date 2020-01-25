@@ -8,8 +8,10 @@
 
 #include <tf2_ros/transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Quaternion.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
 
@@ -23,11 +25,20 @@
 using std::cout;
 using std::cin;
 
-void callback_joints(const sensor_msgs::JointStates & data, DiffDrive & robot, ros::Publisher pub)
+int findJointIndex(std::vector<std::string> joints, std::string target)
+{
+    std::vector<std::string>::iterator find_joint;
+
+    find_joint = std::find(joints.begin(), joints.end(), target);
+
+    return std::distance(joints.begin(), find_joint);
+}
+
+void callback_joints(const sensor_msgs::JointState::ConstPtr & data, rigid2d::DiffDrive & robot, ros::Publisher pub, tf2_ros::TransformBroadcaster br)
 {
     // ros::NodeHandle n;
     //
-    // String odom_frame_id, base_frame_id;
+    // std::string odom_frame_id, base_frame_id;
     //
     // n.getParam("~odom_frame_id", odom_frame_id);
     // n.getParam("~base_frame_id", base_frame_id);
@@ -35,25 +46,40 @@ void callback_joints(const sensor_msgs::JointStates & data, DiffDrive & robot, r
     // Update internal odometry state of the robot
 
     // the incoming data is the state of the left and right joints
-    // convert the wheel displacement/wheel velocities in an updated position
+    // convert the wheel displacement in an updated position
     // in the DiffDrive class
 
+    std::vector<std::string> joints = data->name;
+    int lw_i, rw_i;
 
+    lw_i = findJointIndex(joints, "left_wheel_axel");
+    rw_i = findJointIndex(joints, "right_wheel_axel");
+
+    robot.updateOdometry(data->position[lw_i], data->position[rw_i]);
+
+    rigid2d::WheelVelocities cmd(data->velocity[lw_i], data->velocity[rw_i]);
+    rigid2d::Twist2D tw = robot.wheelsToTwist(cmd);
+
+    rigid2d::Pose2D pos = robot.pose();
+
+    tf2::Quaternion q;
+    q.setRPY(0, 0, pos.th);
 
     // Publish an odometry message
     nav_msgs::Odometry odom;
-    odom.header.stamp = current_time;
+    geometry_msgs::Quaternion q_geo = tf2::toMsg(q);
+    odom.header.stamp = ros::Time::now();
     odom.header.frame_id = "odom";
 
-    odom.pose.pose.position.x = x;
-    odom.pose.pose.position.y = y;
+    odom.pose.pose.position.x = pos.x;
+    odom.pose.pose.position.y = pos.y;
     odom.pose.pose.position.z = 0.0;
-    odom.pose.pose.orientation = odom_quat;
+    odom.pose.pose.orientation = q_geo;
 
     odom.child_frame_id = "base_link";
-    odom.twist.twist.linear.x = vx;
-    odom.twist.twist.linear.y = vy;
-    odom.twist.twist.angular.z = vth;
+    odom.twist.twist.linear.x = tw.vx;
+    odom.twist.twist.linear.y = tw.vy;
+    odom.twist.twist.angular.z = tw.wz;
 
     pub.publish(odom);
 
@@ -65,11 +91,10 @@ void callback_joints(const sensor_msgs::JointStates & data, DiffDrive & robot, r
 
     T_ob.child_frame_id = "base_link";
 
-    T_ob.transform.translation.x = msg->x;
-    T_ob.transform.translation.y = msg->y;
+    T_ob.transform.translation.x = pos.x;
+    T_ob.transform.translation.y = pos.y;
     T_ob.transform.translation.z = 0.0;
-    tf2::Quaternion q;
-    q.setRPY(0, 0, msg->theta);
+
     T_ob.transform.rotation.x = q.x();
     T_ob.transform.rotation.y = q.y();
     T_ob.transform.rotation.z = q.z();
@@ -104,13 +129,10 @@ int main(int argc, char** argv)
     ROS_INFO("Got wheel base param: %f", wheel_base);
     ROS_INFO("Got wheel radius param: %f", wheel_radius);
 
-    Pose2D pos;
+    rigid2d::Pose2D pos;
+    rigid2d::DiffDrive bot(pos, wheel_base, wheel_radius);
 
-    DiffDrive bot(pos, wheel_base, wheel_radius);
+    ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1, boost::bind(callback_joints, _1, boost::ref(bot), odom_pub, odom_br));
 
-    boost::reference_wrapper<DiffDrive>(bot);
-
-
-
-    ros::Subscriber joint_sub = n.subscribe("/joint_states", 1, boost::bind(callback_joints, _1, boost::ref(bot), odom_pub);
+    ros::spin();
 }

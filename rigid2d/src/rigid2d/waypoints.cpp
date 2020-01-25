@@ -82,7 +82,7 @@ namespace rigid2d
       tw.vx = 0;
     }
 
-    //return the twist
+    // return the twist
     return tw;
   }
 

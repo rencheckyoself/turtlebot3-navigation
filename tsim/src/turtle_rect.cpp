@@ -17,7 +17,7 @@
 /// SERVICES:
 ///     /traj_reset (std_srvs/Empty): resets the turtle to the beginning of the trajectory (lower left corner of the rectangle)
 
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include "std_srvs/Empty.h"
 
 #include "turtlesim/SetPen.h"

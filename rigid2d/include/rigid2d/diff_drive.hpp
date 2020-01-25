@@ -13,6 +13,12 @@ namespace rigid2d
   {
       double ur = 0;
       double ul = 0;
+
+      /// \brief sets wheel velocities to zero
+      WheelVelocities();
+
+      /// \brief sets wheel velocity parameters to specified values
+      WheelVelocities(double left, double right);
   };
 
   class DiffDrive
@@ -71,6 +77,7 @@ namespace rigid2d
       double r; // wheel radius of the robot
       double base; // distance between the wheel centers
       WheelVelocities w_vels; // velocities of the two wheels
+      WheelVelocities prev_enc; // Previous encoder values
       Transform2D T_wb, T_bl, T_br; // Transforms to the base and wheels
 
   };

@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 project(tsim)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++17 -Wall -Werror)
+set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -11,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   roscpp
+	tf2
   turtlesim
 )
 
@@ -71,6 +73,8 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   geometry_msgs
+	nav_msgs
+	sensor_msgs
   turtlesim
   # Or other packages containing msgs
 )
