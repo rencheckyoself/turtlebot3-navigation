@@ -13,7 +13,7 @@ namespace rigid2d
     pos.y = 0;
     pos.th = 0;
     r = 0.1;
-    base = .5;
+    base = 0.5;
 
     Pose2D bufl(0, -base/2, 0);
     Pose2D bufr(0, base/2, 0);
@@ -48,16 +48,23 @@ namespace rigid2d
   WheelVelocities DiffDrive::twistToWheels(Twist2D twist)
   {
 
-    // almost_equal(tw.vy,0) ? throw std::invalid_argument("The body twist cannot have a vy component that is non zero")
 
-    // These Equations were derived by:
-    // 1) Converting the body twist into the frame of each wheel (eq 1 & 2)
-    // 2) Identify the velocity characteristics of a conventional wheel (eq 3)
-    // 3) Solve for the wheel velocities using eq 1-3 (eq 4)
+    if(twist.vy == 0)
+    {
+      // These Equations were derived by:
+      // 1) Converting the body twist into the frame of each wheel (eq 1 & 2)
+      // 2) Identify the velocity characteristics of a conventional wheel (eq 3)
+      // 3) Solve for the wheel velocities using eq 1-3 (eq 4)
 
-    double d = base/2;
-    w_vels.ur = (1/r) * (d*twist.wz + twist.vx);
-    w_vels.ul = (1/r) * (-d*twist.wz + twist.vx);
+      double d = base/2;
+      w_vels.ur = (1/r) * (d*twist.wz + twist.vx);
+      w_vels.ul = (1/r) * (-d*twist.wz + twist.vx);
+    }
+
+    else
+    {
+      throw std::invalid_argument("The body twist cannot have a vy component that is non zero");
+    }
 
     return w_vels;
   }

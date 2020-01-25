@@ -3,11 +3,7 @@
 /// \file
 /// \brief Library for tracking the state of a diff drive robot.
 
-#include <iosfwd> // contains forward definitions for iostream objects
-#include <cmath> // standard math functions
 #include "rigid2d/rigid2d.hpp"
-
-using std::fabs;
 
 namespace rigid2d
 {

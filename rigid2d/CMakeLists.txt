@@ -121,6 +121,7 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/${PROJECT_NAME}.cpp
   src/${PROJECT_NAME}/diff_drive.cpp
+  src/${PROJECT_NAME}/waypoints.cpp
 )
 
 ## Add cmake target dependencies of the library
