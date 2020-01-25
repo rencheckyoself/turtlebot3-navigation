@@ -12,7 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   roscpp
-	tf2
   turtlesim
 )
 
@@ -73,8 +72,6 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   geometry_msgs
-	nav_msgs
-	sensor_msgs
   turtlesim
   # Or other packages containing msgs
 )

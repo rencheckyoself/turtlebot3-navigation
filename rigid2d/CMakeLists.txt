@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 	rostest
 	sensor_msgs
   tf2
+  tf2_ros
 )
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -110,7 +111,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES ${PROJECT_NAME}
- CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs roscpp sensor_msgs tf2
+ CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs roscpp sensor_msgs tf2 tf2_ros
 #  DEPENDS system_lib
 )
 
@@ -142,6 +143,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}_node.cpp)
 add_executable(${PROJECT_NAME}_odometer_node src/odometer.cpp)
+add_executable(${PROJECT_NAME}_encoder_node src/fake_diff_encoders.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -164,6 +166,10 @@ target_link_libraries(${PROJECT_NAME}_odometer_node
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(${PROJECT_NAME}_encoder_node
+	${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
 #############
 ## Install ##
 #############
@@ -180,7 +186,7 @@ target_link_libraries(${PROJECT_NAME}_odometer_node
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_node ${PROJECT_NAME}_odometer_node
+install(TARGETS ${PROJECT_NAME}_encoder_node ${PROJECT_NAME}_node ${PROJECT_NAME}_odometer_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

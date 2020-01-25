@@ -1,6 +1,19 @@
 /// \file
 /// \brief This node publishes the Odometry messages per ROS standard format
 ///
+/// PARAMETERS:
+///     g_x (int) The x coordinate of the lower left corner of a rectangle
+///     g_y (int) The y coordinate of the lower left corner of a rectangle
+///     width (int) The width of the rectangle
+///     height (int) The height of the rectangle
+///     trans_vel (int) The translational velocity of the robot
+///     rot_vel: (int) The rotational velocity of the robot
+///     frequency (int) The frequency of the control loop
+/// PUBLISHES:
+///     /pose_error (tsim/PoseError): The positional error of the turtle at each cycle.
+///     /turtle1/cmd_vel (geometry_msgs/Twist): The velcotiy command to control the turtle.
+/// SUBSCRIBES:
+///     /turtle1/pose (turtlesim/Pose): Retrieves the current pose of the turtle
 
 #include <iostream>
 
@@ -20,7 +33,6 @@
 
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
-#include "rigid2d/waypoints.hpp"
 
 using std::cout;
 using std::cin;
@@ -44,10 +56,6 @@ void callback_joints(const sensor_msgs::JointState::ConstPtr & data, rigid2d::Di
     // n.getParam("~base_frame_id", base_frame_id);
 
     // Update internal odometry state of the robot
-
-    // the incoming data is the state of the left and right joints
-    // convert the wheel displacement in an updated position
-    // in the DiffDrive class
 
     std::vector<std::string> joints = data->name;
     int lw_i, rw_i;

@@ -107,6 +107,16 @@ namespace rigid2d
     pos = T_wb.displacement();
   }
 
+  void DiffDrive::setRadius(double radius)
+  {
+    r = radius;
+  }
+
+  void DiffDrive::setBase(double b)
+  {
+    base = b;
+  }
+
   Pose2D DiffDrive::pose() const
   {
     return pos;

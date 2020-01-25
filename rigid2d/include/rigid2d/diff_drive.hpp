@@ -60,6 +60,10 @@ namespace rigid2d
       /// \param cmd - the twist command to send to the robot
       void feedforward(Twist2D cmd);
 
+      void setRadius(double radius);
+
+      void setBase(double b);
+
       /// \brief get the current pose of the robot
       Pose2D pose() const;
 
