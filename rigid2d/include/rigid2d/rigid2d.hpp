@@ -266,14 +266,17 @@ namespace rigid2d
         Transform2D inv() const;
 
         /// \brief retrieve information about the transform
-        /// \return the angle and translation of the transform
+        /// \return the angle (in degs) and translation of the transform
         Pose2D displacement() const;
+
+        /// \brief retrieve information about the transform
+        /// \return the angle (in rads) and translation of the transform
+        Pose2D displacementRad() const;
 
         /// \brief advnace the current transform by a twist for one time unit
         /// \param tw - the twist to follow
-        /// \param dt - the length of the timestep in seconds
         /// \return None. This transform is modified.
-        Transform2D integrateTwist(const Twist2D tw, double dt=1) const;
+        Transform2D integrateTwist(const Twist2D tw) const;
 
         /// \brief compose this transform with another and store the result
         /// in this object

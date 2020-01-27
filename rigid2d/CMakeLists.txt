@@ -221,7 +221,7 @@ if(CATKIN_ENABLE_TESTING)
 	catkin_add_gtest(${PROJECT_NAME}_${PROJECT_NAME}_testing test/test_${PROJECT_NAME}.cpp)
 endif()
 
-if(TARGET ${PROJECT_NAME}_rigid2_testing)
+if(TARGET ${PROJECT_NAME}_${PROJECT_NAME}_testing)
   target_link_libraries(${PROJECT_NAME}_${PROJECT_NAME}_testing ${PROJECT_NAME} gtest_main)
 endif()
 

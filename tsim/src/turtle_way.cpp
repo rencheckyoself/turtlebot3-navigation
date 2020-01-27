@@ -52,7 +52,7 @@ static ros::ServiceClient client_telabs;
 static ros::ServiceClient client_pen;
 
 static double trans_vel, rot_vel, wheel_base, wheel_radius;
-static int frequency;
+static double frequency;
 
 /// \brief A helper function to teleport the turtle to the beginning of the trajectory
 ///
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 {
 
   //Initializations
-  ros::init(argc, argv, "turtle_rect");
+  ros::init(argc, argv, "turtle_way");
 
   ros::NodeHandle n;
 
@@ -164,15 +164,11 @@ int main(int argc, char **argv)
 
     waypoint_list.push_back(buf);
 
-    ROS_INFO_STREAM("Waypoint 0 read as " << waypoint_list.at(i) << "\n");
+    ROS_INFO_STREAM("Waypoint " << i << " read as " << waypoint_list.at(i));
   }
 
   rigid2d::Twist2D v_command;
   rigid2d::Vector2D target;
-
-  // Thresholds to determine if the turtle is close enough to the starting point after teleporting
-  double lin_thresh = 0.05;
-  double ang_thresh = 0.05;
 
   //Set the loop rate
   ros::Rate r(frequency);
@@ -185,19 +181,28 @@ int main(int argc, char **argv)
   rigid2d::Pose2D init_pos(0, target.x, target.y);
   rigid2d::DiffDrive turt(init_pos, wheel_base, wheel_radius);
 
+  // Thresholds to determine if the turtle is close enough to the starting point after teleporting
+  // double lin_thresh = 0.05;
+  // double ang_thresh = 0.05;
+  //
   // Ensure the turtle is teleported and starts with minimal error
-  int clean_start = 0;
-  while(clean_start == 0)
-  {
-    teleport_turtle(init_pos);
+  // int clean_start = 0;
+  // ROS_INFO_STREAM("Entered");
+  // while(clean_start == 0)
+  // {
+  //   teleport_turtle(init_pos);
+  //
+  //   calc_error();
+  //
+  //   ROS_INFO_STREAM("Pose Error: " << current_pose);
+  //
+  //   if(error_pose.x < lin_thresh && error_pose.y < lin_thresh && error_pose.th < ang_thresh)
+  //   {
+  //     clean_start = 1;
+  //   }
+  // }
 
-    calc_error();
-
-    if(error_pose.x < lin_thresh && error_pose.y < lin_thresh && error_pose.th < ang_thresh)
-    {
-      clean_start = 1;
-    }
-  }
+  teleport_turtle(init_pos);
 
   // Begin normal routine of checking estimate pose and determines velocity command to get to current target
   while(ros::ok())
@@ -210,7 +215,8 @@ int main(int argc, char **argv)
     pub_vel.publish(path.Twist2DtoGeoTwist(v_command));
 
     // Update the estimated pose using the Diff Drive object
-    turt.feedforward(v_command);
+
+    turt.feedforward(v_command.scaleTwist(1/frequency));
     expected_pose = turt.pose();
 
     calc_error();

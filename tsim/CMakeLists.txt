@@ -147,7 +147,7 @@ add_executable(${PROJECT_NAME}_turtle_way src/turtle_way.cpp)
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 set_target_properties(${PROJECT_NAME}_turtle_rect PROPERTIES OUTPUT_NAME turtle_rect PREFIX "")
-set_target_properties(${PROJECT_NAME}_turtle_way PROPERTIES OUTPUT_NAME turtle_rect PREFIX "")
+set_target_properties(${PROJECT_NAME}_turtle_way PROPERTIES OUTPUT_NAME turtle_way PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

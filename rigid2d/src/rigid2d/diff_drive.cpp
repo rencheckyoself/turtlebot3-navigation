@@ -113,7 +113,7 @@ namespace rigid2d
   void DiffDrive::feedforward(Twist2D cmd)
   {
     T_wb = T_wb.integrateTwist(cmd);
-    pos = T_wb.displacement();
+    pos = T_wb.displacementRad();
     pos.th = normalize_angle(pos.th);
   }
 

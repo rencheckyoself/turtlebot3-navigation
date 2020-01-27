@@ -2,6 +2,7 @@
 #include <sstream>
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
+#include "rigid2d/waypoints.hpp"
 
 TEST(rigid2dLibrary, VectorIO)
 {
@@ -308,7 +309,7 @@ TEST(diffdriveLibrary, OdomRotOnly)
 
   ASSERT_EQ(pose.x, 0);
   ASSERT_EQ(pose.y, 0);
-  ASSERT_EQ(pose.th, 180);
+  ASSERT_EQ(pose.th, -rigid2d::PI);
 }
 
 TEST(diffdriveLibrary, OdomTransAndRot)
@@ -322,5 +323,5 @@ TEST(diffdriveLibrary, OdomTransAndRot)
 
   ASSERT_PRED3(rigid2d::almost_equal, pose.x, 0.0470, 1e-4);
   ASSERT_PRED3(rigid2d::almost_equal, pose.y, 0.0145, 1e-4);
-  ASSERT_PRED3(rigid2d::almost_equal, pose.th, 34.3775, 1e-4);
+  ASSERT_PRED3(rigid2d::almost_equal, pose.th, 0.6, 1e-4);
 }

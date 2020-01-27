@@ -169,6 +169,12 @@ namespace rigid2d
     vy = liny;
   }
 
+  Twist2D Twist2D::scaleTwist(double dt)
+  {
+    Twist2D buf(this->wz*dt, this->vx*dt, this->vy*dt);
+    return buf;
+  }
+
   // Pose2D Methods ===========================================================
   Pose2D::Pose2D()
   {
@@ -263,23 +269,29 @@ namespace rigid2d
     return disp;
   }
 
-  Transform2D Transform2D::integrateTwist(const Twist2D tw, double dt) const
+  Pose2D Transform2D::displacementRad() const
+  {
+    Pose2D disp(theta, x, y);
+    return disp;
+  }
+
+  Transform2D Transform2D::integrateTwist(const Twist2D tw) const
   {
     Transform2D T_wbp;
-    Pose2D pose(tw.wz * dt, tw.vx * dt, tw.vy * dt);
+    Pose2D pose(tw.wz, tw.vx, tw.vy);
 
     if(pose.th == 0)
     {
       Vector2D vec_bp(pose.x, pose.y);
       Transform2D T_bbp(vec_bp);
 
-      T_wbp = T_bbp * *this;
+      T_wbp = *this * T_bbp;
     }
 
     else
     {
       Transform2D T_bbp;
-      Vector2D vec_s( pose.y / pose.th, -pose.x / pose.th);
+      Vector2D vec_s( pose.y/pose.th, -pose.x/pose.th);
 
       // Create the transform of the current transform relative to the point of rotation.
       Transform2D T_sb(vec_s);
@@ -304,12 +316,16 @@ namespace rigid2d
     double x_buf, y_buf, cth_buf, sth_buf;
 
     cth_buf = ctheta*rhs.ctheta - stheta*rhs.stheta;
+
     sth_buf = stheta*rhs.ctheta + ctheta*rhs.stheta;
 
     x_buf = ctheta*rhs.x - stheta*rhs.y + x;
     y_buf = stheta*rhs.x + ctheta*rhs.y + y;
 
-    theta = std::acos(cth_buf);
+    theta = std::atan2(sth_buf, cth_buf);
+
+    std::cout << "theta: " << theta << "\n";
+
     x = x_buf;
     y = y_buf;
     ctheta = cth_buf;

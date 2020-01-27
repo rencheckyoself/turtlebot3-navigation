@@ -6,6 +6,7 @@
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
 #include <vector>
+#include "geometry_msgs/Twist.h"
 
 namespace rigid2d
 {

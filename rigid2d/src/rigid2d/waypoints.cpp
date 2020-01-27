@@ -6,8 +6,6 @@
 
 #include "geometry_msgs/Twist.h"
 
-#include "ros/console.h"
-
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
 #include "rigid2d/waypoints.hpp"
@@ -46,7 +44,7 @@ namespace rigid2d
     point_list.erase(point_list.begin());
     point_list.push_back(target);
 
-    ROS_INFO_STREAM("New target set to: " << target << "\n");
+    std::cout << "New target set to: " << target << "\n";
   }
 
   Vector2D Waypoints::getTarget()
@@ -60,7 +58,7 @@ namespace rigid2d
     double x_dist, y_dist;
     double calc_dist, calc_heading;
     double err_heading;
-    double dist_thresh = 0.05, ang_thresh = 0.05;
+    double dist_thresh = 0.01, ang_thresh = 0.01;
 
     tw.vy = 0;
 
@@ -74,13 +72,27 @@ namespace rigid2d
     calc_heading = std::atan2(y_dist, x_dist);
     err_heading = calc_heading - pos.th;
 
+    if(err_heading > rigid2d::PI)
+    {
+      err_heading = (err_heading - 2*rigid2d::PI);
+    }
+
+    else if(err_heading < -rigid2d::PI)
+    {
+      err_heading = (err_heading + 2*rigid2d::PI);
+    }
+
+    // std::cout << "Calc Heading " << calc_heading;
+    // std::cout << " Turtle Heading " << pos.th;
+    // std::cout << " Heading Err " << err_heading << "\n";
+
     // update target if nessissary
     if(calc_dist < dist_thresh)
     {
       setTarget();
     }
 
-    if(err_heading < ang_thresh)
+    if(std::fabs(err_heading) < ang_thresh)
     {
       // move straight
       tw.wz = 0;
@@ -90,8 +102,16 @@ namespace rigid2d
     else
     {
       // turn
-      tw.wz = angv_lim;
-      tw.vx = 0;
+      if(err_heading < 0)
+      {
+        tw.wz = -angv_lim;
+        tw.vx = 0;
+      }
+      else
+      {
+        tw.wz = angv_lim;
+        tw.vx = 0;
+      }
     }
 
     // return the twist

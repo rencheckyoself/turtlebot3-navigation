@@ -7,7 +7,7 @@
   <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
 
   <!-- Launch the node to control the turtle -->
-  <node name="turtle_rect" pkg="tsim" type="turtle_rect" output="screen"/>
+  <node name="turtle_way" pkg="tsim" type="turtle_way" output="screen"/>
 
   <!-- Defualt: launches a plot of the positional error -->
   <arg name="plot_gui" default="True" doc="A plot of the positional error will be displayed upon launch. Set to False to disable."/>
