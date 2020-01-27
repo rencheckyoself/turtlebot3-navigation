@@ -189,7 +189,7 @@ target_link_libraries(${PROJECT_NAME}_fake_encoders
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_fake_encoders ${PROJECT_NAME}_base_node ${PROJECT_NAME}_odometer
+install(TARGETS ${PROJECT_NAME}_base_node ${PROJECT_NAME}_fake_encoders ${PROJECT_NAME}_odometer
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
