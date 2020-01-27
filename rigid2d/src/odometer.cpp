@@ -2,7 +2,13 @@
 /// \brief This node publishes the Odometry messages per ROS standard format
 ///
 /// PARAMETERS:
-///     g_x (int) The x coordinate of the lower left corner of a rectangle
+///     odom_frame_id (std::string) the name of the odometer frame
+///     base_frame_id (std::string) the name of the base frame
+///     left_wheel_joint (std::string) the name of the left wheel joint
+///     right_wheel_joint (std::string) the name of the right wheel joint
+///     wheel_base (double) the distance between the two wheels of the diff drive robot
+///     wheel_radius (double) the radius of the wheels
+///     frequency (double) the frequency to publish joint states at
 /// PUBLISHES:
 ///     /odom (nav_msgs/Odometry): The calculated odometry of the diff drive robot
 /// SUBSCRIBES:
@@ -24,12 +30,14 @@
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
 
-using std::cout;
-using std::cin;
-
+//Global Variables
 sensor_msgs::JointState cur_js;
 int got_data = 0;
 
+/// \brief Use to search through the all joint names and return the index of the desired joint
+/// \param joints - a vector of all the joint names
+/// \param target - the desire joint name to find
+/// \return the index of the desired joint name
 int findJointIndex(std::vector<std::string> joints, std::string target)
 {
     std::vector<std::string>::iterator find_joint;
@@ -38,12 +46,16 @@ int findJointIndex(std::vector<std::string> joints, std::string target)
     return std::distance(joints.begin(), find_joint);
 }
 
+/// \brief Callback for the joint state subscriber
+///
 void callback_joints(const sensor_msgs::JointState::ConstPtr data)
 {
     cur_js = *data;
     got_data = 1;
 }
 
+/// \brief Main function for the odometer node
+///
 int main(int argc, char** argv)
 {
     // ros initializations
@@ -58,30 +70,26 @@ int main(int argc, char** argv)
 
     std::string odom_frame_id, base_frame_id, left_wheel_joint, right_wheel_joint;;
     double frequency;
+    double wheel_base, wheel_radius;
 
-    // Get private parameters for the node
+    // Get private parameters
     pn.getParam("odom_frame_id", odom_frame_id);
     pn.getParam("base_frame_id", base_frame_id);
     pn.getParam("left_wheel_joint", left_wheel_joint);
     pn.getParam("right_wheel_joint", right_wheel_joint);
-
+    n.getParam("frequency", frequency);
+    n.getParam("wheel_radius", wheel_radius);
+    n.getParam("wheel_base", wheel_base);
 
     ROS_INFO_STREAM("Odom Got odom frame id: " << odom_frame_id);
     ROS_INFO_STREAM("Odom Got base frame id: " << base_frame_id);
     ROS_INFO_STREAM("Odom Got left wheel joint name: " << left_wheel_joint);
     ROS_INFO_STREAM("Odom Got right wheel joint name: " << right_wheel_joint);
-
-    // Get parameters from server
-    double wheel_base, wheel_radius;
-
-    n.getParam("frequency", frequency);
-    n.getParam("wheel_radius", wheel_radius);
-    n.getParam("wheel_base", wheel_base);
-
     ROS_INFO_STREAM("Odom Got wheel base param: " << wheel_base);
     ROS_INFO_STREAM("Odom Got wheel radius param: " << wheel_radius);
     ROS_INFO_STREAM("Odom Got frequency param: " << frequency);
 
+    // Create diff drive object to simuate the robot
     rigid2d::Pose2D pos;
     rigid2d::DiffDrive bot(pos, wheel_base, wheel_radius);
 
@@ -97,9 +105,9 @@ int main(int argc, char** argv)
 
       if(got_data == 1)
       {
-      // extract new wheel positions
-      joints = cur_js.name;
 
+      // get the index of each wheel
+      joints = cur_js.name;
       lw_i = findJointIndex(joints, left_wheel_joint);
       rw_i = findJointIndex(joints, right_wheel_joint);
 
@@ -107,8 +115,8 @@ int main(int argc, char** argv)
       rigid2d::WheelVelocities cmd = (bot.updateOdometry(cur_js.position[lw_i], cur_js.position[rw_i]));
       rigid2d::Twist2D tw = bot.wheelsToTwist(cmd);
 
+      // Get info to fill out the message and transform
       rigid2d::Pose2D pos = bot.pose();
-
       tf2::Quaternion q;
       q.setRPY(0, 0, pos.th);
 

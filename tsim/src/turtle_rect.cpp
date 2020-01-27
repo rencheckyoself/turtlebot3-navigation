@@ -46,17 +46,17 @@ struct PoseVals
 
 
 // State Machine Variables
-int g_turtle_state = -1;
-int g_cycle_cnt = 0;
+static int g_turtle_state = -1;
+static int g_cycle_cnt = 0;
 
 // global variables to hold the x and y parameters
-int g_x, g_y;
+static int g_x, g_y;
 
 // Variables used to calculate the positional error
-PoseVals current_pose;
-PoseVals expected_pose;
-PoseVals error_pose;
-tsim::PoseError error;
+static PoseVals current_pose;
+static PoseVals expected_pose;
+static PoseVals error_pose;
+static tsim::PoseError error;
 
 /// \brief A helper function to teleport the turtle to the beginning of the trajectory
 ///

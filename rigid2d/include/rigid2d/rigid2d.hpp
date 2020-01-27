@@ -63,9 +63,6 @@ namespace rigid2d
     }
 
     /// static_assertions test compile time assumptions.
-    /// You should write at least one more test for each function
-    /// You should also purposely (and temporarily) make one of these tests fail
-    /// just to see what happens
     static_assert(almost_equal(0, 0), "is_zero failed");
     static_assert(almost_equal(0.001, 0.005, 1.0e-1), "is_zero failed");
     static_assert(almost_equal(-1, -1.0001, 1.0e-3), "is_zero failed");

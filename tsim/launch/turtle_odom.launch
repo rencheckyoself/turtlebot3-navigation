@@ -2,7 +2,6 @@
 
   <arg name="include_stuff" default="False" doc="This value is passed to included launch files to skip over certain commands" />
 
-
   <!-- Launches TurtleSim and turtle_way node -->
   <!-- Launches plot for error -->
   <!-- Loads robot and turtle parameters from config yaml files-->
@@ -23,6 +22,6 @@
   </node>
 
   <!-- Launch fake encoders node -->
-  <node name="fake_encoders" pkg="rigid2d" type="fake_encoders" output="screen"/>
+  <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" output="screen"/>
 
 </launch>

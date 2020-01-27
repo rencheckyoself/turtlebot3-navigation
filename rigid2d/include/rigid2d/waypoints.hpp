@@ -36,9 +36,12 @@ namespace rigid2d
     Twist2D nextWaypoint(Pose2D pos);
 
     /// \brief set the internal velocity limits
+    /// \param lin - the linear velocity limit
+    /// \param ang - the angular velocity limit
     void setVlims(double lin, double ang);
 
     /// \brief set the internal rate
+    /// \param r - the desired rate
     void setRate(int r);
 
     /// \brief get the current target

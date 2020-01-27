@@ -193,12 +193,12 @@ TEST(rigid2dLibrary, TransformDisplacement)
 TEST(rigid2dLibrary, IntegrateTwistNoRot)
 {
   rigid2d::Twist2D tw(0,1,1);
-  rigid2d::Vector2D vec(1,1);
-  rigid2d::Transform2D tf(vec, rigid2d::PI/2);
+  rigid2d::Vector2D vec(0,0);
+  rigid2d::Transform2D tf(vec, 0);
   rigid2d::Transform2D out_tf;
 
   std::stringstream ss_out;
-  std::string output("2D Transform, theta(degrees): 90 x: 2 y: 2\n");
+  std::string output("2D Transform, theta(degrees): 0 x: 1 y: 1\n");
 
   out_tf = tf.integrateTwist(tw);
 
@@ -318,6 +318,53 @@ TEST(diffdriveLibrary, OdomTransAndRot)
   rigid2d::Pose2D pose;
 
   bot.updateOdometry(-1, 2);
+
+  pose = bot.pose();
+
+  ASSERT_PRED3(rigid2d::almost_equal, pose.x, 0.0470, 1e-4);
+  ASSERT_PRED3(rigid2d::almost_equal, pose.y, 0.0145, 1e-4);
+  ASSERT_PRED3(rigid2d::almost_equal, pose.th, 0.6, 1e-4);
+}
+
+TEST(diffdriveLibrary, FFTransOnly)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Pose2D pose;
+  rigid2d::WheelVelocities wh(1,1);
+
+  bot.feedforward(bot.wheelsToTwist(wh));
+
+  pose = bot.pose();
+
+  ASSERT_EQ(pose.x, 0.1);
+  ASSERT_EQ(pose.y, 0);
+  ASSERT_EQ(pose.th, 0);
+}
+
+TEST(diffdriveLibrary, FFRotOnly)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Pose2D pose;
+
+  rigid2d::WheelVelocities wh(-5*rigid2d::PI/2, 5*rigid2d::PI/2);
+
+  bot.feedforward(bot.wheelsToTwist(wh));
+
+  pose = bot.pose();
+
+  ASSERT_EQ(pose.x, 0);
+  ASSERT_EQ(pose.y, 0);
+  ASSERT_EQ(pose.th, -rigid2d::PI);
+}
+
+TEST(diffdriveLibrary, FFTransAndRot)
+{
+  rigid2d::DiffDrive bot;
+  rigid2d::Pose2D pose;
+
+  rigid2d::WheelVelocities wh(-1, 2);
+
+  bot.feedforward(bot.wheelsToTwist(wh));
 
   pose = bot.pose();
 

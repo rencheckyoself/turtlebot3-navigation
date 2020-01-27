@@ -14,8 +14,6 @@
 ///     /turtle1/cmd_vel (geometry_msgs/Twist): The velcotiy command to control the turtle.
 /// SUBSCRIBES:
 ///     /turtle1/pose (turtlesim/Pose): Retrieves the current pose of the turtle
-/// SERVICES:
-///     /traj_reset (std_srvs/Empty): resets the turtle to the beginning of the trajectory (lower left corner of the rectangle)
 
 #include <ros/ros.h>
 #include "std_srvs/Empty.h"
@@ -118,7 +116,7 @@ void callback_pose(const turtlesim::Pose & msg)
   current_pose.th = msg.theta;
 }
 
-/// \brief Main function to create the turtle_rect node.
+/// \brief Main function to create the turtle_way node.
 ///
 int main(int argc, char **argv)
 {
@@ -202,7 +200,6 @@ int main(int argc, char **argv)
 
     //publish error
     pub_error.publish(error);
-    // ROS_INFO("state: %d \t x: %f \t y: %f \t ang: %f", g_turtle_state, error_pose.x, error_pose.y, error_pose.ang);
 
     ros::spinOnce();
     r.sleep();

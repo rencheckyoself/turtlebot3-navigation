@@ -24,7 +24,7 @@ namespace rigid2d
   class DiffDrive
   {
   public:
-      /// \brief the default constructor creates a robot at (0,0,0), with a fixed wheel base and wheel radius
+      /// \brief the default constructor creates a robot at (0,0,0), with a default wheel base and wheel radius
       DiffDrive();
 
       /// \brief create a DiffDrive model by specifying the pose, and geometry
@@ -39,10 +39,9 @@ namespace rigid2d
       /// \param twist - the desired twist in the body frame of the robot
       /// \returns - the wheel velocities to use
       /// \throws std::exception when yb != 0
-      // Need to Add Exception Handling
       WheelVelocities twistToWheels(Twist2D twist);
 
-      /// \brief determine the body twist of the robot from its wheel velocities
+      /// \brief determine the body twist of the robot from its wheel velocities. See doc directory for derivation.
       /// \param vel - the velocities of the wheels, assumed to be held constant
       ///  for one time unit
       /// \returns twist in the original body frame of the robot

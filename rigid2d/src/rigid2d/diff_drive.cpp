@@ -7,15 +7,6 @@
 namespace rigid2d
 {
 
-  Twist2D scaleTwist(Twist2D tw, double dt)
-  {
-    tw.vx = tw.vx * dt;
-    tw.vy = tw.vy * dt;
-    tw.wz = tw.wz * dt;
-
-    return tw;
-  }
-
   WheelVelocities::WheelVelocities()
   {
     ul = 0;
@@ -74,6 +65,7 @@ namespace rigid2d
       // 1) Converting the body twist into the frame of each wheel (eq 1 & 2)
       // 2) Identify the velocity characteristics of a conventional wheel (eq 3)
       // 3) Solve for the wheel velocities using eq 1-3 (eq 4)
+      // See Kinematics.pdf for details
 
       double d = base/2;
       w_vels.ur = (1/r) * (d*twist.wz + twist.vx);
@@ -93,6 +85,7 @@ namespace rigid2d
 
     // These Equations were derived by:
     // Using eq 4, take the pseudoinverse of the H matrix (eq 5) and then solve
+    // See Kinematics.pdf for details
 
     double d = 1 /(base);
     Twist2D tw((r)*(d*vel.ur - d*vel.ul), (r)*(.5*vel.ur + .5*vel.ul), 0);

@@ -31,7 +31,7 @@ namespace rigid2d
 
     return tw;
   }
-
+  
   Waypoints::Waypoints()
   {
     rate = 60;
@@ -101,10 +101,6 @@ namespace rigid2d
     {
       err_heading = (err_heading + 2*rigid2d::PI);
     }
-
-    // std::cout << "Calc Heading " << calc_heading;
-    // std::cout << " Turtle Heading " << pos.th;
-    // std::cout << " Heading Err " << err_heading << "\n";
 
     // update target if nessissary
     if(calc_dist < dist_thresh)
