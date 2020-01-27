@@ -68,11 +68,7 @@ int main(int argc, char** argv)
     while(ros::ok())
     {
 
-      rigid2d::WheelVelocities wheel_vels = robot.twistToWheels(twist_rg.scaleTwist(dt));
-
-      std::cout << wheel_vels.ul << " " << wheel_vels.ur << "\n";
-
-      robot.updateOdometry(wheel_vels.ul, wheel_vels.ur);
+      robot.feedforward(twist_rg.scaleTwist(dt));
 
       rigid2d::WheelVelocities abs_enc = robot.getEncoders();
 

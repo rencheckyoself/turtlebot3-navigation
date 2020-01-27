@@ -102,19 +102,29 @@ namespace rigid2d
   WheelVelocities DiffDrive::updateOdometry(double left, double right)
   {
     WheelVelocities move;
+    Twist2D cmd;
     move.ul = left - prev_enc.ul;
     move.ur = right - prev_enc.ur;
 
     prev_enc.ul = left;
     prev_enc.ur = right;
 
-    feedforward(wheelsToTwist(move));
+    cmd = wheelsToTwist(move);
+
+    T_wb = T_wb.integrateTwist(cmd);
+    pos = T_wb.displacementRad();
+    pos.th = normalize_angle(pos.th);
 
     return move;
   }
 
   void DiffDrive::feedforward(Twist2D cmd)
   {
+    WheelVelocities change = twistToWheels(cmd);
+
+    prev_enc.ul += change.ul;
+    prev_enc.ur += change.ur;
+
     T_wb = T_wb.integrateTwist(cmd);
     pos = T_wb.displacementRad();
     pos.th = normalize_angle(pos.th);
