@@ -190,6 +190,10 @@ namespace rigid2d
       /// \param ylin - the y velocity component
       Twist2D(double ang, double linx, double liny);
 
+      /// \brief scale this twist based on the current unit time
+      /// \param dt - the unit time
+      /// \return this twist scaled by dt to
+      Twist2D scaleTwist(double dt);
     };
 
     /// \brief A 2-Dimensional Pose

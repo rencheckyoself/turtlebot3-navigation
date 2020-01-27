@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(tsim)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++17 -Wall -Werror)
+add_compile_options(-Wall -Werror)
 set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
@@ -11,7 +11,10 @@ set(CMAKE_C17_STANDARD 17)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
+	rigid2d
   roscpp
+  std_msgs
+  std_srvs
   turtlesim
 )
 
@@ -106,9 +109,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES tsim
- CATKIN_DEPENDS geometry_msgs message_runtime roscpp turtlesim
+ # INCLUDE_DIRS include
+ # LIBRARIES rigid2d
+ CATKIN_DEPENDS geometry_msgs message_runtime roscpp std_msgs std_srvs turtlesim
 #  DEPENDS system_lib
 )
 
@@ -119,7 +122,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  # include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -137,19 +140,23 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_turtle_rect src/turtle_rect.cpp)
+add_executable(${PROJECT_NAME}_turtle_way src/turtle_way.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 set_target_properties(${PROJECT_NAME}_turtle_rect PROPERTIES OUTPUT_NAME turtle_rect PREFIX "")
+set_target_properties(${PROJECT_NAME}_turtle_way PROPERTIES OUTPUT_NAME turtle_rect PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_turtle_rect ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_turtle_way ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}_turtle_rect ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_turtle_rect ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_turtle_way ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -167,7 +174,7 @@ target_link_libraries(${PROJECT_NAME}_turtle_rect ${catkin_LIBRARIES})
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_turtle_rect
+install(TARGETS ${PROJECT_NAME}_turtle_rect ${PROJECT_NAME}_turtle_way
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

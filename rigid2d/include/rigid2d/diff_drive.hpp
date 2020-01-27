@@ -60,16 +60,21 @@ namespace rigid2d
       /// \param cmd - the twist command to send to the robot
       void feedforward(Twist2D cmd);
 
+      /// \brief Sets the wheel radius
+      /// \param radius - value to update the class parameter to
       void setRadius(double radius);
 
+      /// \brief Sets the wheel base
+      /// \param b - value to update the class parameter to
       void setBase(double b);
 
       /// \brief get the current pose of the robot
+      /// \returns the current pose of the robot
       Pose2D pose() const;
 
       /// \brief get the wheel speeds, based on the last encoder update
       /// \returns the velocity of the wheels, which is equivalent to
-      /// displacement because \Delta T = 1
+      ///          displacement because \Delta T = 1
       WheelVelocities wheelVelocities() const;
 
       /// \brief reset the robot to the given position/orientation

@@ -3,17 +3,10 @@
 ///
 /// PARAMETERS:
 ///     g_x (int) The x coordinate of the lower left corner of a rectangle
-///     g_y (int) The y coordinate of the lower left corner of a rectangle
-///     width (int) The width of the rectangle
-///     height (int) The height of the rectangle
-///     trans_vel (int) The translational velocity of the robot
-///     rot_vel: (int) The rotational velocity of the robot
-///     frequency (int) The frequency of the control loop
 /// PUBLISHES:
-///     /pose_error (tsim/PoseError): The positional error of the turtle at each cycle.
-///     /turtle1/cmd_vel (geometry_msgs/Twist): The velcotiy command to control the turtle.
+///     /odom (nav_msgs/Odometry): The calculated odometry of the diff drive robot
 /// SUBSCRIBES:
-///     /turtle1/pose (turtlesim/Pose): Retrieves the current pose of the turtle
+///     /joint_states (sensor_msgs/JointState): Retrieves the calculated wheel velocities and change in wheel position
 
 #include <iostream>
 
@@ -37,10 +30,14 @@
 using std::cout;
 using std::cin;
 
+std::string odom_frame_id = "odom";
+std::string base_frame_id = "base_link";
+std::string left_wheel_joint = "left_wheel_axel";
+std::string right_wheel_joint = "right_wheel_axel";
+
 int findJointIndex(std::vector<std::string> joints, std::string target)
 {
     std::vector<std::string>::iterator find_joint;
-
     find_joint = std::find(joints.begin(), joints.end(), target);
 
     return std::distance(joints.begin(), find_joint);
@@ -48,20 +45,13 @@ int findJointIndex(std::vector<std::string> joints, std::string target)
 
 void callback_joints(const sensor_msgs::JointState::ConstPtr & data, rigid2d::DiffDrive & robot, ros::Publisher pub, tf2_ros::TransformBroadcaster br)
 {
-    // ros::NodeHandle n;
-    //
-    // std::string odom_frame_id, base_frame_id;
-    //
-    // n.getParam("~odom_frame_id", odom_frame_id);
-    // n.getParam("~base_frame_id", base_frame_id);
-
     // Update internal odometry state of the robot
 
     std::vector<std::string> joints = data->name;
     int lw_i, rw_i;
 
-    lw_i = findJointIndex(joints, "left_wheel_axel");
-    rw_i = findJointIndex(joints, "right_wheel_axel");
+    lw_i = findJointIndex(joints, left_wheel_joint);
+    rw_i = findJointIndex(joints, right_wheel_joint);
 
     robot.updateOdometry(data->position[lw_i], data->position[rw_i]);
 
@@ -77,14 +67,14 @@ void callback_joints(const sensor_msgs::JointState::ConstPtr & data, rigid2d::Di
     nav_msgs::Odometry odom;
     geometry_msgs::Quaternion q_geo = tf2::toMsg(q);
     odom.header.stamp = ros::Time::now();
-    odom.header.frame_id = "odom";
+    odom.header.frame_id = odom_frame_id;
 
     odom.pose.pose.position.x = pos.x;
     odom.pose.pose.position.y = pos.y;
     odom.pose.pose.position.z = 0.0;
     odom.pose.pose.orientation = q_geo;
 
-    odom.child_frame_id = "base_link";
+    odom.child_frame_id = base_frame_id;
     odom.twist.twist.linear.x = tw.vx;
     odom.twist.twist.linear.y = tw.vy;
     odom.twist.twist.angular.z = tw.wz;
@@ -95,9 +85,9 @@ void callback_joints(const sensor_msgs::JointState::ConstPtr & data, rigid2d::Di
     geometry_msgs::TransformStamped T_ob;
 
     T_ob.header.stamp = ros::Time::now();
-    T_ob.header.frame_id = "odom";
+    T_ob.header.frame_id = odom_frame_id;
 
-    T_ob.child_frame_id = "base_link";
+    T_ob.child_frame_id = base_frame_id;
 
     T_ob.transform.translation.x = pos.x;
     T_ob.transform.translation.y = pos.y;
@@ -123,10 +113,10 @@ int main(int argc, char** argv)
     tf2_ros::TransformBroadcaster odom_br;
 
     // Set private parameters for the node
-    pn.setParam("odom_frame_id", "odom");
-    pn.setParam("body_frame_id", "base_link");
-    pn.setParam("left_wheel_joint", "left_wheel_axel");
-    pn.setParam("right_wheel_joint", "right_wheel_axel");
+    pn.setParam("odom_frame_id", odom_frame_id);
+    pn.setParam("body_frame_id", base_frame_id);
+    pn.setParam("left_wheel_joint", left_wheel_joint);
+    pn.setParam("right_wheel_joint", right_wheel_joint);
 
     // Get parameters from server
     double wheel_base, wheel_radius;

@@ -3,6 +3,11 @@
 
 #include <iostream>
 #include <cmath>
+
+#include "geometry_msgs/Twist.h"
+
+#include "ros/console.h"
+
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
 #include "rigid2d/waypoints.hpp"
@@ -11,9 +16,9 @@ namespace rigid2d
 {
   Waypoints::Waypoints()
   {
-    rate = 10;
-    linv_lim = 5;
-    angv_lim = 5;
+    rate = 60;
+    linv_lim = 0.5;
+    angv_lim = 0.5;
 
     point_list.at(0) = Vector2D (1,1);
     point_list.at(1) = Vector2D (5,1);
@@ -21,25 +26,32 @@ namespace rigid2d
     point_list.at(3) = Vector2D (3,6);
     point_list.at(4) = Vector2D (1,5);
 
-    target = point_list.at(0);
-
-    point_list.push_back(target);
+    setTarget();
   }
 
-  Waypoints::Waypoints(std::vector<Vector2D> points)
+  Waypoints::Waypoints(std::vector<Vector2D> points, int r, double vlim, double alim)
   {
-    rate = 10;
-    linv_lim = 5;
-    angv_lim = 5;
+    rate = r;
+    linv_lim = vlim;
+    angv_lim = alim;
 
     point_list = points;
+
+    setTarget();
   }
 
-  void Waypoints::getTarget()
+  void Waypoints::setTarget()
   {
     target = point_list.at(0);
     point_list.erase(point_list.begin());
     point_list.push_back(target);
+
+    ROS_INFO_STREAM("New target set to: " << target << "\n");
+  }
+
+  Vector2D Waypoints::getTarget()
+  {
+    return target;
   }
 
   Twist2D Waypoints::nextWaypoint(Pose2D pos)
@@ -65,7 +77,7 @@ namespace rigid2d
     // update target if nessissary
     if(calc_dist < dist_thresh)
     {
-      getTarget();
+      setTarget();
     }
 
     if(err_heading < ang_thresh)
@@ -84,6 +96,16 @@ namespace rigid2d
 
     // return the twist
     return tw;
+  }
+
+  geometry_msgs::Twist Waypoints::Twist2DtoGeoTwist(Twist2D tw)
+  {
+    geometry_msgs::Twist gtw;
+    gtw.linear.x = tw.vx;
+    gtw.linear.y = tw.vy;
+    gtw.angular.z = tw.wz;
+
+    return gtw;
   }
 
   void Waypoints::setVlims(double lin, double ang)

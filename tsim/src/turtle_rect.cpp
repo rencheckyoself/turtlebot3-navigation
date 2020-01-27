@@ -28,6 +28,8 @@
 
 #include "tsim/PoseError.h"
 
+#include "rigid2d/rigid2d.hpp"
+
 
 /// \brief A struct to hold related positional values
 ///
@@ -161,13 +163,13 @@ int main(int argc, char **argv)
   n.getParam("frequency", frequency);
 
   //Print params from the Server.
-  ROS_INFO("Got x param: %d", g_x);
-  ROS_INFO("Got y param: %d", g_y);
-  ROS_INFO("Got width param: %d", width);
-  ROS_INFO("Got height param: %d", height);
-  ROS_INFO("Got trans_vel param: %d", trans_vel);
-  ROS_INFO("Got rot_vel param: %d", rot_vel);
-  ROS_INFO("Got frequency param: %d", frequency);
+  ROS_INFO_STREAM("Got x param: " << g_x);
+  ROS_INFO_STREAM("Got y param: " << g_y);
+  ROS_INFO_STREAM("Got width param: " << width);
+  ROS_INFO_STREAM("Got height param: " << height);
+  ROS_INFO_STREAM("Got trans_vel param: " << trans_vel);
+  ROS_INFO_STREAM("Got rot_vel param: " << rot_vel);
+  ROS_INFO_STREAM("Got frequency param: " << frequency);
 
   // Variables to hold the number of cycles to travel the desired disatnce at the specified velocities
   int hor_cycles, ver_cycles, turn_cycles;
@@ -187,7 +189,7 @@ int main(int argc, char **argv)
   // Calculate the number of cycles to traverse each segment and turn
   hor_cycles = (float) (width/trans_vel) * frequency;
   ver_cycles = (float) (height/trans_vel) * frequency;
-  turn_cycles = (float) (1.57/rot_vel) * frequency;
+  turn_cycles = (float) (rigid2d::PI/rot_vel) * frequency;
   ROS_INFO("Cycles for the horz, vertical, and turn movements respectively:");
   ROS_INFO("%d %d %d", hor_cycles, ver_cycles, turn_cycles);
 
@@ -297,9 +299,9 @@ int main(int argc, char **argv)
     pub_vel.publish(v_command);
 
     // Adjust for turtlesim angle wrapping
-    if(expected_pose.ang >= 3.14)
+    if(expected_pose.ang >= rigid2d::PI)
     {
-      expected_pose.ang = -3.13;
+      expected_pose.ang = -rigid2d::PI+0.1;
     }
 
     // Update the expected position

@@ -2,16 +2,12 @@
 /// \brief This file contains the source code for the turtle_rect node. It pulls in parameters set from the yaml file and uses feed forward control to drive the turtle in a rectangle. It also calculates the positional error over time.
 ///
 /// PARAMETERS:
-///     g_x (int) The x coordinate of the lower left corner of a rectangle
-///     g_y (int) The y coordinate of the lower left corner of a rectangle
-///     width (int) The width of the rectangle
-///     height (int) The height of the rectangle
-///     trans_vel (int) The translational velocity of the robot
-///     rot_vel: (int) The rotational velocity of the robot
-///     frequency (int) The frequency of the control loop
+///     left_wheel_joint (std::string) the name of the left wheel joint
+///     right_wheel_joint (std::string) the name of the right wheel joint
+///     wheel_base (double) the distance between the two wheels of the diff drive robot
+///     wheel_radius (double) the radius of the wheels
 /// PUBLISHES:
-///     /pose_error (tsim/PoseError): The positional error of the turtle at each cycle.
-///     /turtle1/cmd_vel (geometry_msgs/Twist): The velcotiy command to control the turtle.
+///     /joint_states (sensor_msgs/JointState) publishs the scaled wheel velocities and the resulting distance of rotation for wheels moving at that velocity 
 /// SUBSCRIBES:
 ///     /turtle1/cmd_vel (geometry_msgs/Twist): Retrieves the current twist of the turtle
 

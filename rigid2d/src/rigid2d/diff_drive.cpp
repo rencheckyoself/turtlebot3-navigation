@@ -7,6 +7,15 @@
 namespace rigid2d
 {
 
+  Twist2D scaleTwist(Twist2D tw, double dt)
+  {
+    tw.vx = tw.vx * dt;
+    tw.vy = tw.vy * dt;
+    tw.wz = tw.wz * dt;
+
+    return tw;
+  }
+
   WheelVelocities::WheelVelocities()
   {
     ul = 0;
@@ -105,6 +114,7 @@ namespace rigid2d
   {
     T_wb = T_wb.integrateTwist(cmd);
     pos = T_wb.displacement();
+    pos.th = normalize_angle(pos.th);
   }
 
   void DiffDrive::setRadius(double radius)

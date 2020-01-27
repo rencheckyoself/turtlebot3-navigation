@@ -2,6 +2,8 @@ x: 3 # The x coordinate of the lower left corner of a rectangle
 y: 2 # The y coordinate of the lower left corner of a rectangle
 width: 4 # The width of the rectangle
 height: 5 # The height of the rectangle
-trans_vel: 2 # The translational velocity of the robot
-rot_vel: 1 # The rotational velocity of the robot
-frequency: 100 # The frequency of the control loop
+trans_vel: 0.5 # The translational velocity of the robot
+rot_vel: 0.5 # The rotational velocity of the robot
+frequency: 60 # The frequency of the control loop
+waypoints_x: [3, 7, 7, 5, 3] # The x coordinates for a pentagonal path
+waypoints_y: [2, 2, 5, 7, 5] # The y coordinates for a pentagonal path
