@@ -1,0 +1,28 @@
+<launch>
+
+  <arg name="include_stuff" default="False" doc="This value is passed to included launch files to skip over certain commands" />
+
+
+  <!-- Launches TurtleSim and turtle_way node -->
+  <!-- Launches plot for error -->
+  <!-- Loads robot and turtle parameters from config yaml files-->
+  <include file="$(find tsim)/launch/turtle_pent.launch">
+    <arg name="plot_gui" value="True"/>
+  </include>
+
+  <!-- Loads the robot description -->
+  <!-- Launches the robot state publisher -->
+  <!-- Launches rviz -->
+  <include file="$(find nuturtle_description)/launch/view_diff_drive.launch">
+    <arg name="include_stuff" value="$(arg include_stuff)"/>
+  </include>
+
+  <!-- Launch odometer node -->
+  <node name="odometer" pkg="rigid2d" type="odometer" output="screen">
+    <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
+  </node>
+
+  <!-- Launch fake encoders node -->
+  <node name="fake_encoders" pkg="rigid2d" type="fake_encoders" output="screen"/>
+
+</launch>

@@ -53,7 +53,7 @@ namespace rigid2d
       /// \param right - the right encoder angle (in radians)
       /// \return the velocities of each wheel, assuming that they have been
       /// constant since the last call to updateOdometry
-      void updateOdometry(double left, double right);
+      WheelVelocities updateOdometry(double left, double right);
 
       /// \brief update the odometry of the diff drive robot, assuming that
       /// it follows the given body twist for one time  unit
@@ -71,6 +71,10 @@ namespace rigid2d
       /// \brief get the current pose of the robot
       /// \returns the current pose of the robot
       Pose2D pose() const;
+
+      /// \breif get the current absolute encoder position
+      /// \return the encoder position
+      WheelVelocities getEncoders() const;
 
       /// \brief get the wheel speeds, based on the last encoder update
       /// \returns the velocity of the wheels, which is equivalent to

@@ -324,8 +324,6 @@ namespace rigid2d
 
     theta = std::atan2(sth_buf, cth_buf);
 
-    std::cout << "theta: " << theta << "\n";
-
     x = x_buf;
     y = y_buf;
     ctheta = cth_buf;

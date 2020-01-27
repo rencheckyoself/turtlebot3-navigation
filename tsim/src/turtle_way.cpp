@@ -181,27 +181,6 @@ int main(int argc, char **argv)
   rigid2d::Pose2D init_pos(0, target.x, target.y);
   rigid2d::DiffDrive turt(init_pos, wheel_base, wheel_radius);
 
-  // Thresholds to determine if the turtle is close enough to the starting point after teleporting
-  // double lin_thresh = 0.05;
-  // double ang_thresh = 0.05;
-  //
-  // Ensure the turtle is teleported and starts with minimal error
-  // int clean_start = 0;
-  // ROS_INFO_STREAM("Entered");
-  // while(clean_start == 0)
-  // {
-  //   teleport_turtle(init_pos);
-  //
-  //   calc_error();
-  //
-  //   ROS_INFO_STREAM("Pose Error: " << current_pose);
-  //
-  //   if(error_pose.x < lin_thresh && error_pose.y < lin_thresh && error_pose.th < ang_thresh)
-  //   {
-  //     clean_start = 1;
-  //   }
-  // }
-
   teleport_turtle(init_pos);
 
   // Begin normal routine of checking estimate pose and determines velocity command to get to current target
@@ -212,7 +191,7 @@ int main(int argc, char **argv)
     v_command = path.nextWaypoint(expected_pose);
 
     // Publish the velocity command to move the turtle in turtlesim
-    pub_vel.publish(path.Twist2DtoGeoTwist(v_command));
+    pub_vel.publish(rigid2d::Twist2DtoGeoTwist(v_command));
 
     // Update the estimated pose using the Diff Drive object
 

@@ -7,7 +7,7 @@
 ///     wheel_base (double) the distance between the two wheels of the diff drive robot
 ///     wheel_radius (double) the radius of the wheels
 /// PUBLISHES:
-///     /joint_states (sensor_msgs/JointState) publishs the scaled wheel velocities and the resulting distance of rotation for wheels moving at that velocity 
+///     /joint_states (sensor_msgs/JointState) publishs the scaled wheel velocities and the resulting distance of rotation for wheels moving at that velocity
 /// SUBSCRIBES:
 ///     /turtle1/cmd_vel (geometry_msgs/Twist): Retrieves the current twist of the turtle
 
@@ -20,46 +20,17 @@
 
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
+#include "rigid2d/waypoints.hpp"
 
 // Global Variables
-ros::Publisher pub_joint_state;
-
-std::string left_wheel_joint, right_wheel_joint;
-
-double wheel_base, wheel_radius;
-
-rigid2d::Pose2D pos(0,0,0);
-
-rigid2d::DiffDrive OnlyForFunction;
-
-ros::Time cur_t, last_t;
+geometry_msgs::Twist twist_cmd;
+rigid2d::Twist2D twist_rg;
 
 // Callbacks
 void callback_twist(geometry_msgs::Twist::ConstPtr data)
 {
-
-  cur_t = ros::Time::now();
-
-  rigid2d::Twist2D twist_cmd;
-
-  sensor_msgs::JointState js;
-
-  double dt;
-
-  dt = (cur_t - last_t).toSec();
-
-  twist_cmd.wz = (data->angular.z) * dt;
-  twist_cmd.vx = data->linear.x * dt;
-  twist_cmd.vy = data->linear.y * dt;
-
-  rigid2d::WheelVelocities wheel_vels = OnlyForFunction.twistToWheels(twist_cmd);
-
-  js.name = {left_wheel_joint, right_wheel_joint};
-  js.position = {wheel_vels.ul*dt, wheel_vels.ur*dt};
-  js.velocity = {wheel_vels.ul, wheel_vels.ur};
-
-  pub_joint_state.publish(js);
-  cur_t = last_t;
+  twist_cmd = *data;
+  twist_rg = rigid2d::GeoTwisttoTwist2D(twist_cmd);
 }
 
 int main(int argc, char** argv)
@@ -67,26 +38,51 @@ int main(int argc, char** argv)
     // ros initializations
     ros::init(argc, argv, "fake_encoders");
     ros::NodeHandle n;
+    ros::NodeHandle np("~odometer");
 
-    n.getParam("~odometer/left_wheel_joint", left_wheel_joint);
-    n.getParam("~odometer/right_wheel_joint", right_wheel_joint);
+    std::string left_wheel_joint, right_wheel_joint;
+    double wheel_base, wheel_radius, frequency;
 
+    np.getParam("/odometer/left_wheel_joint", left_wheel_joint);
+    np.getParam("/odometer/right_wheel_joint", right_wheel_joint);
     n.getParam("wheel_radius", wheel_radius);
     n.getParam("wheel_base", wheel_base);
+    n.getParam("frequency", frequency);
 
-    ROS_INFO("Got wheel base param: %f", wheel_base);
-    ROS_INFO("Got wheel radius param: %f", wheel_radius);
-    ROS_INFO("Got left wheel joint name: %s", left_wheel_joint.c_str());
-    ROS_INFO("Got right wheel joint name: %s", right_wheel_joint.c_str());
+    ROS_INFO_STREAM("Got wheel base param: " << wheel_base);
+    ROS_INFO_STREAM("Got wheel radius param: " << wheel_radius);
+    ROS_INFO_STREAM("Got left wheel joint name: " << left_wheel_joint);
+    ROS_INFO_STREAM("Got right wheel joint name: " << right_wheel_joint);
 
-    OnlyForFunction.setRadius(wheel_radius);
-    OnlyForFunction.setBase(wheel_base);
-
-    cur_t = ros::Time::now();
-    last_t = ros::Time::now();
+    rigid2d::Pose2D pos(0,0,0);
+    rigid2d::DiffDrive robot(pos, wheel_base, wheel_radius);
 
     ros::Subscriber twist_sub = n.subscribe("turtle1/cmd_vel", 1, callback_twist);
-    ros::Publisher pub_joint_state = n.advertise<sensor_msgs::JointState>("odom", 10);
+    ros::Publisher pub_joint_state = n.advertise<sensor_msgs::JointState>("/joint_states", 1);
 
-    ros::spin();
+    sensor_msgs::JointState js;
+    double dt = 1.0/frequency;
+
+    ros::Rate r(frequency);
+
+    while(ros::ok())
+    {
+
+      rigid2d::WheelVelocities wheel_vels = robot.twistToWheels(twist_rg.scaleTwist(dt));
+
+      std::cout << wheel_vels.ul << " " << wheel_vels.ur << "\n";
+
+      robot.updateOdometry(wheel_vels.ul, wheel_vels.ur);
+
+      rigid2d::WheelVelocities abs_enc = robot.getEncoders();
+
+      js.header.stamp = ros::Time::now();
+      js.name = {left_wheel_joint, right_wheel_joint};
+      js.position = {abs_enc.ul, abs_enc.ur};
+
+      pub_joint_state.publish(js);
+
+      ros::spinOnce();
+      r.sleep();
+    }
 }

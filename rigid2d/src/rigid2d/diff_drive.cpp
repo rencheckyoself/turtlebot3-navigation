@@ -68,8 +68,6 @@ namespace rigid2d
 
   WheelVelocities DiffDrive::twistToWheels(Twist2D twist)
   {
-
-
     if(twist.vy == 0)
     {
       // These Equations were derived by:
@@ -101,13 +99,18 @@ namespace rigid2d
     return tw;
   }
 
-  void DiffDrive::updateOdometry(double left, double right)
+  WheelVelocities DiffDrive::updateOdometry(double left, double right)
   {
     WheelVelocities move;
     move.ul = left - prev_enc.ul;
     move.ur = right - prev_enc.ur;
 
+    prev_enc.ul = left;
+    prev_enc.ur = right;
+
     feedforward(wheelsToTwist(move));
+
+    return move;
   }
 
   void DiffDrive::feedforward(Twist2D cmd)
@@ -135,6 +138,11 @@ namespace rigid2d
   WheelVelocities DiffDrive::wheelVelocities() const
   {
     return w_vels;
+  }
+
+  WheelVelocities DiffDrive::getEncoders() const
+  {
+    return prev_enc;
   }
 
   void DiffDrive::reset(Pose2D ps)

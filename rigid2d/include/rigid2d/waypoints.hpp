@@ -10,6 +10,16 @@
 
 namespace rigid2d
 {
+  /// \brief convert a Twist2D into a geometry_msgs::Twist
+  /// \param tw - a Twist2D to convert
+  /// \return the equivalent geometry_msgs::Twist
+  geometry_msgs::Twist Twist2DtoGeoTwist(Twist2D tw);
+
+  /// \brief convert a geometry_msgs::Twist into a Twist2D
+  /// \param twg - a geometry_msgs::Twist to convert
+  /// \return the equivalent Twist2D
+  Twist2D GeoTwisttoTwist2D(geometry_msgs::Twist gtw);
+
   class Waypoints
   {
   public:
@@ -34,11 +44,6 @@ namespace rigid2d
     /// \brief get the current target
     /// \return the current target
     Vector2D getTarget();
-
-    /// \brief convert a Twist2D into a geometry_msgs::Twist
-    /// \param tw - a Twist2D to convert
-    /// \return the equivalent geometry_msgs::Twist
-    geometry_msgs::Twist Twist2DtoGeoTwist(Twist2D tw);
 
   private:
 

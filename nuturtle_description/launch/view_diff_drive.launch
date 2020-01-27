@@ -10,17 +10,24 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
   <!-- Default: launch joint state publisher with gui -->
-  <arg name="use_gui" default="True" doc="Launch the joint_state_publisher gui to publish joint angles"/>
+  <!-- Default: Include everything -->
+  <arg name="use_gui" default="True" doc="(Default: True) Launch the joint_state_publisher gui to publish joint angles"/>
+  <arg name="include_stuff" default="True" doc="(Defult: True) Option to skip over the joint state publisher and loading params" />
+  <arg name="rviz_config" default="-d $(find nuturtle_description)/config/odom_view.rviz" unless="$(arg include_stuff)" doc="The file path for the desired rviz config"/>
+  <arg name="rviz_config" value="-d $(find nuturtle_description)/config/view_urdf.rviz" if="$(arg include_stuff)" doc="The file path for the desired rviz config"/>
 
   <!-- The joint state publisher will be launched with a gui -->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="use_gui" value="$(arg use_gui)" />
-  </node>
+  <!-- The robot parameters will be loaded into the parameter server -->
+  <group if="$(arg include_stuff)">
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+      <param name="use_gui" value="$(arg use_gui)" />
+    </node>
+
+    <!-- Load the robot params in the Parameter Server -->
+    <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
+
+  </group>
 
   <!-- Launch rviz as a required node -->
-  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/view_urdf.rviz"/>
-
-  <!-- Load the robot params in the Parameter Server -->
-  <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
-
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="$(arg rviz_config)"/>
 </launch>

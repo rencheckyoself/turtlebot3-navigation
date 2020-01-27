@@ -12,6 +12,26 @@
 
 namespace rigid2d
 {
+  geometry_msgs::Twist Twist2DtoGeoTwist(Twist2D tw)
+  {
+    geometry_msgs::Twist gtw;
+    gtw.linear.x = tw.vx;
+    gtw.linear.y = tw.vy;
+    gtw.angular.z = tw.wz;
+
+    return gtw;
+  }
+
+  Twist2D GeoTwisttoTwist2D(geometry_msgs::Twist gtw)
+  {
+    Twist2D tw;
+    tw.vx = gtw.linear.x;
+    tw.vy = gtw.linear.y;
+    tw.wz = gtw.angular.z;
+
+    return tw;
+  }
+
   Waypoints::Waypoints()
   {
     rate = 60;
@@ -116,16 +136,6 @@ namespace rigid2d
 
     // return the twist
     return tw;
-  }
-
-  geometry_msgs::Twist Waypoints::Twist2DtoGeoTwist(Twist2D tw)
-  {
-    geometry_msgs::Twist gtw;
-    gtw.linear.x = tw.vx;
-    gtw.linear.y = tw.vy;
-    gtw.angular.z = tw.wz;
-
-    return gtw;
   }
 
   void Waypoints::setVlims(double lin, double ang)
