@@ -90,7 +90,10 @@ namespace rigid2d
       double base; // distance between the wheel centers
       WheelVelocities w_vels; // velocities of the two wheels
       WheelVelocities prev_enc; // Previous encoder values
-      Transform2D T_wb, T_bl, T_br; // Transforms to the base and wheels
+      Transform2D T_wb; // Transforms to the base and wheels
+
+      /// \brief sets the transform to the body frame of the robot using the existing pos values.
+      void setTransform();
 
   };
 }

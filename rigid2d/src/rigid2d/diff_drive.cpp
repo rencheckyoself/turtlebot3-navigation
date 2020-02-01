@@ -30,13 +30,7 @@ namespace rigid2d
     Pose2D bufl(0, -base/2, 0);
     Pose2D bufr(0, base/2, 0);
 
-    Transform2D buf_base(pos);
-    Transform2D buf_left(bufl);
-    Transform2D buf_right(bufr);
-
-    T_wb = buf_base;
-    T_bl = buf_left;
-    T_br = buf_right;
+    setTransform();
   }
 
   DiffDrive::DiffDrive(Pose2D pose, double wheel_base, double wheel_radius)
@@ -48,13 +42,7 @@ namespace rigid2d
     Pose2D bufl(0, -base/2, 0);
     Pose2D bufr(0, base/2, 0);
 
-    Transform2D buf_base(pos);
-    Transform2D buf_left(bufl);
-    Transform2D buf_right(bufr);
-
-    T_wb = buf_base;
-    T_bl = buf_left;
-    T_br = buf_right;
+    setTransform();
   }
 
   WheelVelocities DiffDrive::twistToWheels(Twist2D twist)
@@ -151,6 +139,14 @@ namespace rigid2d
   void DiffDrive::reset(Pose2D ps)
   {
     pos = ps;
+
+    setTransform();
+  }
+
+  void DiffDrive::setTransform()
+  {
+    Transform2D buf_base(pos);
+    T_wb = buf_base;
   }
 
 }

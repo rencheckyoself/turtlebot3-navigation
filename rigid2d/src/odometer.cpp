@@ -13,6 +13,8 @@
 ///     /odom (nav_msgs/Odometry): The calculated odometry of the diff drive robot
 /// SUBSCRIBES:
 ///     /joint_states (sensor_msgs/JointState): Retrieves the calculated wheel velocities and change in wheel position
+/// SERVICES:
+///     /set_odom (rigid2d/SetOdom): Sets the odometry of the robot to the provided values
 
 #include <iostream>
 
@@ -27,12 +29,13 @@
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
 
+#include "rigid2d/SetPose.srv"
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
 
 //Global Variables
-sensor_msgs::JointState cur_js;
-int got_data = 0;
+static sensor_msgs::JointState cur_js;
+static int got_data = 0;
 
 /// \brief Use to search through the all joint names and return the index of the desired joint
 /// \param joints - a vector of all the joint names
@@ -47,11 +50,18 @@ int findJointIndex(std::vector<std::string> joints, std::string target)
 }
 
 /// \brief Callback for the joint state subscriber
-///
 void callback_joints(const sensor_msgs::JointState::ConstPtr data)
 {
     cur_js = *data;
     got_data = 1;
+}
+
+/// \brief Callback for the set_pose service
+void callback_set_pose(rigid2d::SetPose::Request &req, rigid2d::SetPose::Response &res, DiffDrive &robot_obj)
+{
+
+  rigid2d::Pose2D buf(rigid2d::deg2rad(req.th), req.x, req.y)
+  robot_obj.reset(buf)
 }
 
 /// \brief Main function for the odometer node
@@ -66,6 +76,8 @@ int main(int argc, char** argv)
 
     ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1, callback_joints);
     ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 10);
+
+
     tf2_ros::TransformBroadcaster odom_br;
 
     std::string odom_frame_id, base_frame_id, left_wheel_joint, right_wheel_joint;;
@@ -92,6 +104,8 @@ int main(int argc, char** argv)
     // Create diff drive object to simuate the robot
     rigid2d::Pose2D pos;
     rigid2d::DiffDrive bot(pos, wheel_base, wheel_radius);
+
+    ros::ServiceServer srv_set_pose = n.advertiseService("set_pose", boost::bind(callback_set_pose, _1, _2, bot);
 
     ros::Rate r(frequency);
 

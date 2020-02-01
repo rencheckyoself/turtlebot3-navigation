@@ -52,18 +52,16 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  Pose.msg
+)
 
-## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+# Generate services in the 'srv' folder
+add_service_files(
+  FILES
+  SetPose.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -73,11 +71,8 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(DEPENDENCIES
-#   geometry_msgs
-# 	nav_msgs
-# 	sensor_msgs
-# )
+generate_messages(DEPENDENCIES
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -189,7 +184,7 @@ target_link_libraries(${PROJECT_NAME}_fake_diff_encoders
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_${PROJECT_NAME}_node ${PROJECT_NAME}_fake_diff_encoders ${PROJECT_NAME}_odometer
+install(TARGETS ${PROJECT_NAME}_fake_diff_encoders ${PROJECT_NAME}_odometer ${PROJECT_NAME}_${PROJECT_NAME}_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
