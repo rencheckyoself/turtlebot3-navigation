@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(tsim)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-Wall -Werror)
+add_compile_options(-Wall -Werror -Wnc-psabi)
 set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
@@ -74,8 +74,8 @@ add_message_files(
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
-  geometry_msgs
-  turtlesim
+  # geometry_msgs
+  # turtlesim
   # Or other packages containing msgs
 )
 

@@ -1,3 +1,3 @@
-double x 
-double y
-double ang
+float64 x
+float64 y
+float64 ang

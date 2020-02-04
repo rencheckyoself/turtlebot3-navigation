@@ -29,13 +29,14 @@
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
 
-#include "rigid2d/SetPose.srv"
+#include "rigid2d/SetPose.h"
 #include "rigid2d/rigid2d.hpp"
 #include "rigid2d/diff_drive.hpp"
 
 //Global Variables
 static sensor_msgs::JointState cur_js;
 static int got_data = 0;
+static rigid2d::DiffDrive bot;
 
 /// \brief Use to search through the all joint names and return the index of the desired joint
 /// \param joints - a vector of all the joint names
@@ -57,11 +58,11 @@ void callback_joints(const sensor_msgs::JointState::ConstPtr data)
 }
 
 /// \brief Callback for the set_pose service
-void callback_set_pose(rigid2d::SetPose::Request &req, rigid2d::SetPose::Response &res, DiffDrive &robot_obj)
+bool callback_set_pose(rigid2d::SetPose::Request &req, rigid2d::SetPose::Response &res)
 {
-
-  rigid2d::Pose2D buf(rigid2d::deg2rad(req.th), req.x, req.y)
-  robot_obj.reset(buf)
+  rigid2d::Pose2D buf(rigid2d::deg2rad(req.pose.ang), req.pose.x, req.pose.y);
+  bot.reset(buf);
+  return 1;
 }
 
 /// \brief Main function for the odometer node
@@ -103,9 +104,11 @@ int main(int argc, char** argv)
 
     // Create diff drive object to simuate the robot
     rigid2d::Pose2D pos;
-    rigid2d::DiffDrive bot(pos, wheel_base, wheel_radius);
+    rigid2d::DiffDrive bufbot(pos, wheel_base, wheel_radius);
 
-    ros::ServiceServer srv_set_pose = n.advertiseService("set_pose", boost::bind(callback_set_pose, _1, _2, bot);
+    bot = bufbot;
+
+    ros::ServiceServer srv_set_pose = n.advertiseService("set_pose", callback_set_pose);
 
     ros::Rate r(frequency);
 

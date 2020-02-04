@@ -1,0 +1,14 @@
+<launch>
+
+  <arg name='robot' default='0' doc='Argument to specify which robot is being used. 0 to uses local machine'/>
+
+  <!-- Create the proper machine based on the provided parameter -->
+  <machine name="turtlebot" address="localhost"/>
+
+  <!-- Launch the serial node on the correct machine -->
+  <node name="serial_node" pkg="rosserial_python" type="serial_node.py" machine="turtlebot">
+      <param name="port" value="/dev/ttyACM0"/>
+      <param name="baud" value="115200"/>
+  </node>
+
+</launch>
