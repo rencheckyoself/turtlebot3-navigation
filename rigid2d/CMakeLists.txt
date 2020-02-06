@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(rigid2d)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-Wall -Werror -Wnc-psabi)
+add_compile_options(-Wall -Werror -Wno-psabi)
 set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
@@ -209,11 +209,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config)
 
 #############
 ## Testing ##

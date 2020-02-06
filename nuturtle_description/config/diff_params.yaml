@@ -1,4 +1,4 @@
-wheel_width: 0.1 # The width of the wheels (m)
+wheel_width: 0.018 # The width of the wheels (m)
 wheel_radius: 0.033 # The radius of the wheels (m)
 wheel_base: 0.16 # The distance between the centers of the wheels (m)
 chassis_length: .138 # The length of the main chassis link (m)
