@@ -4,7 +4,7 @@
 
   <!-- Create the proper machine based on the provided parameter -->
   <machine name="turtlebot" address="localhost" if="$(eval robot == 0)"/>
-  <machine name="turtlebot" address="turtlebot$(arg robot)" env-loader="/home/student/install/env.sh" if="$(eval robot != 0)"/>
+  <machine name="turtlebot" address="turtlebot$(arg robot)" env-loader="/home/student/install/env.sh" user="student" if="$(eval robot != 0)"/>
 
   <!-- Launch the serial node on the correct machine -->
   <node name="serial_node" pkg="rosserial_python" type="serial_node.py" machine="turtlebot">
