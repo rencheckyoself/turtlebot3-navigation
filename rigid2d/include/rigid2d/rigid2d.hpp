@@ -62,6 +62,13 @@ namespace rigid2d
       return ang - PI;
     }
 
+    constexpr double linInterp(double x, const double xlims[], const double ylims[])
+    {
+      double y = 0;
+      y = ylims[0] + (x - xlims[0]) * ((ylims[1] - ylims[0])/(xlims[1] - xlims[0]));
+      return y;
+    }
+
     /// static_assertions test compile time assumptions.
     static_assert(almost_equal(0, 0), "is_zero failed");
     static_assert(almost_equal(0.001, 0.005, 1.0e-1), "is_zero failed");
@@ -84,6 +91,12 @@ namespace rigid2d
     static_assert(almost_equal(normalize_angle(2.5*PI),PI/2, 1e-4), "normalized angle falied");
     static_assert(almost_equal(normalize_angle(-1.5*PI),PI/2, 1e-4), "normalized angle falied");
     static_assert(almost_equal(normalize_angle(-2.5*PI),-PI/2, 1e-4), "normalized angle falied");
+
+
+    static constexpr double x_test[2] = {0,2};
+    static constexpr double y_test[2] = {0,2};
+
+    static_assert(almost_equal(linInterp(1, x_test, y_test), 1), "Linear Interpolation Failed");
 
     /// \brief A 2-Dimensional Vector
     struct Vector2D

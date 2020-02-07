@@ -24,8 +24,8 @@
 #include "rigid2d/waypoints.hpp"
 
 // Global Variables
-geometry_msgs::Twist twist_cmd;
-rigid2d::Twist2D twist_rg;
+static geometry_msgs::Twist twist_cmd;
+static rigid2d::Twist2D twist_rg;
 
 /// \brief callback funtion for the /turtle1/cmd_vel subscriber
 ///

@@ -7,4 +7,4 @@ tvel_lim: 0.22 # translational velocity limit of the robot (m/s)
 avel_lim: 2.84 # rotational velocity limit of the robot (rad/s)
 motor_lim: 6.35492 # velcity limit of the motor (rad/s)
 encoder_ticks_per_rev: 4096 # Nuumber of encoder ticks per revolution
-motor_power: 1 # the motor power, can be -256 to 256
+motor_power: 255 # the motor power, can be -256 to 256
