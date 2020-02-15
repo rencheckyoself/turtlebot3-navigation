@@ -29,7 +29,9 @@ static rigid2d::DiffDrive robot;
 
 static std::string left_wheel_joint, right_wheel_joint;
 static double tvel_lim, avel_lim, motor_lim;
-static int frequency;
+static int frequency = 0;
+static int encoder_ticks_per_rev = 0;
+static double motor_power = 0;
 static ros::Publisher pub_wheels, pub_encs;
 
 nuturtlebot::WheelCommands getWheelCommands()
@@ -56,7 +58,7 @@ nuturtlebot::WheelCommands getWheelCommands()
   }
 
   double m_lim[2] = {-motor_lim, motor_lim};
-  double cmd_lim[2] = {-265, 265};
+  double cmd_lim[2] = {-motor_power, motor_power};
 
   whl_cmd.left_velocity = rigid2d::linInterp(wv.ul, m_lim, cmd_lim);
   whl_cmd.right_velocity = rigid2d::linInterp(wv.ur, m_lim, cmd_lim);
@@ -89,17 +91,14 @@ void callback_twist(geometry_msgs::Twist::ConstPtr data)
 
 void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 {
-  rigid2d::WheelVelocities wheel_vels, abs_enc;
+  rigid2d::WheelVelocities data_conv, wheel_vels, abs_enc;
   sensor_msgs::JointState js;
-  double dt = 0;
 
-  wheel_vels = robot.updateOdometry(data->left_encoder, data->right_encoder);
+  data_conv.ul = static_cast<double>(data->left_encoder)/encoder_ticks_per_rev * 2.0 * rigid2d::PI;
+  data_conv.ur = static_cast<double>(data->right_encoder)/encoder_ticks_per_rev * 2.0 * rigid2d::PI;
+
+  wheel_vels = robot.updateOdometry(data_conv.ul, data_conv.ur);
   abs_enc = robot.getEncoders();
-
-  dt = 1./frequency;
-
-  wheel_vels.ul /= dt;
-  wheel_vels.ur /= dt;
 
   // Create the joint state message & publish
   js.header.stamp = ros::Time::now();
@@ -119,7 +118,7 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "turtle_interface");
     ros::NodeHandle n;
 
-    ros::Subscriber twist_sub = n.subscribe<geometry_msgs::Twist>("turtle1/cmd_vel", 1, callback_twist);
+    ros::Subscriber twist_sub = n.subscribe<geometry_msgs::Twist>("cmd_vel", 1, callback_twist);
     pub_wheels = n.advertise<nuturtlebot::WheelCommands>("wheel_cmd", 1);
 
     ros::Subscriber sensor_sub = n.subscribe("sensor_data", 1, callback_sensors);
@@ -133,23 +132,27 @@ int main(int argc, char** argv)
 
     n.getParam("wheel_radius", wheel_radius);
     n.getParam("wheel_base", wheel_base);
-    // n.getParam("frequency", frequency);
-    frequency = 60;
+    n.getParam("frequency", frequency);
 
     n.getParam("tvel_lim", tvel_lim);
     n.getParam("avel_lim", avel_lim);
     n.getParam("motor_lim", motor_lim);
+    n.getParam("encoder_ticks_per_rev", encoder_ticks_per_rev);
+    n.getParam("motor_power", motor_power);
 
-    ROS_INFO_STREAM("Got left wheel joint name: " << left_wheel_joint);
-    ROS_INFO_STREAM("Got right wheel joint name: " << right_wheel_joint);
+    ROS_INFO_STREAM("T_INT: Got left wheel joint name: " << left_wheel_joint);
+    ROS_INFO_STREAM("T_INT: Got right wheel joint name: " << right_wheel_joint);
 
-    ROS_INFO_STREAM("Got wheel base param: " << wheel_base);
-    ROS_INFO_STREAM("Got wheel radius param: " << wheel_radius);
-    ROS_INFO_STREAM("Got frequency param: " << frequency);
+    ROS_INFO_STREAM("T_INT: Got wheel base param: " << wheel_base);
+    ROS_INFO_STREAM("T_INT: Got wheel radius param: " << wheel_radius);
+    ROS_INFO_STREAM("T_INT: Got frequency param: " << frequency);
 
-    ROS_INFO_STREAM("Got trans vel limit param: " << tvel_lim);
-    ROS_INFO_STREAM("Got ang. vel limit param: " << avel_lim);
-    ROS_INFO_STREAM("Got motor limit param: " << motor_lim);
+    ROS_INFO_STREAM("T_INT: Got trans vel limit param: " << tvel_lim);
+    ROS_INFO_STREAM("T_INT: Got ang. vel limit param: " << avel_lim);
+    ROS_INFO_STREAM("T_INT: Got motor limit param: " << motor_lim);
+
+    ROS_INFO_STREAM("T_INT: Got motor power param: " << motor_power);
+    ROS_INFO_STREAM("T_INT: Got encoder spec param: " << encoder_ticks_per_rev);
 
     // Create diff drive object to track the robot simulation
     rigid2d::Pose2D pos(0,0,0);

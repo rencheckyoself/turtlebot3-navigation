@@ -28,7 +28,6 @@ void callback_joints(sensor_msgs::JointState::ConstPtr data)
   got_sensor_data = 1;
 }
 
-
 TEST(TurtleInterface, TransOnly)
 {
   // Proper result for a cmd_vel message with no rotational component
@@ -106,10 +105,10 @@ TEST(TurtleInterface, ValidEncs)
       // wait for data to be recieved...
   }
 
-  ASSERT_NEAR(js_data.position.at(0), 100, 1e-4);
-  ASSERT_NEAR(js_data.position.at(1), 100, 1e-4);
-  ASSERT_NEAR(js_data.velocity.at(0), 6000, 1e-4);
-  ASSERT_NEAR(js_data.velocity.at(1), 6000, 1e-4);
+  ASSERT_NEAR(js_data.position.at(0), 0.1533, 1e-4);
+  ASSERT_NEAR(js_data.position.at(1), 0.1533, 1e-4);
+  ASSERT_NEAR(js_data.velocity.at(0), 0.1533, 1e-4);
+  ASSERT_NEAR(js_data.velocity.at(1), 0.1533, 1e-4);
 }
 
 
@@ -119,7 +118,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "turtle_interface_test");
   ros::NodeHandle n;
 
-  pub_cmd_vel = n.advertise<geometry_msgs::Twist>("turtle1/cmd_vel", 1, true);
+  pub_cmd_vel = n.advertise<geometry_msgs::Twist>("cmd_vel", 1, true);
   sub_wheelcmd = n.subscribe<nuturtlebot::WheelCommands>("wheel_cmd", 1, callback_wheels);
 
   pub_sensors = n.advertise<nuturtlebot::SensorData>("sensor_data", 1, true);

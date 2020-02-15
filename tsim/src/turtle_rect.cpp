@@ -117,7 +117,7 @@ void calc_error()
   error.theta_error = error_pose.ang;
 }
 
-bool callback_reset_traj(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res)
+bool callback_reset_traj(std_srvs::Empty::Request&, std_srvs::Empty::Response&)
 {
   teleport_turtle();
 

@@ -22,10 +22,8 @@
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
       <param name="use_gui" value="$(arg use_gui)" />
     </node>
-
     <!-- Load the robot params in the Parameter Server -->
     <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
-
   </group>
 
   <!-- Launch rviz as a required node -->

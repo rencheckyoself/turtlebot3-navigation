@@ -1,0 +1,26 @@
+<launch>
+
+  <arg name='robot' default='0' doc='Argument to specify which robot is being used. 0 to uses local machine'/>
+  <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
+  <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
+  <rosparam command="load" file="$(find nuturtle_robot)/config/traj_params.yaml"/>
+
+  <include file="$(find nuturtle_robot)/launch/basic_remote.launch">
+    <arg name="robot" value="$(arg robot)"/>
+  </include>
+
+  <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
+
+  <node name="rotation" pkg="nuturtle_robot" type="rotation" machine="turtlebot" output="screen">
+    <param name="frac_val" value=".3"/>
+  </node>
+
+  <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot" output="screen">
+    <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
+  </node>
+
+  <include file="$(find nuturtle_description)/launch/view_diff_drive.launch">
+    <arg name="include_stuff" value="False"/>
+  </include>
+
+</launch>

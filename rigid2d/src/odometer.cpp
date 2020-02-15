@@ -58,7 +58,7 @@ void callback_joints(const sensor_msgs::JointState::ConstPtr data)
 }
 
 /// \brief Callback for the set_pose service
-bool callback_set_pose(rigid2d::SetPose::Request &req, rigid2d::SetPose::Response &res)
+bool callback_set_pose(rigid2d::SetPose::Request &req, rigid2d::SetPose::Response &)
 {
   rigid2d::Pose2D buf(rigid2d::deg2rad(req.pose.ang), req.pose.x, req.pose.y);
   bot.reset(buf);
@@ -94,13 +94,13 @@ int main(int argc, char** argv)
     n.getParam("wheel_radius", wheel_radius);
     n.getParam("wheel_base", wheel_base);
 
-    ROS_INFO_STREAM("Odom Got odom frame id: " << odom_frame_id);
-    ROS_INFO_STREAM("Odom Got base frame id: " << base_frame_id);
-    ROS_INFO_STREAM("Odom Got left wheel joint name: " << left_wheel_joint);
-    ROS_INFO_STREAM("Odom Got right wheel joint name: " << right_wheel_joint);
-    ROS_INFO_STREAM("Odom Got wheel base param: " << wheel_base);
-    ROS_INFO_STREAM("Odom Got wheel radius param: " << wheel_radius);
-    ROS_INFO_STREAM("Odom Got frequency param: " << frequency);
+    ROS_INFO_STREAM("ODOM: Got odom frame id: " << odom_frame_id);
+    ROS_INFO_STREAM("ODOM: Got base frame id: " << base_frame_id);
+    ROS_INFO_STREAM("ODOM: Got left wheel joint name: " << left_wheel_joint);
+    ROS_INFO_STREAM("ODOM: Got right wheel joint name: " << right_wheel_joint);
+    ROS_INFO_STREAM("ODOM: Got wheel base param: " << wheel_base);
+    ROS_INFO_STREAM("ODOM: Got wheel radius param: " << wheel_radius);
+    ROS_INFO_STREAM("ODOM: Got frequency param: " << frequency);
 
     // Create diff drive object to simuate the robot
     rigid2d::Pose2D pos;

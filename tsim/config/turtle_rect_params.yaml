@@ -4,6 +4,6 @@ width: 4 # The width of the rectangle
 height: 5 # The height of the rectangle
 trans_vel: 0.5 # The translational velocity of the robot
 rot_vel: 0.5 # The rotational velocity of the robot
-frequency: 60 # The frequency of the control loop
 waypoint_x: [3, 7, 7, 5, 3] # The x coordinates for a pentagonal path
 waypoint_y: [2, 2, 5, 7, 5] # The y coordinates for a pentagonal path
+frequency: 60 # The frequency of the control loop

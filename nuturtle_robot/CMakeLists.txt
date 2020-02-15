@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
 	rigid2d
 	roscpp
 	sensor_msgs
+	std_srvs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -108,7 +109,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES nuturtle_robot
- CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs
+ CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_srvs
 #  DEPENDS system_lib
 )
 
@@ -137,19 +138,23 @@ ${catkin_INCLUDE_DIRS}
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_turtle_interface src/turtle_interface.cpp)
+add_executable(${PROJECT_NAME}_rotation src/rotation.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 set_target_properties(${PROJECT_NAME}_turtle_interface PROPERTIES OUTPUT_NAME turtle_interface PREFIX "")
+set_target_properties(${PROJECT_NAME}_rotation PROPERTIES OUTPUT_NAME rotation PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_turtle_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_rotation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_turtle_interface ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_rotation ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -167,7 +172,7 @@ target_link_libraries(${PROJECT_NAME}_turtle_interface ${rigid2d_LIBRARIES} ${ca
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_turtle_interface
+install(TARGETS ${PROJECT_NAME}_turtle_interface ${PROJECT_NAME}_rotation
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -188,6 +193,7 @@ install(TARGETS ${PROJECT_NAME}_turtle_interface
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(DIRECTORY launch/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch)
+install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config)
 
 #############
 ## Testing ##
