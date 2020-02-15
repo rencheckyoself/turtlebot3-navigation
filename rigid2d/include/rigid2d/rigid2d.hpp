@@ -6,8 +6,6 @@
 #include <iosfwd> // contains forward definitions for iostream objects
 #include <cmath> // standard math functions
 
-using std::fabs;
-
 namespace rigid2d
 {
     /// \brief PI.  Not in C++ standard until C++20.
@@ -23,7 +21,7 @@ namespace rigid2d
     /// be useful here
     constexpr bool almost_equal(double d1, double d2, double epsilon=1.0e-12)
     {
-      return fabs(d1 - d2) < epsilon ? true : false;
+      return std::fabs(d1 - d2) < epsilon ? true : false;
     }
 
     /// \brief convert degrees to radians
@@ -34,7 +32,7 @@ namespace rigid2d
     /// if given a compile-time constant as input
     constexpr double deg2rad(double deg)
     {
-      return deg * (PI/180);
+      return deg * (PI/180.0);
     }
 
     /// \brief convert radians to degrees
@@ -42,7 +40,7 @@ namespace rigid2d
     /// \returns the angle in degrees
     constexpr double rad2deg(double rad)
     {
-        return rad * (180/PI);
+        return rad * (180.0/PI);
     }
 
     /// \brief maps an angle to the range [-pi, pi)
@@ -53,11 +51,11 @@ namespace rigid2d
       double ang = 0;
       int i = 0;
 
-      i = (rad + PI)/(2 * PI);
-      ang = rad + PI - (i * 2 * PI);
+      i = (rad + PI)/(2.0 * PI);
+      ang = rad + PI - (i * 2.0 * PI);
       if(ang < 0)
       {
-        ang += 2*PI;
+        ang += 2.0*PI;
       }
       return ang - PI;
     }
@@ -65,7 +63,7 @@ namespace rigid2d
     constexpr double linInterp(double x, const double xlims[], const double ylims[])
     {
       double y = 0;
-      y = ylims[0] + (x - xlims[0]) * ((ylims[1] - ylims[0])/(xlims[1] - xlims[0]));
+      y = std::round(ylims[0] + (x - xlims[0]) * ((ylims[1] - ylims[0])/(xlims[1] - xlims[0])));
       return y;
     }
 
@@ -283,9 +281,9 @@ namespace rigid2d
         /// \return the angle (in rads) and translation of the transform
         Pose2D displacementRad() const;
 
-        /// \brief advnace the current transform by a twist for one time unit
+        /// \brief advance the current transform by a twist for one time unit
         /// \param tw - the twist to follow
-        /// \return None. This transform is modified.
+        /// \return The transform relative to the world after following the given twist
         Transform2D integrateTwist(const Twist2D tw) const;
 
         /// \brief compose this transform with another and store the result
@@ -303,6 +301,12 @@ namespace rigid2d
         Transform2D(double theta, double ctheta, double stheta, double x, double y);
         double theta, ctheta, stheta, x, y; // angle, sin, cos, x, and y
     };
+
+
+    /// \brief Compute the transform relative to the initial position after following the given twist
+    /// \param tw - the twist to follow
+    /// \return the transform relative to the initial position after following the given twist
+    Transform2D transformFromTwist(Twist2D tw);
 
     /// \brief should print a human readable version of the transform:
     /// An example output:

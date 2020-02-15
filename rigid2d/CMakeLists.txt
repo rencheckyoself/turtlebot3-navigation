@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(rigid2d)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-Wall -Werror -Wno-psabi)
+add_compile_options(-Wall -Wextra -Wno-psabi)
 set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries

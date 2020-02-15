@@ -65,6 +65,38 @@ namespace rigid2d
     return is;
   }
 
+  Transform2D transformFromTwist(Twist2D tw)
+  {
+    Pose2D pose(tw.wz, tw.vx, tw.vy);
+    Transform2D T_bbp;
+
+    if(almost_equal(pose.th, 0))
+    {
+      Vector2D vec_bp(pose.x, pose.y);
+      Transform2D buffer(vec_bp);
+
+      T_bbp = buffer;
+    }
+
+    else
+    {
+      Vector2D vec_s( pose.y/pose.th, -pose.x/pose.th);
+
+      // Create the transform of the current transform relative to the point of rotation.
+      Transform2D T_sb(vec_s);
+
+      // Rotate at the point of rotation
+      Transform2D T_ssp(pose.th);
+
+      // Get the Transform  of the new frame after applying the twist relative to the current frame
+      // Note: T_sb == T_spbp
+
+      T_bbp = T_sb.inv() * T_ssp * T_sb;
+    }
+
+    return T_bbp;
+  }
+
   // Vector2D Methods ==========================================================
   Vector2D::Vector2D()
   {
@@ -265,50 +297,17 @@ namespace rigid2d
 
   Pose2D Transform2D::displacement() const
   {
-    Pose2D disp(rad2deg(theta), x, y);
-    return disp;
+    return {rad2deg(theta), x, y};
   }
 
   Pose2D Transform2D::displacementRad() const
   {
-    Pose2D disp(theta, x, y);
-    return disp;
+    return {theta, x, y};
   }
 
   Transform2D Transform2D::integrateTwist(const Twist2D tw) const
   {
-    Transform2D T_wbp;
-    Pose2D pose(tw.wz, tw.vx, tw.vy);
-
-    if(pose.th == 0)
-    {
-      Vector2D vec_bp(pose.x, pose.y);
-      Transform2D T_bbp(vec_bp);
-
-      T_wbp = *this * T_bbp;
-    }
-
-    else
-    {
-      Transform2D T_bbp;
-      Vector2D vec_s( pose.y/pose.th, -pose.x/pose.th);
-
-      // Create the transform of the current transform relative to the point of rotation.
-      Transform2D T_sb(vec_s);
-
-      // Rotate at the point of rotation
-      Transform2D T_ssp(pose.th);
-
-      // Get the Transform  of the new frame after applying the twist relative to the current frame
-      // Note: T_sb == T_spbp
-
-      T_bbp = T_sb.inv() * T_ssp * T_sb;
-
-      // T_wbp = T_wb * T_bbp
-      T_wbp = *this * T_bbp;
-    }
-
-    return T_wbp;
+    return *this * transformFromTwist(tw);
   }
 
   Transform2D & Transform2D::operator*=(const Transform2D & rhs)

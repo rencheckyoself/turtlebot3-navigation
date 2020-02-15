@@ -1,4 +1,6 @@
 <launch>
-  <node pkg="nuturtle_robot" name="turtle_interface" type="turtle_interface output="screen"/>
+  <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
+  <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
+  <node pkg="nuturtle_robot" name="turtle_interface" type="turtle_interface" output="screen"/>
   <test test-name="test_turtle_interface" pkg="nuturtle_robot" type="test_turtle_interface"/>
 </launch>

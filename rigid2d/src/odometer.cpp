@@ -14,7 +14,7 @@
 /// SUBSCRIBES:
 ///     /joint_states (sensor_msgs/JointState): Retrieves the calculated wheel velocities and change in wheel position
 /// SERVICES:
-///     /set_odom (rigid2d/SetOdom): Sets the odometry of the robot to the provided values
+///     /set_pose (rigid2d/SetPose): Sets the pose of the robot to the provided values
 
 #include <iostream>
 

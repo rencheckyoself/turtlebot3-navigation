@@ -16,19 +16,61 @@
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/JointState.h>
 
-#include "nuturtlebot/WheelCommands.h"
 #include "nuturtlebot/SensorData.h"
+#include "nuturtlebot/WheelCommands.h"
 
 #include "rigid2d/diff_drive.hpp"
+#include "rigid2d/waypoints.hpp"
 
 // Global Variables
+static nuturtlebot::WheelCommands bot_cmd;
 static geometry_msgs::Twist twist_cmd;
-static rigid2d::WheelVelocities wheel_pos;
+static rigid2d::DiffDrive robot;
+
+static std::string left_wheel_joint, right_wheel_joint;
+static double tvel_lim, avel_lim, motor_lim;
+static int frequency;
+static ros::Publisher pub_wheels, pub_encs;
+
+nuturtlebot::WheelCommands getWheelCommands()
+{
+  rigid2d::Twist2D tw;
+  rigid2d::WheelVelocities wv;
+
+  nuturtlebot::WheelCommands whl_cmd;
+
+  // convert to twist format
+  tw = rigid2d::GeoTwisttoTwist2D(twist_cmd);
+
+  // get wheel velocities
+  wv = robot.twistToWheels(tw);
+
+  // compare to motor max speed
+  if(wv.ul > motor_lim)
+  {
+    wv.ul = motor_lim;
+  }
+  else if(wv.ur > motor_lim)
+  {
+    wv.ur = motor_lim;
+  }
+
+  double m_lim[2] = {-motor_lim, motor_lim};
+  double cmd_lim[2] = {-265, 265};
+
+  whl_cmd.left_velocity = rigid2d::linInterp(wv.ul, m_lim, cmd_lim);
+  whl_cmd.right_velocity = rigid2d::linInterp(wv.ur, m_lim, cmd_lim);
+
+  pub_wheels.publish(whl_cmd);
+
+  return whl_cmd;
+}
 
 /// \brief callback funtion for the /turtle1/cmd_vel subscriber
 ///
 void callback_twist(geometry_msgs::Twist::ConstPtr data)
 {
+
   twist_cmd = *data;
 
   // Check for velocity limit violations
@@ -41,42 +83,33 @@ void callback_twist(geometry_msgs::Twist::ConstPtr data)
   {
     twist_cmd.angular.z = avel_lim;
   }
+
+  bot_cmd = getWheelCommands();
 }
 
 void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 {
-  wheel_pos.ul = data.left_encoder;
-  wheel_pos.ur = data.right_encoder;
+  rigid2d::WheelVelocities wheel_vels, abs_enc;
+  sensor_msgs::JointState js;
+  double dt = 0;
+
+  wheel_vels = robot.updateOdometry(data->left_encoder, data->right_encoder);
+  abs_enc = robot.getEncoders();
+
+  dt = 1./frequency;
+
+  wheel_vels.ul /= dt;
+  wheel_vels.ur /= dt;
+
+  // Create the joint state message & publish
+  js.header.stamp = ros::Time::now();
+  js.name = {left_wheel_joint, right_wheel_joint};
+  js.position = {abs_enc.ul, abs_enc.ur};
+  js.velocity = {wheel_vels.ul, wheel_vels.ur};
+
+  pub_encs.publish(js);
 }
 
-nuturtlebot::WheelCommands getWheelCommands(rigid2d::DiffDrive &bot)
-{
-  rigid2d::Twist2D tw;
-  rigid2d::WheelVelocities wv;
-
-  nuturtlebot::WheelCommands whl_cmd;
-
-  // convert to twist format
-  tw = GeoTwisttoTwist2D(twist_cmd);
-
-  // get wheel velocities
-  wv = bot.twistToWheels(tw)
-
-  // compare to motor max speed
-  if(wv.ul > motor_lim)
-  {
-    wv.ul = motor_lim;
-  }
-  else if(wv.ur > motor_lim)
-  {
-    wv.ur = motor_lim;
-  }
-
-  whl_cmd.left_velocity = rigid2d::linInterp(wv.ul, [-motor_lim, motor_lim], [-44, 44]);
-  whl_cmd.right_velocity = rigid2d::linInterp(wv.ur, [-motor_lim, motor_lim], [-44, 44]);
-
-  return whl_cmd;
-}
 
 /// \brief Main function to create the fake_diff_encoders node
 ///
@@ -85,29 +118,27 @@ int main(int argc, char** argv)
     // ros initializations
     ros::init(argc, argv, "turtle_interface");
     ros::NodeHandle n;
-    ros::NodeHandle np("~odometer");
 
-    ros::Subscriber twist_sub = n.subscribe("turtle1/cmd_vel", 1, callback_twist);
-    ros::Publisher pub_wheels = n.advertise("/wheel_cmd", 1);
+    ros::Subscriber twist_sub = n.subscribe<geometry_msgs::Twist>("turtle1/cmd_vel", 1, callback_twist);
+    pub_wheels = n.advertise<nuturtlebot::WheelCommands>("wheel_cmd", 1);
 
     ros::Subscriber sensor_sub = n.subscribe("sensor_data", 1, callback_sensors);
-    ros::Publisher pub_encs = n.advertise("/joint_states", 1);
+    pub_encs = n.advertise<sensor_msgs::JointState>("joint_states", 1);
 
     // Get parameters from the parameter server
-    std::string left_wheel_joint, right_wheel_joint;
-    double wheel_base = 0, wheel_radius = 0, frequency = 0;
-    double tvel_lim = 0, avel_lim = 0, motor_lim = 0;
+    double wheel_base = 0, wheel_radius = 0;
 
-    np.getParam("/odometer/left_wheel_joint", left_wheel_joint);
-    np.getParam("/odometer/right_wheel_joint", right_wheel_joint);
+    n.getParam("left_wheel_joint", left_wheel_joint);
+    n.getParam("right_wheel_joint", right_wheel_joint);
 
     n.getParam("wheel_radius", wheel_radius);
     n.getParam("wheel_base", wheel_base);
-    n.getParam("frequency", frequency);
+    // n.getParam("frequency", frequency);
+    frequency = 60;
 
-    n.getParam(("tvel_lim", tvel_lim);
-    n.getParam(("avel_lim", avel_lim);
-    n.getParam(("motor_lim", motor_lim);
+    n.getParam("tvel_lim", tvel_lim);
+    n.getParam("avel_lim", avel_lim);
+    n.getParam("motor_lim", motor_lim);
 
     ROS_INFO_STREAM("Got left wheel joint name: " << left_wheel_joint);
     ROS_INFO_STREAM("Got right wheel joint name: " << right_wheel_joint);
@@ -122,32 +153,9 @@ int main(int argc, char** argv)
 
     // Create diff drive object to track the robot simulation
     rigid2d::Pose2D pos(0,0,0);
-    rigid2d::DiffDrive robot(pos, wheel_base, wheel_radius);
+    rigid2d::DiffDrive robot_buf(pos, wheel_base, wheel_radius);
 
-    sensor_msgs::JointState js;
-    nuturtlebot::WheelCommands bot_cmd;
+    robot = robot_buf;
 
-    double dt = 1.0/frequency;
-
-    ros::Rate r(frequency);
-
-    while(ros::ok())
-    {
-      // Use the scaled twist to propigate the robot
-      wheel_vels = robot.updateOdometry(wheel_pos);
-
-      // Create the joint state message & publish
-      js.header.stamp = ros::Time::now();
-      js.name = {left_wheel_joint, right_wheel_joint};
-      js.position = {abs_enc.ul, abs_enc.ur};
-      js.velocity = {wheel_vels.ul, wheel_vels.ur};
-
-      bot_cmd = getWheelCommands(&robot);
-
-      pub_wheels.publish(bot_cmd)
-      pub_joint_state.publish(js);
-
-      ros::spinOnce();
-      r.sleep();
-    }
+    ros::spin();
 }

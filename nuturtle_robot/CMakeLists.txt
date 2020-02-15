@@ -2,13 +2,16 @@ cmake_minimum_required(VERSION 2.8.3)
 project(nuturtle_robot)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-Wall -Wextra -Wno-psabi)
+set(CMAKE_C17_STANDARD 17)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
 	geometry_msgs
+	nuturtlebot
+	rigid2d
 	roscpp
 	sensor_msgs
 )
@@ -117,7 +120,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-# ${catkin_INCLUDE_DIRS}
+${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -194,8 +197,8 @@ if(CATKIN_ENABLE_TESTING)
 	find_package(rostest REQUIRED)
 
 	## Add gtest based cpp test target and link libraries
-	catkin_add_gtest(${PROJECT_NAME}-test test/run_tests.test src/test/test_turtle_interface.cpp)
-  target_link_libraries(${PROJECT_NAME}-test ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
+	add_rostest_gtest(test_turtle_interface test/run_tests.test src/test/test_turtle_interface.cpp)
+  target_link_libraries(test_turtle_interface ${rigid2d_LIBRARIES} gtest_main ${catkin_LIBRARIES} ${nuturtlebot_LIBRARIES})
 endif()
 
 ## Add folders to be run by python nosetests
