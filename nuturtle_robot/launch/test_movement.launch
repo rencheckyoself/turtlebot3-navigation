@@ -9,18 +9,34 @@
     <arg name="robot" value="$(arg robot)"/>
   </include>
 
-  <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
+  <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot"/>
 
-  <node name="rotation" pkg="nuturtle_robot" type="rotation" machine="turtlebot" output="screen">
+  <node name="rotation" pkg="nuturtle_robot" type="rotation" machine="turtlebot">
     <param name="frac_val" value=".3"/>
   </node>
 
-  <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot" output="screen">
+  <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot">
     <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
   </node>
 
   <include file="$(find nuturtle_description)/launch/view_diff_drive.launch">
     <arg name="include_stuff" value="False"/>
   </include>
+
+  <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" machine="turtlebot" output="screen">
+    <remap from="turtle1/cmd_vel" to="/cmd_vel"/>
+    <remap from="joint_states" to="fake/joint_states"/>
+  </node>
+
+  <group ns="fake">
+    <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot" output="screen">
+      <param name="odom_frame_id" value="fake_odom"/>
+      <param name="base_frame_id" value="fake_base_link"/>
+      <param name="left_wheel_joint" value="left_wheel_axel"/>
+      <param name="right_wheel_joint" value="right_wheel_axel"/>
+    </node>
+  </group>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 odom fake_odom" />
 
 </launch>

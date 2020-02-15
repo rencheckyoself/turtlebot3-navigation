@@ -75,7 +75,7 @@ int main(int argc, char** argv)
     ros::NodeHandle n;
     ros::NodeHandle pn("~");
 
-    ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("/joint_states", 1, callback_joints);
+    ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("joint_states", 1, callback_joints);
     ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 10);
 
 
@@ -90,9 +90,9 @@ int main(int argc, char** argv)
     pn.getParam("base_frame_id", base_frame_id);
     pn.getParam("left_wheel_joint", left_wheel_joint);
     pn.getParam("right_wheel_joint", right_wheel_joint);
-    n.getParam("frequency", frequency);
-    n.getParam("wheel_radius", wheel_radius);
-    n.getParam("wheel_base", wheel_base);
+    n.getParam("/frequency", frequency);
+    n.getParam("/wheel_radius", wheel_radius);
+    n.getParam("/wheel_base", wheel_base);
 
     ROS_INFO_STREAM("ODOM: Got odom frame id: " << odom_frame_id);
     ROS_INFO_STREAM("ODOM: Got base frame id: " << base_frame_id);

@@ -44,8 +44,8 @@ int main(int argc, char** argv)
     ros::NodeHandle n;
     ros::NodeHandle np("~odometer");
 
-    ros::Subscriber twist_sub = n.subscribe("turtle1/cmd_vel", 1, callback_twist);
-    ros::Publisher pub_joint_state = n.advertise<sensor_msgs::JointState>("/joint_states", 1);
+    ros::Subscriber twist_sub = n.subscribe("cmd_vel", 1, callback_twist);
+    ros::Publisher pub_joint_state = n.advertise<sensor_msgs::JointState>("joint_states", 1);
 
     // Get parameters from the parameter server
     std::string left_wheel_joint, right_wheel_joint;
@@ -57,10 +57,10 @@ int main(int argc, char** argv)
     n.getParam("wheel_base", wheel_base);
     n.getParam("frequency", frequency);
 
-    ROS_INFO_STREAM("Got wheel base param: " << wheel_base);
-    ROS_INFO_STREAM("Got wheel radius param: " << wheel_radius);
-    ROS_INFO_STREAM("Got left wheel joint name: " << left_wheel_joint);
-    ROS_INFO_STREAM("Got right wheel joint name: " << right_wheel_joint);
+    ROS_INFO_STREAM("FDENC: Got wheel base param: " << wheel_base);
+    ROS_INFO_STREAM("FDENC: Got wheel radius param: " << wheel_radius);
+    ROS_INFO_STREAM("FDENC: Got left wheel joint name: " << left_wheel_joint);
+    ROS_INFO_STREAM("FDENC: Got right wheel joint name: " << right_wheel_joint);
 
     // Create diff drive object to track the robot simulation
     rigid2d::Pose2D pos(0,0,0);

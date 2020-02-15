@@ -12,7 +12,7 @@
   <xacro:property name="chassis_length" value="${props['chassis_length']}"/>
   <xacro:property name="chassis_thickness" value="${props['chassis_thickness']}"/>
   <xacro:property name="chassis_width" value="${(wheel_base - wheel_width)}"/>
-  <xacro:property name="castor_radius" value="${((wheel_radius - (chassis_thickness/2))/2)}"/>
+  <xacro:property name="castor_radius" value="${(wheel_radius/2)}"/>
   <xacro:property name="base_shift" value="${chassis_length/2 - wheel_radius}"/>
 
   <!-- Macro to create wheels -->
@@ -47,12 +47,12 @@
         <material name="white_mat">
           <color rgba=".9 .9 .9 .95" />
         </material>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <origin rpy="0 0 0" xyz="0 0 ${castor_radius}"/>
       </visual>
     </link>
-
+    <!--  -->
     <joint name="${caster_side}_castor_joint" type="fixed">
-      <origin xyz="${base_shift + (chassis_length/2 - castor_radius)} 0 ${castor_radius}" rpy="0 0 0" />
+      <origin xyz="${base_shift + (chassis_length/2 - castor_radius)} 0 0" rpy="0 0 0" />
       <parent link="base_link"/>
       <child link="caster_${caster_side}" />
     </joint>
@@ -66,7 +66,7 @@
         <box size="${chassis_length} ${chassis_width} ${chassis_thickness}" />
       </geometry>
 
-      <origin rpy="0 0 0" xyz="${base_shift} 0 ${wheel_radius}"/>
+      <origin rpy="0 0 0" xyz="${base_shift} 0 ${wheel_radius + chassis_thickness/2}"/>
 
       <material name="green_mat">
         <color rgba="0 1 0 1" />
