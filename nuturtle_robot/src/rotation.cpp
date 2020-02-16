@@ -121,13 +121,16 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
 
   double avel_lim = 0;
+  double frequency = 0;
 
   pn.getParam("frac_val", frac_val);
   n.getParam("avel_lim", avel_lim);
+  n.getParam("frequency", frequency);
 
-  ROS_INFO_STREAM("ROTATION: " << frac_val << " " << avel_lim);
+  ROS_INFO_STREAM("ROTATION: Got Frac Val: " << frac_val);
+  ROS_INFO_STREAM("ROTATION: Got Ang. Vel Limit: " << avel_lim);
+  ROS_INFO_STREAM("ROTATION: Frequency: " << frequency);
 
-  double frequency = 105.0;
   double sec_per_rev = 0;
 
   robot_vel = avel_lim * frac_val;
@@ -136,13 +139,13 @@ int main(int argc, char** argv)
 
   sec_per_rev = (2.0*rigid2d::PI) / robot_vel;
 
-  ROS_INFO_STREAM("ROTATION: Secs Per Rotation, " << sec_per_rev);
+  // ROS_INFO_STREAM("ROTATION: Secs Per Rotation, " << sec_per_rev);
 
   cycles_per_rev = static_cast<int>(std::round(sec_per_rev*frequency));
   cycles_per_wait = cycles_per_rev/20;
 
-  ROS_INFO_STREAM("ROTATION: Move Cycles, " << cycles_per_rev);
-  ROS_INFO_STREAM("ROTATION: Wait Cycles, " << cycles_per_wait);
+  // ROS_INFO_STREAM("ROTATION: Move Cycles, " << cycles_per_rev);
+  // ROS_INFO_STREAM("ROTATION: Wait Cycles, " << cycles_per_wait);
 
   ROS_INFO_STREAM("Turtlebot Standing by...");
   robot_vel *= dir;

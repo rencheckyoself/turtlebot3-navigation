@@ -34,6 +34,10 @@ static int encoder_ticks_per_rev = 0;
 static double motor_power = 0;
 static ros::Publisher pub_wheels, pub_encs;
 
+static int init_enc_left = 0;
+static int init_enc_right = 0;
+static int init_data = 0;
+
 nuturtlebot::WheelCommands getWheelCommands()
 {
   rigid2d::Twist2D tw;
@@ -91,19 +95,25 @@ void callback_twist(geometry_msgs::Twist::ConstPtr data)
 
 void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 {
-  rigid2d::WheelVelocities data_conv, wheel_vels, abs_enc;
+  if(init_data == 0)
+  {
+    // init_enc_left = data->left_encoder;
+    // init_enc_right = data->right_encoder;
+    init_data = 1;
+  }
+
+  rigid2d::WheelVelocities data_conv, wheel_vels;
   sensor_msgs::JointState js;
 
-  data_conv.ul = static_cast<double>(data->left_encoder)/encoder_ticks_per_rev * 2.0 * rigid2d::PI;
-  data_conv.ur = static_cast<double>(data->right_encoder)/encoder_ticks_per_rev * 2.0 * rigid2d::PI;
+  data_conv.ul = static_cast<double>(data->left_encoder - init_enc_left)/encoder_ticks_per_rev * 2.0 * rigid2d::PI;
+  data_conv.ur = static_cast<double>(data->right_encoder - init_enc_right)/encoder_ticks_per_rev * 2.0 * rigid2d::PI;
 
   wheel_vels = robot.updateOdometry(data_conv.ul, data_conv.ur);
-  abs_enc = robot.getEncoders();
 
   // Create the joint state message & publish
   js.header.stamp = ros::Time::now();
   js.name = {left_wheel_joint, right_wheel_joint};
-  js.position = {abs_enc.ul, abs_enc.ur};
+  js.position = {data_conv.ul, data_conv.ur};
   js.velocity = {wheel_vels.ul, wheel_vels.ur};
 
   pub_encs.publish(js);

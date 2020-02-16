@@ -2,6 +2,7 @@
 #include <sstream>
 #include <ros/ros.h>
 
+#include "rigid2d/rigid2d.hpp"
 #include "geometry_msgs/Twist.h"
 #include "nuturtlebot/WheelCommands.h"
 #include "nuturtlebot/SensorData.h"
@@ -93,8 +94,8 @@ TEST(TurtleInterface, ValidEncs)
   // Proper result for a sensor message to joint_states conversion
   nuturtlebot::SensorData enc_vals;
 
-  enc_vals.left_encoder = 100;
-  enc_vals.right_encoder = 100;
+  enc_vals.left_encoder = 4096/4;
+  enc_vals.right_encoder = 4096/4;
 
   pub_sensors.publish(enc_vals);
 
@@ -105,10 +106,10 @@ TEST(TurtleInterface, ValidEncs)
       // wait for data to be recieved...
   }
 
-  ASSERT_NEAR(js_data.position.at(0), 0.1533, 1e-4);
-  ASSERT_NEAR(js_data.position.at(1), 0.1533, 1e-4);
-  ASSERT_NEAR(js_data.velocity.at(0), 0.1533, 1e-4);
-  ASSERT_NEAR(js_data.velocity.at(1), 0.1533, 1e-4);
+  ASSERT_NEAR(js_data.position.at(0), rigid2d::PI/2, 1e-4);
+  ASSERT_NEAR(js_data.position.at(1), rigid2d::PI/2, 1e-4);
+  ASSERT_NEAR(js_data.velocity.at(0), rigid2d::PI/2, 1e-4);
+  ASSERT_NEAR(js_data.velocity.at(1), rigid2d::PI/2, 1e-4);
 }
 
 

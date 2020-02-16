@@ -1,1 +1,1 @@
-frequency: 105 # Rate to send commands to the turtlebot
+frequency: 110 # Rate to send commands to the turtlebot
