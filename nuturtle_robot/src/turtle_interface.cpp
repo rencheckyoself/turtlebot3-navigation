@@ -2,6 +2,18 @@
 /// \brief This node interfaces between a main computer and the raspberri pi on the turtlebot
 ///
 /// PARAMETERS:
+// n.getParam("left_wheel_joint", left_wheel_joint);
+// n.getParam("right_wheel_joint", right_wheel_joint);
+//
+// n.getParam("wheel_radius", wheel_radius);
+// n.getParam("wheel_base", wheel_base);
+// n.getParam("frequency", frequency);
+//
+// n.getParam("tvel_lim", tvel_lim);
+// n.getParam("avel_lim", avel_lim);
+// n.getParam("motor_lim", motor_lim);
+// n.getParam("encoder_ticks_per_rev", encoder_ticks_per_rev);
+// n.getParam("motor_power", motor_power);
 /// PUBLISHES:
 ///     /wheel_cmd (nutrutlebot/WheelCommands): a command to control the motors on the turtlebot
 ///     /joint_states (sensor_msgs/JointState): the wheel position and velocities of the turtlebot
@@ -52,14 +64,8 @@ nuturtlebot::WheelCommands getWheelCommands()
   wv = robot.twistToWheels(tw);
 
   // compare to motor max speed
-  if(wv.ul > motor_lim)
-  {
-    wv.ul = motor_lim;
-  }
-  else if(wv.ur > motor_lim)
-  {
-    wv.ur = motor_lim;
-  }
+  wv.ul = std::clamp(wv.ul, -motor_lim, motor_lim);
+  wv.ur = std::clamp(wv.ur, -motor_lim, motor_lim);
 
   double m_lim[2] = {-motor_lim, motor_lim};
   double cmd_lim[2] = {-motor_power, motor_power};
@@ -97,8 +103,8 @@ void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 {
   if(init_data == 0)
   {
-    // init_enc_left = data->left_encoder;
-    // init_enc_right = data->right_encoder;
+    init_enc_left = data->left_encoder;
+    init_enc_right = data->right_encoder;
     init_data = 1;
   }
 

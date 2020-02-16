@@ -24,7 +24,7 @@ static int robot_state = 0;
 static int cycles_per_rev, cycles_per_wait;
 static double robot_vel = 0;
 static int total_revs =0;
-static bool dir = 1;
+static int dir = 1;
 static ros::Publisher pub_cmd;
 
 bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response&)
@@ -57,7 +57,7 @@ bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response
     ROS_WARN_STREAM("Direction must be 1 or 0, defaulting to 1");
   }
 
-  ROS_INFO_STREAM("Robot Started");
+  // ROS_INFO_STREAM("Robot Started");
 
   robot_state = 1;
   total_revs = 0;
@@ -80,12 +80,12 @@ void callback_timer(const ros::TimerEvent&)
 
     case 1:
       // ROS_INFO_STREAM("Moving...");
-      speed_cmd.angular.z = robot_vel;
+      speed_cmd.angular.z = dir*robot_vel;
       if(cnt >= cycles_per_rev)
       {
         robot_state = 2;
         cnt = 0;
-        ROS_INFO_STREAM("Waiting...");
+        // ROS_INFO_STREAM("Waiting...");
       }
       break;
 
@@ -97,14 +97,14 @@ void callback_timer(const ros::TimerEvent&)
         robot_state = 1;
         cnt = 0;
         total_revs++;
-        ROS_INFO_STREAM("Number of revs: " << total_revs);
-        ROS_INFO_STREAM("Moving...");
+        // ROS_INFO_STREAM("Number of revs: " << total_revs);
+        // ROS_INFO_STREAM("Moving...");
       }
 
       if(total_revs >= 20)
       {
         robot_state = 0;
-        ROS_INFO_STREAM("Done. Going to Standy...");
+        // ROS_INFO_STREAM("Done. Going to Standy...");
       }
       break;
   }

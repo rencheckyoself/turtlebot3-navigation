@@ -91,10 +91,14 @@ namespace rigid2d
     static_assert(almost_equal(normalize_angle(-2.5*PI),-PI/2, 1e-4), "normalized angle falied");
 
 
-    static constexpr double x_test[2] = {0,2};
-    static constexpr double y_test[2] = {0,2};
+    static constexpr double x_test[2] = {-6.35492,6.35492};
+    static constexpr double y_test[2] = {-265,265};
 
-    static_assert(almost_equal(linInterp(1, x_test, y_test), 1), "Linear Interpolation Failed");
+    static_assert(almost_equal(linInterp(-6.35492, x_test, y_test), -265), "Linear Interpolation Failed");
+
+    // static_assert(almost_equal(linInterp(1, x_test, y_test), 2), "Linear Interpolation Failed");
+    // static_assert(almost_equal(linInterp(0, x_test, y_test), 1), "Linear Interpolation Failed");
+    // static_assert(almost_equal(linInterp(2, x_test, y_test), 3), "Linear Interpolation Failed");
 
     /// \brief A 2-Dimensional Vector
     struct Vector2D

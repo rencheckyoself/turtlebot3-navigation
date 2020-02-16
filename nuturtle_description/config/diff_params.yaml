@@ -5,6 +5,6 @@ chassis_length: .138 # The length of the main chassis link (m)
 chassis_thickness: .192 # The thickness of the plate that forms the chassis (m)
 tvel_lim: 0.22 # translational velocity limit of the robot (m/s)
 avel_lim: 2.84 # rotational velocity limit of the robot (rad/s)
-motor_lim: 6.35492 # velcity limit of the motor (rad/s)
+motor_lim: 6.35492 # velocity limit of the motor (rad/s)
 encoder_ticks_per_rev: 4096 # Nuumber of encoder ticks per revolution
 motor_power: 265 # the motor power, can be -256 to 256

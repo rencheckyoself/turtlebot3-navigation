@@ -12,16 +12,19 @@
   <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot"/>
 
   <node name="rotation" pkg="nuturtle_robot" type="rotation" machine="turtlebot">
-    <param name="frac_val" value=".3"/>
+    <param name="frac_val" value="1"/>
   </node>
 
   <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot">
     <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
   </node>
 
-  <include file="$(find nuturtle_description)/launch/view_diff_drive.launch">
+  <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- <include file="$(find nuturtle_description)/launch/view_diff_drive.launch">
     <arg name="include_stuff" value="False"/>
-  </include>
+  </include> -->
 
   <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" machine="turtlebot" output="screen">
     <remap from="turtle1/cmd_vel" to="/cmd_vel"/>
