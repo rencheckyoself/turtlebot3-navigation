@@ -41,6 +41,7 @@ namespace rigid2d
     dist_thresh = 0.01;
     ang_thresh = 0.01;
     kp = 0.5;
+    num_cycles = -1;
 
     point_list.at(0) = Vector2D (1,1);
     point_list.at(1) = Vector2D (5,1);
@@ -48,12 +49,8 @@ namespace rigid2d
     point_list.at(3) = Vector2D (3,6);
     point_list.at(4) = Vector2D (1,5);
 
-    init_target = point_list.at(0)
-    init_target.x -= 1;
-    init_target.y -= 1;
-
+    init_target = point_list.at(1);
     setTarget();
-    init_target = target;
   }
 
   Waypoints::Waypoints(std::vector<Vector2D> points, int r, double vlim, double alim)
@@ -62,8 +59,14 @@ namespace rigid2d
     linv_lim = vlim;
     angv_lim = alim;
 
+    dist_thresh = 0.01;
+    ang_thresh = 0.01;
+    kp = 0.5;
+    num_cycles = -1;
+
     point_list = points;
 
+    init_target = point_list.at(1);
     setTarget();
   }
 
@@ -73,12 +76,14 @@ namespace rigid2d
     point_list.erase(point_list.begin());
     point_list.push_back(target);
 
-    std::cout << "New target set to: " << target << "\n";
 
     if(target.x == init_target.x && target.y == init_target.y)
     {
       num_cycles++;
     }
+
+    std::cout << "New target set to: " << target << "\n";
+    std::cout << "Num Cycles: " << num_cycles << "\n"; 
   }
 
   Vector2D Waypoints::getTarget()
@@ -128,14 +133,14 @@ namespace rigid2d
     {
       // move straight
       tw.wz = 0;
-      tw.vx = std::clamp(kp * calc_dist, -tlim, tlim);
+      tw.vx = std::clamp(kp * calc_dist, -linv_lim, linv_lim);
     }
 
     else
     {
       // turn
-      tw.wz = std::clamp(kp * err_heading, -alim, alim);
-      tw.vx = 0
+      tw.wz = std::clamp(kp * err_heading, -angv_lim, angv_lim);
+      tw.vx = 0;
 
     }
 
@@ -149,13 +154,13 @@ namespace rigid2d
     angv_lim = ang;
   }
 
-  void setThresholds(double alim, double tlim)
+  void Waypoints::setThresholds(double alim, double tlim)
   {
     dist_thresh = tlim;
     ang_thresh = alim;
   }
 
-  void setGains(double p)
+  void Waypoints::setGains(double p)
   {
     kp = p;
   }
@@ -163,5 +168,10 @@ namespace rigid2d
   void Waypoints::setRate(int r)
   {
     rate = r;
+  }
+
+  int Waypoints::getCycles()
+  {
+    return num_cycles;
   }
 }

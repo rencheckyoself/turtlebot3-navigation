@@ -57,6 +57,10 @@ namespace rigid2d
     /// \return the current target
     Vector2D getTarget();
 
+    /// \brief get the number of completed cycles
+    /// \return the number of completed cycles
+    int getCycles();
+
   private:
 
     double rate; //rate to send commands

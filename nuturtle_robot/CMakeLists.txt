@@ -11,11 +11,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
 	geometry_msgs
+	nav_msgs
 	nuturtlebot
 	rigid2d
 	roscpp
 	sensor_msgs
 	std_srvs
+	tf2_ros
+	visualization_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -110,7 +113,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES nuturtle_robot
- CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_srvs
+ CATKIN_DEPENDS geometry_msgs nav_msgs roscpp sensor_msgs std_srvs tf2_ros visualization_msgs
 #  DEPENDS system_lib
 )
 
@@ -140,6 +143,7 @@ ${catkin_INCLUDE_DIRS}
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_turtle_interface src/turtle_interface.cpp)
 add_executable(${PROJECT_NAME}_rotation src/rotation.cpp)
+add_executable(${PROJECT_NAME}_real_waypoints src/real_waypoints.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,15 +151,18 @@ add_executable(${PROJECT_NAME}_rotation src/rotation.cpp)
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 set_target_properties(${PROJECT_NAME}_turtle_interface PROPERTIES OUTPUT_NAME turtle_interface PREFIX "")
 set_target_properties(${PROJECT_NAME}_rotation PROPERTIES OUTPUT_NAME rotation PREFIX "")
+set_target_properties(${PROJECT_NAME}_real_waypoints PROPERTIES OUTPUT_NAME real_waypoints PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_turtle_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_rotation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_real_waypoints ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_turtle_interface ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(${PROJECT_NAME}_rotation ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_real_waypoints ${rigid2d_LIBRARIES} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -173,7 +180,10 @@ target_link_libraries(${PROJECT_NAME}_rotation ${rigid2d_LIBRARIES} ${catkin_LIB
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_turtle_interface ${PROJECT_NAME}_rotation
+install(TARGETS
+	${PROJECT_NAME}_real_waypoints
+	${PROJECT_NAME}_rotation
+	${PROJECT_NAME}_turtle_interface
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -202,10 +212,9 @@ install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 
 if(CATKIN_ENABLE_TESTING)
 	find_package(rostest REQUIRED)
-
 	## Add gtest based cpp test target and link libraries
 	add_rostest_gtest(test_turtle_interface test/run_tests.test src/test/test_turtle_interface.cpp)
-  target_link_libraries(test_turtle_interface ${rigid2d_LIBRARIES} gtest_main ${catkin_LIBRARIES} ${nuturtlebot_LIBRARIES})
+	target_link_libraries(test_turtle_interface ${rigid2d_LIBRARIES} gtest_main ${catkin_LIBRARIES} ${nuturtlebot_LIBRARIES})
 endif()
 
 ## Add folders to be run by python nosetests

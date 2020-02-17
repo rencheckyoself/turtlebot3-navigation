@@ -99,9 +99,15 @@ Visualization Manager:
           Value: true
         caster_bottom:
           Value: false
+        fake_base_link:
+          Value: true
         fake_odom:
           Value: true
         odom:
+          Value: true
+        wheel_left:
+          Value: true
+        wheel_right:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -110,9 +116,25 @@ Visualization Manager:
       Show Names: true
       Tree:
         odom:
+          base_link:
+            caster_bottom:
+              {}
+            wheel_left:
+              {}
+            wheel_right:
+              {}
           fake_odom:
-            {}
+            fake_base_link:
+              {}
       Update Interval: 0
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: visualization_marker
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
@@ -142,7 +164,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.4401726722717285
+      Distance: 6.238122940063477
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -157,10 +179,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.42979714274406433
+      Pitch: 0.5747970342636108
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.5353912711143494
+      Yaw: 3.5853939056396484
     Saved: ~
 Window Geometry:
   Displays:
