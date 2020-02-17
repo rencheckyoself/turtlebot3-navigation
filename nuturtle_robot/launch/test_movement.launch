@@ -1,36 +1,47 @@
 <launch>
 
+  <!-- Launch Settings -->
   <arg name='robot' default='0' doc='Argument to specify which robot is being used. 0 to uses local machine'/>
+  <arg name='with_rviz' default="False" doc="launch everything with/without rviz. There is a noticable difference in perfomance with it running. Defaults to without (False)."/>
+
+  <!-- Load YAML Files -->
   <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
   <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
   <rosparam command="load" file="$(find nuturtle_robot)/config/traj_params.yaml"/>
 
+  <!-- Set up host machine and start serial communications -->
   <include file="$(find nuturtle_robot)/launch/basic_remote.launch">
     <arg name="robot" value="$(arg robot)"/>
   </include>
 
+  <!-- Launch interface node to the turtle bot -->
   <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot"/>
 
+  <!-- Launch Rotation node to pubish velocities -->
   <node name="rotation" pkg="nuturtle_robot" type="rotation" machine="turtlebot">
-    <param name="frac_val" value="1"/>
+    <param name="frac_val" value="1"/> <!-- doc="Velocity scaling multiplier, 1 is max speed." -->
+    <param name="motion_type" value="1"/> <!-- doc="Sets the motion type. 1 for linear, 0 for rotational." -->
   </node>
 
+  <!-- Launch odometer node to track the turtlebot encoders -->
   <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot">
     <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
   </node>
 
+  <!-- Publish the robot urdf -->
   <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
-  <!-- <include file="$(find nuturtle_description)/launch/view_diff_drive.launch">
-    <arg name="include_stuff" value="False"/>
-  </include> -->
+  <!-- Launch rviz as a required node -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_view.rviz" if="$(arg with_rviz)"/>
 
+  <!-- Simulate encoders for perfect feed forward control -->
   <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" machine="turtlebot" output="screen">
     <remap from="turtle1/cmd_vel" to="/cmd_vel"/>
     <remap from="joint_states" to="fake/joint_states"/>
   </node>
 
+  <!-- Track the simulated encoders -->
   <group ns="fake">
     <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot" output="screen">
       <param name="odom_frame_id" value="fake_odom"/>
@@ -40,6 +51,7 @@
     </node>
   </group>
 
+  <!-- Link the simulated robot to the real robot -->
   <node pkg="tf2_ros" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 odom fake_odom" />
 
 </launch>
