@@ -31,12 +31,16 @@ namespace rigid2d
 
     return tw;
   }
-  
+
   Waypoints::Waypoints()
   {
     rate = 60;
     linv_lim = 0.5;
     angv_lim = 0.5;
+
+    dist_thresh = 0.01;
+    ang_thresh = 0.01;
+    kp = 0.5;
 
     point_list.at(0) = Vector2D (1,1);
     point_list.at(1) = Vector2D (5,1);
@@ -44,7 +48,12 @@ namespace rigid2d
     point_list.at(3) = Vector2D (3,6);
     point_list.at(4) = Vector2D (1,5);
 
+    init_target = point_list.at(0)
+    init_target.x -= 1;
+    init_target.y -= 1;
+
     setTarget();
+    init_target = target;
   }
 
   Waypoints::Waypoints(std::vector<Vector2D> points, int r, double vlim, double alim)
@@ -65,6 +74,11 @@ namespace rigid2d
     point_list.push_back(target);
 
     std::cout << "New target set to: " << target << "\n";
+
+    if(target.x == init_target.x && target.y == init_target.y)
+    {
+      num_cycles++;
+    }
   }
 
   Vector2D Waypoints::getTarget()
@@ -78,7 +92,6 @@ namespace rigid2d
     double x_dist, y_dist;
     double calc_dist, calc_heading;
     double err_heading;
-    double dist_thresh = 0.01, ang_thresh = 0.01;
 
     tw.vy = 0;
 
@@ -106,28 +119,24 @@ namespace rigid2d
     if(calc_dist < dist_thresh)
     {
       setTarget();
+
+      tw.wz = 0;
+      tw.vx = 0;
     }
 
-    if(std::fabs(err_heading) < ang_thresh)
+    else if(std::fabs(err_heading) < ang_thresh)
     {
       // move straight
       tw.wz = 0;
-      tw.vx = linv_lim;
+      tw.vx = std::clamp(kp * calc_dist, -tlim, tlim);
     }
 
     else
     {
       // turn
-      if(err_heading < 0)
-      {
-        tw.wz = -angv_lim;
-        tw.vx = 0;
-      }
-      else
-      {
-        tw.wz = angv_lim;
-        tw.vx = 0;
-      }
+      tw.wz = std::clamp(kp * err_heading, -alim, alim);
+      tw.vx = 0
+
     }
 
     // return the twist
@@ -138,6 +147,17 @@ namespace rigid2d
   {
     linv_lim = lin;
     angv_lim = ang;
+  }
+
+  void setThresholds(double alim, double tlim)
+  {
+    dist_thresh = tlim;
+    ang_thresh = alim;
+  }
+
+  void setGains(double p)
+  {
+    kp = p;
   }
 
   void Waypoints::setRate(int r)

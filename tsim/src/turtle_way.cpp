@@ -2,13 +2,13 @@
 /// \brief This file contains the source code for the turtle_way node. It reads in a list of waypoints and sends commands to turtlesim to follow that path
 ///
 /// PARAMETERS:
-///     waypoint_x (int) A list of the x coordinates for a series of waypoints
-///     waypoint_y (int) A list of the y coordinates for a series of waypoints
-///     trans_vel (int) The translational velocity of the robot
+///     waypoint_x: (int) A list of the x coordinates for a series of waypoints
+///     waypoint_y: (int) A list of the y coordinates for a series of waypoints
+///     trans_vel: (int) The translational velocity of the robot
 ///     rot_vel: (int) The rotational velocity of the robot
-///     frequency (int) The frequency of the control loop
-///     wheel_radius (double) The radius of the wheels
-///     wheel_base (double) The distance between two wheels
+///     frequency: (int) The frequency of the control loop
+///     wheel_radius: (double) The radius of the wheels
+///     wheel_base: (double) The distance between two wheels
 /// PUBLISHES:
 ///     /pose_error (tsim/PoseError): The positional error of the turtle at each cycle.
 ///     /turtle1/cmd_vel (geometry_msgs/Twist): The velcotiy command to control the turtle.
@@ -185,7 +185,7 @@ int main(int argc, char **argv)
   while(ros::ok())
   {
 
-    // call check if we are at the target and calculate the correct twist
+    // check if we are at the target and calculate the correct twist
     v_command = path.nextWaypoint(expected_pose);
 
     // Publish the velocity command to move the turtle in turtlesim

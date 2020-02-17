@@ -44,6 +44,15 @@ namespace rigid2d
     /// \param r - the desired rate
     void setRate(int r);
 
+    /// \brief set the angular and distance thresholds
+    /// \param alim - the angular position threshold
+    /// \param tlim - the translation position threshold
+    void setThresholds(double alim, double tlim);
+
+    /// \brief set the controls gains
+    /// \param p - the proportional control gain
+    void setGains(double p);
+
     /// \brief get the current target
     /// \return the current target
     Vector2D getTarget();
@@ -55,6 +64,11 @@ namespace rigid2d
     double angv_lim; // angular velocity limits
     std::vector<Vector2D> point_list; // list of waypoint to travel between
     Vector2D target; // The current target waypoint to drive to
+    Vector2D init_target; // The first waypoint of the path
+    double kp; //proportional control gain
+    double dist_thresh; //angular threshold setting
+    double ang_thresh; //angular threshold setting
+    int num_cycles; //the number of cycles through the waypoints
 
     /// \brief Retrieve the next waypoint to move to
     void setTarget();
