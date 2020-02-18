@@ -52,8 +52,6 @@
 
   <build_depend>geometry_msgs</build_depend>
   <build_depend>nav_msgs</build_depend>
-  <build_depend>nuturtlebot</build_depend>
-  <build_depend>rigid2d</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>std_srvs</build_depend>
@@ -62,18 +60,17 @@
 
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>nav_msgs</build_export_depend>
-  <build_export_depend>nuturtlebot</build_export_depend>
-  <build_export_depend>rigid2d</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>std_srvs</build_export_depend>
   <build_export_depend>tf2_ros</build_export_depend>
   <build_export_depend>visualization_msgs</build_export_depend>
 
+  <depend>rigid2d</depend>
+  <depend>nuturtlebot</depend>
+  
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
-  <exec_depend>nuturtlebot</exec_depend>
-  <exec_depend>rigid2d</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_srvs</exec_depend>

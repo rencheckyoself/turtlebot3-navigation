@@ -29,12 +29,12 @@ This package is used to control the turtlesim simulation.
 ## For `turtle_rect.launch`
 [Video Link](https://youtu.be/aji3aDB8LBI)
 
-![Sim Image](turtle_rect_img.png)
-![Full Plot](plot_onecycle.png)
-![Zoomed Plot](zoomed_in_plot.png)
+![Sim Image](images/turtle_rect_img.png)
+![Full Plot](images/plot_onecycle.png)
+![Zoomed Plot](images/zoomed_in_plot.png)
 
 ## For `turtle_pent.launch`
-![Error Plot](turtle_pent_error.png)
+![Error Plot](images/turtle_pent_error.png)
 
 ## For `turtle_odom.launch`
 [Video link](https://youtu.be/058QKyPgfmI)

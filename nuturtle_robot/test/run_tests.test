@@ -1,7 +1,12 @@
 <launch>
+  <!-- Load Paramter Files -->
   <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
   <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
   <rosparam command="load" file="$(find nuturtle_robot)/config/traj_params.yaml"/>
+
+  <!-- Launch node to test -->
   <node pkg="nuturtle_robot" name="turtle_interface" type="turtle_interface" output="screen"/>
+
+  <!-- Launch testing node -->
   <test test-name="test_turtle_interface" pkg="nuturtle_robot" type="test_turtle_interface"/>
 </launch>

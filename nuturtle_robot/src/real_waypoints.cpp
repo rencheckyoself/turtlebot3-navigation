@@ -53,6 +53,7 @@ ros::Publisher marker_pub;
 
 static int cycles_to_stop = 1;
 
+/// \breif Callback for the start service
 bool callback_start(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
 {
 
@@ -63,19 +64,20 @@ bool callback_start(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
 
   rigid2d::SetPose ps;
 
+  // Reset Pose
   ROS_INFO_STREAM("Init Pose: " << init_pos.x << " " << init_pos.y);
-
   ps.request.pose.x = init_pos.x;
   ps.request.pose.y = init_pos.y;
   ps.request.pose.ang = init_pos.ang;
-
   temp_pose.call(ps);
 
+  // set robot state
   robot_state = 1;
 
   // Publish markers if first start
   if(cycles_to_stop == 1)
   {
+    // Publish the markers
     for(unsigned int i = 0; i < waypoint_list.size(); i++)
     {
       visualization_msgs::Marker marker;
@@ -105,7 +107,7 @@ bool callback_start(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
       marker.color.g = 0.0f;
       marker.color.a = 1.0;
 
-      marker.lifetime = ros::Duration();
+      marker.lifetime = ros::Duration(); //infinite lifetime
 
       marker_pub.publish(marker);
       r.sleep();
@@ -115,6 +117,7 @@ bool callback_start(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
   return 1;
 }
 
+/// \breif Callback for the odom subscriber
 void callback_pose(nav_msgs::Odometry::ConstPtr odom)
 {
   expected_pose.x = odom->pose.pose.position.x;
@@ -129,12 +132,14 @@ void callback_pose(nav_msgs::Odometry::ConstPtr odom)
   expected_pose.th = y;
 }
 
+/// \breif Callback for the start service
 bool callback_stop(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
 {
   robot_state = -1;
   return 1;
 }
 
+/// \breif main function to create the real_waypoints node
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "real_waypoints");
@@ -142,6 +147,7 @@ int main(int argc, char** argv)
 
   double kp = 0;
 
+  // Get Parameters
   n.getParam("frac_val", frac_val);
   n.getParam("avel_lim", avel_lim);
   n.getParam("tvel_lim", tvel_lim);
@@ -174,10 +180,12 @@ int main(int argc, char** argv)
   ros::Subscriber sub_pose = n.subscribe("/odom", 1, callback_pose);
   ros::ServiceServer client_start = n.advertiseService("start", callback_start);
   marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
+
   // Initialize waypoint following
   rigid2d::Waypoints path(waypoint_list, frequency, tvel_lim * frac_val, avel_lim * frac_val);
   path.setGains(kp);
   path.setThresholds(0.025, 0.01);
+
   rigid2d::Vector2D init_target = path.getTarget();
   rigid2d::Vector2D target;
 
@@ -206,12 +214,14 @@ int main(int argc, char** argv)
         init_pos.y = expected_pose.y;
         init_pos.ang = expected_pose.th;
         break;
+
       case 0:
       // Standby. Must call start service to begin
         send_cmd.linear.x = 0;
         send_cmd.angular.z = 0;
 
         break;
+
       case 1:
       // Robot is running.
       // get the velcotiy command to move towards the target
@@ -223,8 +233,7 @@ int main(int argc, char** argv)
     // pubish the twist command
     pub_cmd.publish(send_cmd);
 
-    // check if the robot has completed a path
-
+    // check if the robot has completed one loop
     if(path.getCycles() >= cycles_to_stop)
     {
       robot_state = -1;

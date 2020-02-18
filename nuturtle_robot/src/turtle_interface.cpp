@@ -2,18 +2,16 @@
 /// \brief This node interfaces between a main computer and the raspberri pi on the turtlebot
 ///
 /// PARAMETERS:
-// n.getParam("left_wheel_joint", left_wheel_joint);
-// n.getParam("right_wheel_joint", right_wheel_joint);
-//
-// n.getParam("wheel_radius", wheel_radius);
-// n.getParam("wheel_base", wheel_base);
-// n.getParam("frequency", frequency);
-//
-// n.getParam("tvel_lim", tvel_lim);
-// n.getParam("avel_lim", avel_lim);
-// n.getParam("motor_lim", motor_lim);
-// n.getParam("encoder_ticks_per_rev", encoder_ticks_per_rev);
-// n.getParam("motor_power", motor_power);
+///     left_wheel_joint (std::string): the name of the left wheel joint
+///     right_wheel_joint (std::string): the name of the right wheel joint
+///     wheel_base (double): the distance between the two wheels of the diff drive robot
+///     wheel_radius (double): the radius of the wheels
+///     frequency (double): the frequency to publish joint states at
+///     tvel_lim (double): the maximum translational velocity
+///     avel_lim (double): the maximum angular velocity
+///     motor_lim (double): the maximum rotation velocity of the motor
+///     encoder_ticks_per_rev (int): the number of encoder pulses per revolution of the wheel
+///     motor_power (int): the max command value to send the motor
 /// PUBLISHES:
 ///     /wheel_cmd (nutrutlebot/WheelCommands): a command to control the motors on the turtlebot
 ///     /joint_states (sensor_msgs/JointState): the wheel position and velocities of the turtlebot
@@ -35,7 +33,6 @@
 #include "rigid2d/waypoints.hpp"
 
 // Global Variables
-static nuturtlebot::WheelCommands bot_cmd;
 static geometry_msgs::Twist twist_cmd;
 static rigid2d::DiffDrive robot;
 
@@ -50,7 +47,8 @@ static int init_enc_left = 0;
 static int init_enc_right = 0;
 static int init_data = 0;
 
-nuturtlebot::WheelCommands getWheelCommands()
+/// \brief Calculates the proper wheel command given a twist
+void pubWheelCommands()
 {
   rigid2d::Twist2D tw;
   rigid2d::WheelVelocities wv;
@@ -74,12 +72,9 @@ nuturtlebot::WheelCommands getWheelCommands()
   whl_cmd.right_velocity = rigid2d::linInterp(wv.ur, m_lim, cmd_lim);
 
   pub_wheels.publish(whl_cmd);
-
-  return whl_cmd;
 }
 
-/// \brief callback funtion for the /turtle1/cmd_vel subscriber
-///
+/// \brief callback funtion for the cmd_vel subscriber
 void callback_twist(geometry_msgs::Twist::ConstPtr data)
 {
 
@@ -96,9 +91,10 @@ void callback_twist(geometry_msgs::Twist::ConstPtr data)
     twist_cmd.angular.z = avel_lim;
   }
 
-  bot_cmd = getWheelCommands();
+  pubWheelCommands();
 }
 
+/// \brief callback funtion for the sensor_data subscriber
 void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 {
   if(init_data == 0)
@@ -126,8 +122,7 @@ void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 }
 
 
-/// \brief Main function to create the fake_diff_encoders node
-///
+/// \brief Main function to create the turtle_interface node
 int main(int argc, char** argv)
 {
     // ros initializations

@@ -1,3 +1,13 @@
+/// \file
+/// \brief This node tests the turtle interface node
+///
+/// PUBLISHES:
+///     /cmd_vel (geometry_msgs/Twist): the twist command from the turtlesim package
+///     /sensor_data (nuturtlebot/SensorData): retrives sensor info from the turtlebot
+/// SUBSCRIBES:
+///     /wheel_cmd (nutrutlebot/WheelCommands): a command to control the motors on the turtlebot
+///     /joint_states (sensor_msgs/JointState): the wheel position and velocities of the turtlebot
+
 #include <gtest/gtest.h>
 #include <sstream>
 #include <ros/ros.h>
@@ -17,12 +27,14 @@ static sensor_msgs::JointState js_data;
 static ros::Subscriber sub_wheelcmd, sub_joints;
 static ros::Publisher pub_cmd_vel, pub_sensors;
 
+/// \breif Callback for wheel_cmd subscriber
 void callback_wheels(nuturtlebot::WheelCommands::ConstPtr data)
 {
   wheel_cmd = *data;
   got_wheel_data = 1;
 }
 
+/// \breif Callback for joint_states subscriber
 void callback_joints(sensor_msgs::JointState::ConstPtr data)
 {
   js_data = *data;
@@ -70,8 +82,7 @@ TEST(TurtleInterface, RotOnly)
 
 TEST(TurtleInterface, RotAndTrans)
 {
-  // Proper result for a cmd_vel message
-  // .1 1, 4,38
+  // Proper result for a typical cmd_vel message
   geometry_msgs::Twist tw;
   tw.linear.x = 0.1;
   tw.angular.z = 1;

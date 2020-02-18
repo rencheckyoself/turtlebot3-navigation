@@ -29,14 +29,15 @@ static int dir = 1;
 static int move_limit = 0;
 static int motion_type = 0;
 
+/// \breif Callback for start service
 bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response&)
 {
-
   ros::NodeHandle temp_n;
   ros::ServiceClient temp_pose = temp_n.serviceClient<rigid2d::SetPose>("set_pose");
 
   ros::service::waitForService("set_pose");
 
+  // Set initial pose
   rigid2d::SetPose ps;
   ps.request.pose.x = 0;
   ps.request.pose.y = 0;
@@ -44,6 +45,7 @@ bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response
 
   temp_pose.call(ps);
 
+  // Set Direction of movement
   if(req.data == 0)
   {
     // CCW/Forwards
@@ -64,17 +66,18 @@ bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response
   robot_state = 1;
   total_moves = 0;
   cnt = 0;
-  robot_vel *= dir;
 
   return 1;
 }
 
+/// \breif Callback for Timer
 void callback_timer(const ros::TimerEvent&)
 {
 
   geometry_msgs::Twist speed_cmd;
   double cmd_val = 0;
 
+  // Set Velocity Command
   switch (robot_state)
   {
     case 0:
@@ -84,7 +87,7 @@ void callback_timer(const ros::TimerEvent&)
 
     case 1:
       // ROS_INFO_STREAM("Moving...");
-      cmd_val = robot_vel;
+      cmd_val = robot_vel*dir;
       if(cnt >= cycles_per_move)
       {
         robot_state = 2;
@@ -114,6 +117,8 @@ void callback_timer(const ros::TimerEvent&)
   }
 
   cnt++;
+
+  // Assign Velocity command to proper twist value
   if(motion_type == 0)
   {
     speed_cmd.angular.z = cmd_val;
@@ -124,12 +129,13 @@ void callback_timer(const ros::TimerEvent&)
   }
   else
   {
-    ROS_WARN_STREAM("Should not be here...something changes the motion types variable.");
+    ROS_WARN_STREAM("Should not be here...something changed the motion type variable.");
   }
 
   pub_cmd.publish(speed_cmd);
 }
 
+/// \breif main function to create the rotation node
 int main(int argc, char** argv)
 {
 
