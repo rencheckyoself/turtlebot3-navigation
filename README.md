@@ -5,8 +5,7 @@
 
 - Task A.005
 - Task E.006 - E.007
-- Task F.000 - F.008
-- Task W.000
+- Task F.000 - F.009
 
 ## Completed:
 
