@@ -81,6 +81,8 @@ Values recorded as (th, x, y) in degrees and meters
 
 ### Waypoint Following
 
+[Video Demo Link](https://www.youtube.com/watch?v=V_Ljk7B5whE)
+
 The total path distance is 4.414m
 Relative to the odom frame, the robot finished: 0.102, 0.140 off from the original starting position
 
