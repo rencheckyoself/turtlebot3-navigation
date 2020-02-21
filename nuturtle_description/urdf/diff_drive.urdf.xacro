@@ -11,9 +11,11 @@
   <xacro:property name="wheel_base" value="${props['wheel_base']}"/>
   <xacro:property name="chassis_length" value="${props['chassis_length']}"/>
   <xacro:property name="chassis_thickness" value="${props['chassis_thickness']}"/>
+  <xacro:property name="wheel_axle_offset" value="${props['wheel_axle_offset']}"/>
   <xacro:property name="chassis_width" value="${(wheel_base - wheel_width)}"/>
-  <xacro:property name="castor_radius" value="${(wheel_radius/2)}"/>
   <xacro:property name="base_shift" value="${chassis_length/2 - wheel_radius}"/>
+  <xacro:property name="castor_radius" value="${wheel_axle_offset/2}"/>
+
 
   <!-- Macro to create wheels -->
   <xacro:macro name="wheel_temp" params="wheel_side offset">
@@ -27,10 +29,19 @@
         </material>
         <origin rpy="${pi/2} 0 0" xyz="0 ${offset * (wheel_width/2)} 0"/>
       </visual>
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="${(1/12)*0.1*(3*wheel_radius**2+wheel_width**2)}" iyy="${.5*0.1*wheel_radius**2}" izz="${(1/12)*0.1*(3*wheel_radius**2+wheel_width**2)}" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+      <collision>
+        <geometry>
+            <cylinder length="${wheel_width}" radius="${wheel_radius}" />
+        </geometry>
+      </collision>
     </link>
 
     <joint name="${wheel_side}_wheel_axel" type="continuous">
-      <origin xyz="${base_shift-.25*chassis_length} ${offset * (chassis_width/2)} ${wheel_radius}" rpy="0 0 0" />
+      <origin xyz="${base_shift-.25*chassis_length} ${offset * (chassis_width/2)} ${wheel_axle_offset}" rpy="0 0 0" />
       <parent link="base_link"/>
       <child link="wheel_${wheel_side}" />
       <axis xyz="0 1 0"/>
@@ -49,6 +60,11 @@
         </material>
         <origin rpy="0 0 0" xyz="0 0 ${castor_radius}"/>
       </visual>
+      <collision>
+        <geometry>
+            <sphere radius="${castor_radius}" />
+        </geometry>
+      </collision>
     </link>
     <!--  -->
     <joint name="${caster_side}_castor_joint" type="fixed">
@@ -58,22 +74,40 @@
     </joint>
   </xacro:macro>
 
-  <!-- The body of the robot-->
-  <link name="base_link" >
-    <visual>
 
+  <link name="base_link">
+    <origin rpy="0 0 0" xyz="${base_shift} 0 0"/>
+  </link>
+
+  <!-- The body of the robot-->
+  <link name="robot_body" >
+    <visual>
       <geometry>
         <box size="${chassis_length} ${chassis_width} ${chassis_thickness}" />
       </geometry>
-
-      <origin rpy="0 0 0" xyz="${base_shift} 0 ${wheel_radius + chassis_thickness/2}"/>
-
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <material name="green_mat">
         <color rgba="0 1 0 1" />
       </material>
-
     </visual>
+
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="${(1/12)*(chassis_thickness**2 + chassis_width**2)}" iyy="${(1/12)*(chassis_thickness**2 + chassis_length**2)}" izz="${(1/12)*(chassis_length**2 + chassis_width**2)}" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+
+    <collision>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_thickness}" />
+      </geometry>
+    </collision>
   </link>
+
+  <joint name="base_body" type="fixed">
+    <origin xyz="${base_shift} 0 ${wheel_axle_offset + chassis_thickness/2}" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="robot_body"/>
+  </joint>
 
   <!-- Wheel Creation -->
   <xacro:wheel_temp wheel_side="left" offset="1"/>

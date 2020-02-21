@@ -1,8 +1,9 @@
 wheel_width: 0.018 # The width of the wheels (m)
 wheel_radius: 0.033 # The radius of the wheels (m)
 wheel_base: 0.16 # The distance between the centers of the wheels (m)
+wheel_axle_offset: 0.02 # the height of the motor axle from the ground
 chassis_length: .138 # The length of the main chassis link (m)
-chassis_thickness: .192 # The thickness of the plate that forms the chassis (m)
+chassis_thickness: .140 # The thickness of the plate that forms the chassis (m)
 tvel_lim: 0.22 # translational velocity limit of the robot (m/s)
 avel_lim: 2.84 # rotational velocity limit of the robot (rad/s)
 motor_lim: 6.35492 # velocity limit of the motor (rad/s)
