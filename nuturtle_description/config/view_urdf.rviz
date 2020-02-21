@@ -67,8 +67,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         caster_bottom:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_body:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -98,6 +102,8 @@ Visualization Manager:
           Value: true
         caster_bottom:
           Value: false
+        robot_body:
+          Value: true
         wheel_left:
           Value: true
         wheel_right:
@@ -110,6 +116,8 @@ Visualization Manager:
       Tree:
         base_link:
           caster_bottom:
+            {}
+          robot_body:
             {}
           wheel_left:
             {}
@@ -145,7 +153,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 7.394197940826416
+      Distance: 0.4559655785560608
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -160,10 +168,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.24979722499847412
+      Pitch: 0.059797171503305435
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.1703907251358032
+      Yaw: 5.5485687255859375
     Saved: ~
 Window Geometry:
   Displays:

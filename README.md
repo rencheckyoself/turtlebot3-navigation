@@ -3,7 +3,7 @@
 
 ## Submitting:
 
-- Task A.006?
+- Task A.006
 - Task G.000 - G.005
 - Task S.000 - S.001
 

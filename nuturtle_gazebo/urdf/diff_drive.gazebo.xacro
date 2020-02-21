@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="diff_drive" >
+
+<xacro:include filename="$(find nuturtle_description)/urdf/diff_drive.urdf.xacro"/>
+
+<gazebo link="robot_body">
+  <material>Gazebo/Green</material>
+</gazebo>
+
+<gazebo link="wheel_left">
+  <material>Gazebo/Black</material>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+</gazebo>
+
+<gazebo link="wheel_black">
+  <material>Gazebo/Black</material>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+</gazebo>
+
+<gazebo link="robot_body">
+  <material>Gazebo/White</material>
+  <mu1>0.0</mu1>
+  <mu2>0.0</mu2>
+</gazebo>
+
+</robot>

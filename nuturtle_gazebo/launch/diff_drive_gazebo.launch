@@ -1,0 +1,16 @@
+<launch>
+  <arg name="world_name" default="worlds/empty.world" doc="The file path to the name of the world file to use"/>
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/>
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="recording" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" />
+
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model diff_drive -z 0.001"/>
+</launch>
