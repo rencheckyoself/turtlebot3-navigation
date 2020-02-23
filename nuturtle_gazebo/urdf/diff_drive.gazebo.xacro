@@ -3,11 +3,27 @@
 
 <xacro:include filename="$(find nuturtle_description)/urdf/diff_drive.urdf.xacro"/>
 
-<gazebo link="robot_body">
+<gazebo>
+  <plugin name="turtle_drive_plugin" filename="libnuturtle_gazebo_plugin.so">
+    <!-- Add in wheel joint names and topics -->
+    <left_wheel_joint>left_wheel_axel</left_wheel_joint>
+    <right_wheel_joint>right_wheel_axel</right_wheel_joint>
+    <sensor_frequency>200</sensor_frequency>
+    <wheel_cmd_topic>wheel_cmd</wheel_cmd_topic>
+    <sensor_data_topic>sensor_data</sensor_data_topic>
+  </plugin>
+</gazebo>
+
+<gazebo reference="base_link">
   <material>Gazebo/Green</material>
 </gazebo>
 
-<gazebo link="wheel_left">
+
+<gazebo reference="robot_body">
+  <material>Gazebo/Green</material>
+</gazebo>
+
+<gazebo reference="wheel_left">
   <material>Gazebo/Black</material>
   <mu1>0.1</mu1>
   <mu2>0.1</mu2>
@@ -18,7 +34,7 @@
   <kd>10</kd>
 </gazebo>
 
-<gazebo link="wheel_black">
+<gazebo reference="wheel_right">
   <material>Gazebo/Black</material>
   <mu1>0.1</mu1>
   <mu2>0.1</mu2>
@@ -29,7 +45,7 @@
   <kd>10</kd>
 </gazebo>
 
-<gazebo link="robot_body">
+<gazebo reference="caster_bottom">
   <material>Gazebo/White</material>
   <mu1>0.0</mu1>
   <mu2>0.0</mu2>

@@ -16,7 +16,6 @@
   <xacro:property name="base_shift" value="${chassis_length/2 - wheel_radius}"/>
   <xacro:property name="castor_radius" value="${wheel_axle_offset/2}"/>
 
-
   <!-- Macro to create wheels -->
   <xacro:macro name="wheel_temp" params="wheel_side offset">
     <link name="wheel_${wheel_side}">
@@ -76,7 +75,6 @@
       <child link="caster_${caster_side}" />
     </joint>
   </xacro:macro>
-
 
   <link name="base_link">
     <origin rpy="0 0 0" xyz="${base_shift} 0 0"/>
