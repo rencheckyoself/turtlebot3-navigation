@@ -11,13 +11,16 @@
     <sensor_frequency>200</sensor_frequency>
     <wheel_cmd_topic>wheel_cmd</wheel_cmd_topic>
     <sensor_data_topic>sensor_data</sensor_data_topic>
+    <encoder_ticks_per_rev>${props['encoder_ticks_per_rev']}</encoder_ticks_per_rev>
+    <motor_lim>${props['motor_lim']}</motor_lim>
+    <motor_power>${props['motor_power']}</motor_power>
+    <motor_torque>${props['motor_torque']}</motor_torque>
   </plugin>
 </gazebo>
 
 <gazebo reference="base_link">
   <material>Gazebo/Green</material>
 </gazebo>
-
 
 <gazebo reference="robot_body">
   <material>Gazebo/Green</material>

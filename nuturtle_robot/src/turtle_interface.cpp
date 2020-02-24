@@ -13,7 +13,7 @@
 ///     encoder_ticks_per_rev (int): the number of encoder pulses per revolution of the wheel
 ///     motor_power (int): the max command value to send the motor
 /// PUBLISHES:
-///     /wheel_cmd (nutrutlebot/WheelCommands): a command to control the motors on the turtlebot
+///     /wheel_cmd (nuturtlebot/WheelCommands): a command to control the motors on the turtlebot
 ///     /joint_states (sensor_msgs/JointState): the wheel position and velocities of the turtlebot
 /// SUBSCRIBES:
 ///     /cmd_vel (geometry_msgs/Twist): the twist command from the turtlesim package
