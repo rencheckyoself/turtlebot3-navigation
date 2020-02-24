@@ -3,3 +3,5 @@ waypoint_y: [0, 0, 1, 1.5, 1] # The y coordinates for a pentagonal path
 frequency: 110 # Rate to send commands to the turtlebot
 frac_val: 0.55 # velocity setting, 1 is max vel.
 kp: 1 # proportional gain
+lin_thresh: 0.02 # linear distance from the waypoint threshold
+ang_thresh: 0.05 # angular distance from the waypoint threshold

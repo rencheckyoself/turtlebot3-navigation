@@ -1,10 +1,9 @@
 <launch>
-  <arg name="robot" value="-1" doc:"used to set launch the turtlebot waypoint navigation in simulation."/>
-
   <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch"/>
 
-  <include file="$(find nuturtle_robot)/launch/diff_drive_gazebo.launch">
-    <arg arg="robot" value ="-1"/>
+  <include file="$(find nuturtle_robot)/launch/follow_waypoints.launch">
+    <arg name="robot" value="-1"/>
+    <arg name="with_rviz" value="true"/>
   </include>
-  
+
 </launch>

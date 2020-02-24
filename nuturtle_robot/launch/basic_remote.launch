@@ -3,7 +3,7 @@
   <arg name='robot' default='0' doc='Argument to specify which robot is being used. 0 to uses local machine'/>
 
   <!-- Create the proper machine based on the provided parameter -->
-  <machine name="turtlebot" address="localhost" if="$(eval robot <= 0)"/>
+  <machine name="turtlebot" address="localhost" if="$(eval 0 >= robot)"/>
   <machine name="turtlebot" address="turtlebot$(arg robot)" env-loader="/home/student/install/env.sh" user="student" if="$(eval robot >= 0)"/>
 
   <!-- Launch the serial node on the correct machine -->

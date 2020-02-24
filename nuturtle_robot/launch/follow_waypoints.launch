@@ -26,7 +26,7 @@
   </node>
 
   <!-- Publish the robot urdf -->
-  <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" />
+  <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'" if="$(eval robot >=0)"/>
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
   <!-- Launch rviz as a required node -->

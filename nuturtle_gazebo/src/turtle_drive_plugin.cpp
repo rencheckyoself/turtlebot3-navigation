@@ -176,7 +176,7 @@ namespace gazebo
       // convert from integer command to rad/s
       this->left_wheel_vel = rigid2d::linInterp(data->left_velocity, cmd_lim, m_lim);
       this->right_wheel_vel = rigid2d::linInterp(data->right_velocity, cmd_lim, m_lim);
-      ROS_INFO_STREAM("Most recent Wheel Cmd: " << this->left_wheel_vel << " " << this->right_wheel_vel);
+      ROS_INFO_STREAM("Most recent calced Wheel Cmd: " << this->left_wheel_vel << " " << this->right_wheel_vel);
     }
 
     // Called by the world update start event
@@ -204,9 +204,6 @@ namespace gazebo
         // Calculate corresponding encoder reading
         enc_vals.left_encoder = rad2enc * left_pos;
         enc_vals.right_encoder = rad2enc * right_pos;
-
-        ROS_INFO_STREAM("Left Enc: " << enc_vals.left_encoder);
-        ROS_INFO_STREAM("Right Enc: " << enc_vals.right_encoder);
 
         sensor_pub.publish(enc_vals);
 

@@ -68,8 +68,8 @@ void pubWheelCommands()
   double m_lim[2] = {-motor_lim, motor_lim};
   double cmd_lim[2] = {-motor_power, motor_power};
 
-  whl_cmd.left_velocity = rigid2d::linInterp(wv.ul, m_lim, cmd_lim);
-  whl_cmd.right_velocity = rigid2d::linInterp(wv.ur, m_lim, cmd_lim);
+  whl_cmd.left_velocity = std::round(rigid2d::linInterp(wv.ul, m_lim, cmd_lim));
+  whl_cmd.right_velocity = std::round(rigid2d::linInterp(wv.ur, m_lim, cmd_lim));
 
   pub_wheels.publish(whl_cmd);
 }

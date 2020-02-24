@@ -63,7 +63,7 @@ namespace rigid2d
     constexpr double linInterp(double x, const double xlims[], const double ylims[])
     {
       double y = 0;
-      y = std::round(ylims[0] + (x - xlims[0]) * ((ylims[1] - ylims[0])/(xlims[1] - xlims[0])));
+      y = ylims[0] + (x - xlims[0]) * ((ylims[1] - ylims[0])/(xlims[1] - xlims[0]));
       return y;
     }
 

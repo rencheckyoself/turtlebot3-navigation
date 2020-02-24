@@ -146,6 +146,8 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
 
   double kp = 0;
+  double lin_thresh = 0.01;
+  double ang_thresh = 0.025;
 
   // Get Parameters
   n.getParam("frac_val", frac_val);
@@ -155,12 +157,16 @@ int main(int argc, char** argv)
   n.getParam("kp", kp);
   n.getParam("waypoint_x", waypoint_x);
   n.getParam("waypoint_y", waypoint_y);
+  n.getParam("lin_thresh", lin_thresh);
+  n.getParam("ang_thresh", ang_thresh);
 
   ROS_INFO_STREAM("REAL_WAY: Got Frac Val: " << frac_val);
   ROS_INFO_STREAM("REAL_WAY: Got Lin. Vel Limit: " << tvel_lim);
   ROS_INFO_STREAM("REAL_WAY: Got Ang. Vel Limit: " << avel_lim);
   ROS_INFO_STREAM("REAL_WAY: Frequency: " << frequency);
   ROS_INFO_STREAM("REAL_WAY: Prop. Gain: " << kp);
+  ROS_INFO_STREAM("REAL_WAY: Lin pos threshold: " << lin_thresh);
+  ROS_INFO_STREAM("REAL_WAY: Ang pos threshold: " << ang_thresh);
 
   // Assemble Waypoint Vector
   rigid2d::Vector2D buf;
@@ -184,7 +190,7 @@ int main(int argc, char** argv)
   // Initialize waypoint following
   rigid2d::Waypoints path(waypoint_list, frequency, tvel_lim * frac_val, avel_lim * frac_val);
   path.setGains(kp);
-  path.setThresholds(0.025, 0.01);
+  path.setThresholds(ang_thresh, lin_thresh);
 
   rigid2d::Vector2D init_target = path.getTarget();
   rigid2d::Vector2D target;

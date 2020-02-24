@@ -28,10 +28,10 @@
 
 <gazebo reference="wheel_left">
   <material>Gazebo/Black</material>
-  <mu1>0.1</mu1>
-  <mu2>0.1</mu2>
-  <minDepth>0.001</minDepth>
-  <fdir1>1 0 0 </fdir1>
+  <mu1>1000</mu1>
+  <mu2>1000</mu2>
+  <!-- <minDepth>0.001</minDepth> -->
+  <!-- <fdir1>1 0 0 </fdir1> -->
   <maxVel>0.1</maxVel>
   <kp>500000</kp>
   <kd>10</kd>
@@ -39,10 +39,10 @@
 
 <gazebo reference="wheel_right">
   <material>Gazebo/Black</material>
-  <mu1>0.1</mu1>
-  <mu2>0.1</mu2>
-  <minDepth>0.001</minDepth>
-  <fdir1>1 0 0 </fdir1>
+  <mu1>1000</mu1>
+  <mu2>1000</mu2>
+  <!-- <minDepth>0.001</minDepth> -->
+  <!-- <fdir1>1 0 0 </fdir1> -->
   <maxVel>0.1</maxVel>
   <kp>500000</kp>
   <kd>10</kd>
@@ -50,8 +50,8 @@
 
 <gazebo reference="caster_bottom">
   <material>Gazebo/White</material>
-  <mu1>0.0</mu1>
-  <mu2>0.0</mu2>
+  <mu1>0.1</mu1>
+  <mu2>0.1</mu2>
   <minDepth>0.001</minDepth>
   <maxVel>1.0</maxVel>
   <kp>1000000</kp>
