@@ -176,7 +176,7 @@ namespace gazebo
       // convert from integer command to rad/s
       this->left_wheel_vel = rigid2d::linInterp(data->left_velocity, cmd_lim, m_lim);
       this->right_wheel_vel = rigid2d::linInterp(data->right_velocity, cmd_lim, m_lim);
-      ROS_INFO_STREAM("Most recent calced Wheel Cmd: " << this->left_wheel_vel << " " << this->right_wheel_vel);
+      // ROS_INFO_STREAM("Most recent calced Wheel Cmd: " << this->left_wheel_vel << " " << this->right_wheel_vel);
     }
 
     // Called by the world update start event

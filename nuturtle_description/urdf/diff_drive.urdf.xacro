@@ -76,6 +76,7 @@
     </joint>
   </xacro:macro>
 
+
   <link name="base_link">
     <origin rpy="0 0 0" xyz="${base_shift} 0 0"/>
   </link>
@@ -106,10 +107,22 @@
     </collision>
   </link>
 
-  <joint name="base_body" type="fixed">
+  <!-- Link body to base frame -->
+  <joint name="body_to_base" type="fixed">
     <origin xyz="${base_shift} 0 0" rpy="0 0 0" />
     <parent link="base_link"/>
     <child link="robot_body"/>
+  </joint>
+
+  <!-- The laser scanner -->
+  <link name="base_scan">
+    <origin rpy="0 0 0" xyz="$0 0 0"/>
+  </link>
+
+  <joint name="scan_to_base" type="fixed">
+    <origin xyz="0 0 ${chassis_thickness + wheel_axle_offset}" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="base_scan"/>
   </joint>
 
   <!-- Wheel Creation -->

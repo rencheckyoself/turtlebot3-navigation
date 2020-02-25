@@ -30,7 +30,8 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
   <!-- Launch rviz as a required node -->
-  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_view.rviz" if="$(arg with_rviz)"/>
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_view.rviz" if="$(eval with_rviz and robot == 0)"/>
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_and_laser.rviz" if="$(eval with_rviz and robot != 0)"/>
 
   <!-- Simulate encoders for perfect feed forward control -->
   <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" machine="turtlebot" output="screen">
