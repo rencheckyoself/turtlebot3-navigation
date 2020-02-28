@@ -132,7 +132,7 @@ void callback_pose(nav_msgs::Odometry::ConstPtr odom)
   expected_pose.th = y;
 }
 
-/// \breif Callback for the start service
+/// \breif Callback for the stop service
 bool callback_stop(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
 {
   robot_state = -1;
@@ -185,6 +185,7 @@ int main(int argc, char** argv)
   ros::Publisher pub_cmd = n.advertise<geometry_msgs::Twist>("cmd_vel", 1);
   ros::Subscriber sub_pose = n.subscribe("/odom", 1, callback_pose);
   ros::ServiceServer client_start = n.advertiseService("start", callback_start);
+  ros::ServiceServer client_stop = n.advertiseService("stop", callback_stop);
   marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
 
   // Initialize waypoint following
