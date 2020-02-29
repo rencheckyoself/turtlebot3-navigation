@@ -1,0 +1,20 @@
+<launch>
+  <arg name="robot" default="-1" doc="'Argument to specify which robot is being used. -1 to use local machine with simulation'"/>
+
+  <!-- spawn robot in the desired world -->
+  <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch">
+    <arg name="world_name" value="$(find nuturtlebot)/worlds/block.world"/>
+  </include>
+
+  <!-- Create the appropirate machine tag and turtlebot control nodes -->
+  <include file="$(find nuturtle_robot)/launch/teleop_turtle.launch">
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="with_rviz" value="True"/>
+  </include>
+
+  <!-- Landmark Identification node -->
+  <node name="landmarks" pkg="nuslam" type="landmarks" output="screen">
+    <param name="distance_threshold" value=".04"/> <!-- Threshold to determine a landmark -->
+  </node>
+
+</launch>
