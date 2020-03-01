@@ -15,6 +15,7 @@
   <!-- Landmark Identification node -->
   <node name="landmarks" pkg="nuslam" type="landmarks" output="screen">
     <param name="distance_threshold" value=".04"/> <!-- Threshold to determine a landmark -->
+    <param name="radius_threshold" value=".25"/> <!-- Threshold to the radius of a landmark -->
   </node>
 
 </launch>

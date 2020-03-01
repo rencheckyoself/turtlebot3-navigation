@@ -9,9 +9,7 @@
 /// SERIVCES:
 
 #include <vector>
-#include <math.h>
-
-#include <Eigen/Dense.hpp>
+#include <Eigen/Dense>
 
 #include "ros/ros.h"
 
@@ -21,28 +19,14 @@
 #include "sensor_msgs/LaserScan.h"
 
 #include "rigid2d/rigid2d.hpp"
+#include "nuslam/cylinder_detect.hpp"
 
 static double distance_threshold = 0;
 static double radius_threshold = 0;
+static ros::Publisher pub_cmd;
 
-// Struct to describe a cluster
-// typedef struct clusters
-// {
-//   std::vector<rigid2d::Vector2D> points;
-//   int id = 0;
-//   geometry_msgs::Point center;
-//   double radius = 0;
-//
-//   clusters(){};
-//
-//   clusters(int num)
-//   {
-//     id = num;
-//   }
-//
-// } cluster;
 
-typedef Eigen::Matrix<double, Dynamic, 4> MatrixX4d;
+
 
 /// \brief converts a point in polar coordinates into cartesian coordinates
 /// \param r: the distange to the point
@@ -68,8 +52,7 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
   double max_range = data->range_max;
   double min_range = data->range_min;
 
-
-  // Loop through the rest of the data points in the returned array
+  // Loop through the data points in the returned array to find clusters
   for(unsigned int i = 0; i < data->ranges.size(); i++)
   {
     cur_range = data->ranges.at(i);
@@ -104,19 +87,16 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
       else
       {
         ROS_ERROR_STREAM("Valid Point not assigned. Point ID " << i << " Point range " << cur_range << " Point bearing " << cur_theta);
-      }MatrixX4d
+      }
     }
   }
-
 
   // If last cluster merges with the first cluster, then combine the two point lists
   if(std::fabs(data->ranges.at(0) - data->ranges.at(data->ranges.size()-1)) <= distance_threshold)
   {
     buf_points_list.at(0).insert(buf_points_list.at(0).end(), temp_points.begin(), temp_points.end());
   }
-
-  // Save final cluster
-  else
+  else // Save final cluster
   {
     buf_points_list.push_back(temp_points);
   }
@@ -128,7 +108,7 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
     temp_points = buf_points_list.back();
     buf_points_list.pop_back();
 
-    if(temp_points.size() >= 3)
+    if(temp_points.size() > 3)
     {
       points_list.push_back(temp_points);
     }
@@ -141,114 +121,44 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
   // Circle Fitting Algorithms, Electronic Journal of Statistics (2009), Volume 3 p 886-911
   // https://projecteuclid.org/download/pdfview_1/euclid.ejs/1251119958
   temp_points.clear();
-  rigid2d::Vector2D average_point;
-  geometry_msgs::Point center_point;
-  int val_found = 0, k = 0;
-  double min_eval = 0;
-  double z_mean=0, z=0;
-  double shift_x=0, shift_y=0;
-  double a=0, b=0, radius2=0;
-  Eigen::Index r=0;
-  Eigen::MatrixX4d Zmat, Mmat;
-  Eigen::Matrix4d Hmat_inv;
-  Eigen::JacobiSVD<MatrixX4d> zSVD;
-  Eigen::Vector4f Avec;
-  Eigen::Matrixd Vmat;
-  Eigen::DiagonalMatrix Smat;
-  Eigen::SelfAdjointEigenSolver Qmat;
 
+  std::vector<double> circle_param;
+  geometry_msgs::Point center_point;
   std::vector<geometry_msgs::Point> center_points;
   std::vector<double> radii;
   nuslam::TurtleMap cluster_data;
 
   for(auto cluster : points_list)
   {
-    for(auto point : cluster) {average_point += point;} //Sum all points
+    // Fit circle to a cluster
+    circle_param = cylinder::fit_circles(cluster);
 
-    // Calculate the mean x and y for each cluster
-    average_point.x /= cluster.size();
-    average_point.y /= cluster.size();
-
-    // Shift each point to the circle centroid an assemble Z matrix
-    Zmat.resize(cluster.size(), 4);
-    Mmat.resize(cluster.size(), 4);
-    for(auto point : cluster)
+    // eliminate in radius is unreasonably large
+    if(circle_param.at(2) < radius_threshold)
     {
-      shift_x = point.x - average_point.x;
-      shift_y = point.y - average_point.y;
-      z = pow(shift_x, 2) + pow(shift_y, 2);
-      z_mean += z;
-      Zmat(r++) << z, shift_x, shift_y, 1;
-    }
-
-    r = 0;
-    z_mean /= cluster.size();
-
-    Mmat = (1/z_mean) * Zmat.transpose() * Zmat;
-
-    Hmat_inv << 0,   0, 0,       0.5,
-                0,   1, 0,         0,
-                0,   0, 1,         0,
-                0.5, 0, 0, -2*z_mean;
-
-    // Compute the SVD
-    zSVD.compute(Zmat, ComputeThinU | ComputeThinV);
-    // Check the 4th element of the vector of singularValues
-    if(zSVD.singularValues()(3, 0) <= 1e-12)
-    {
-      Avec = zSVD.matrixV().col(3);
-    }
-    else
-    {
-      Smat = zSVD.singularValues().asDiagonal();
-      Ymat = zSVD.matrixV() * Smat zSVD.matrixV().transpose();
-
-      Qmat.compute(Ymat);
-      val_found = 0;
-      k = 0;
-
-      // Find smallest Eigenvalue
-      while(val_found == 0)
-      {
-        if(k > 4)
-        {
-          ROS_ERROR_STREAM("Did not find a minimum Eigen Value.");
-        }
-        else if(Qmat.eigenvalues().row(k) > 0)
-        {
-          Avec_star = Qmat.eigenvalues().col(Qmat.eigenvalues().row(k));
-          val_found = 1;
-        }
-        k++;
-      }
-      Avec = Avec_star * Ymat.inverse();
-    }
-
-    a = -Avec.row(1) / (2 * Avec.row(0));
-    b = -Avec.ros(2) / (2 * Avec.row(0));
-    radius2 = (std::pow(Avec.row(1),2) + std::row(Avec.row(2),2) - 4 * Avec.row(0) * Avec.row(4))/(4*std::pow(Avec.row(1),2));
-
-    // Assemble variables to publish
-
-    if(std::pow(radius2, 0.5) < radius_threshold)
-    {
-      center_point.x = a + average_point.x;
-      center_point.y = a + average_point.y;
+      center_point.x = circle_param.at(0);
+      center_point.y = circle_param.at(1);
 
       center_points.push_back(center_point);
-      radii.push_back(std::pow(radius2, 0.5));
+      radii.push_back(circle_param.at(2));
+
+      ROS_INFO_STREAM("STEP 10 Complete");
     }
     else
     {
-      ROS_INFO_STREAM("Found a wall");
+      ROS_INFO_STREAM("Cluster eliminated due to a large radius size.");
     }
+
   }
 
-    // Compute MSE Function
+  // Assemble variable to publish
+  cluster_data.centers = center_points;
+  cluster_data.radii = radii;
+
+  pub_cmd.publish(cluster_data);
 }
 
 
-pub_cmd.publish()
 
 /// \brief main function to create the real_waypoints node
 int main(int argc, char** argv)
@@ -258,7 +168,7 @@ int main(int argc, char** argv)
   ros::NodeHandle pn("~");
 
   ros::Subscriber sub_scan = n.subscribe("scan", 1, callback_robotScan);
-  ros::Publisher pub_cmd = n.advertise<nuslam::TurtleMap>("landmark_data", 1);
+  pub_cmd = n.advertise<nuslam::TurtleMap>("landmark_data", 1);
 
   pn.getParam("distance_threshold", distance_threshold);
   pn.getParam("radius_threshold", radius_threshold);
