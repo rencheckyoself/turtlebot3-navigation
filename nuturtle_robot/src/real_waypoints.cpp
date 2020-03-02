@@ -2,10 +2,10 @@
 /// \brief This node publishes a twist to drive the turtlebot along a path of waypoints
 ///
 /// PARAMETERS:
-///     /frac_val: (double) proportion of max speed to use
-///     /avel_lim: (double) max robot angular velocity
-///     /tvel_lim: (double) max robot linear velocity
-///     /frequency: (int) frequency to publish at
+///     frac_val: (double) proportion of max speed to use
+///     avel_lim: (double) max robot angular velocity
+///     tvel_lim: (double) max robot linear velocity
+///     frequency: (int) frequency to publish at
 ///     waypoint_x: (double) A list of the x coordinates for a series of waypoints
 ///     waypoint_y: (double) A list of the y coordinates for a series of waypoints
 /// PUBLISHES:
@@ -35,7 +35,6 @@
 #include "rigid2d/Pose.h"
 
 #include <visualization_msgs/Marker.h>
-#include <visualization_msgs/MarkerArray.h>
 
 static double frac_val = 0;
 static int robot_state = 0;

@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <sstream>
+#include <iostream>
 #include <vector>
 
 #include "rigid2d/rigid2d.hpp"
@@ -19,8 +20,14 @@ TEST(Landmark, CircleTest1)
   ASSERT_NEAR(circle_vals.at(2), 4.8275, 1e-4);
 
 }
-//
-// TEST(Landmark, CircleTest2)
-// {
-//
-// }
+
+TEST(Landmark, CircleTest2)
+{
+  std::vector<rigid2d::Vector2D> input_cluster = {rigid2d::Vector2D(-1,0), rigid2d::Vector2D(-0.3,-0.06), rigid2d::Vector2D(0.3, 0.1), rigid2d::Vector2D(1,0)};
+
+  std::vector<double> circle_vals = cylinder::fit_circles(input_cluster);
+
+  ASSERT_NEAR(circle_vals.at(0), 0.4908357, 1e-4);
+  ASSERT_NEAR(circle_vals.at(1), -22.15212, 1e-4);
+  ASSERT_NEAR(circle_vals.at(2), 22.17979, 1e-4);
+}

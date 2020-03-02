@@ -14,8 +14,12 @@
 
   <!-- Landmark Identification node -->
   <node name="landmarks" pkg="nuslam" type="landmarks" output="screen">
-    <param name="distance_threshold" value=".04"/> <!-- Threshold to determine a landmark -->
+    <param name="distance_threshold" value=".075"/> <!-- Threshold to determine a landmark -->
     <param name="radius_threshold" value=".25"/> <!-- Threshold to the radius of a landmark -->
+    <param name="frame_id" value="base_scan"/> <!-- frame the laser scan data is relative to -->
   </node>
+
+  <!-- Draw Markers for landmark data -->
+  <node name="draw_map" pkg="nuslam" type="draw_map" output="screen"/>
 
 </launch>

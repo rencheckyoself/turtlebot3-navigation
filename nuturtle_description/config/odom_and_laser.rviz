@@ -149,7 +149,7 @@ Visualization Manager:
       Marker Topic: visualization_marker
       Name: Marker
       Namespaces:
-        {}
+        landmarks: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -225,10 +225,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7697970867156982
+      Pitch: 1.3197965621948242
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.440399646759033
+      Yaw: 3.1504006385803223
     Saved: ~
 Window Geometry:
   Displays:

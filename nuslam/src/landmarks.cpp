@@ -2,6 +2,9 @@
 /// \brief This node clusters laser scan data points and fits each cluster to a circular landmark
 ///
 /// PARAMETERS:
+///   distance_threshold: (double) Threshold to determine if a point is in a cluster
+///   radius_threshold: (double) Threshold to determine if a cirlce fit is valid for an obstacle
+///   frame_id: (string) The frame the Laser scan data is relative to
 /// PUBLISHES:
 ///     /landmark_data: (nuslam/TurtleMap) a list of centers and radii for cylindrical landmarks
 /// SUBSCRIBES:
@@ -23,9 +26,8 @@
 
 static double distance_threshold = 0;
 static double radius_threshold = 0;
+static std::string frame_id = "Did not Fill";
 static ros::Publisher pub_cmd;
-
-
 
 
 /// \brief converts a point in polar coordinates into cartesian coordinates
@@ -53,10 +55,14 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
   double min_range = data->range_min;
 
   // Loop through the data points in the returned array to find clusters
+
+  // ROS_INFO_STREAM("Total scan points: " << data->ranges.size());
+
   for(unsigned int i = 0; i < data->ranges.size(); i++)
   {
     cur_range = data->ranges.at(i);
     cur_theta = data->angle_min + (data->angle_increment * i);
+
 
     // check if the point is valid valid point
     if(cur_range < max_range && cur_range > min_range)
@@ -80,6 +86,12 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
       else if(std::fabs(cur_range - data->ranges.at(i-1)) > distance_threshold)
       {
         buf_points_list.push_back(temp_points);
+
+        // for(unsigned int buf_ctr = 0; buf_ctr < temp_points.size(); buf_ctr++)
+        // {
+        //   ROS_INFO_STREAM("Cluster: " << temp_points.at(buf_ctr));
+        // }
+
         temp_points.clear();
         temp_points.push_back(polar2cart(cur_range,cur_theta));
       }
@@ -101,6 +113,8 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
     buf_points_list.push_back(temp_points);
   }
 
+
+
   // Prune clusters with less than 3 points
   for(unsigned int j = 0; j < buf_points_list.size(); j++)
   {
@@ -113,8 +127,6 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
       points_list.push_back(temp_points);
     }
   }
-
-  ROS_INFO_STREAM("Number of Clusters: " << points_list.size());
 
   // Circle Fitting Algorithm
   // For more details see: A. Al-Sharadqah and N. Chernov, Error Analysis for
@@ -133,7 +145,7 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
     // Fit circle to a cluster
     circle_param = cylinder::fit_circles(cluster);
 
-    // eliminate in radius is unreasonably large
+    // eliminate if radius is unreasonably large
     if(circle_param.at(2) < radius_threshold)
     {
       center_point.x = circle_param.at(0);
@@ -142,16 +154,18 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
       center_points.push_back(center_point);
       radii.push_back(circle_param.at(2));
 
-      ROS_INFO_STREAM("STEP 10 Complete");
+      // ROS_INFO_STREAM("STEP 10 Complete");
     }
     else
     {
-      ROS_INFO_STREAM("Cluster eliminated due to a large radius size.");
+      // ROS_INFO_STREAM("Cluster eliminated due to a large radius size.");
     }
-
   }
 
+  ROS_INFO_STREAM("Init Clusters: " << points_list.size() << " Fin Clusters: " << center_points.size());
+
   // Assemble variable to publish
+  cluster_data.header.frame_id = frame_id;
   cluster_data.centers = center_points;
   cluster_data.radii = radii;
 
@@ -172,8 +186,11 @@ int main(int argc, char** argv)
 
   pn.getParam("distance_threshold", distance_threshold);
   pn.getParam("radius_threshold", radius_threshold);
+  pn.getParam("frame_id", frame_id);
 
   ROS_INFO_STREAM("LANDMARKS: Distance Threshold " << distance_threshold);
+  ROS_INFO_STREAM("LANDMARKS: Radius Threshold " << radius_threshold);
+  ROS_INFO_STREAM("LANDMARKS: Frame ID " << frame_id);
 
   ros::spin();
 }
