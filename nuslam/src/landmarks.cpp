@@ -18,8 +18,10 @@
 
 #include "std_msgs/Header.h"
 #include "geometry_msgs/Point.h"
+#include "geometry_msgs/Point32.h"
 #include "nuslam/TurtleMap.h"
 #include "sensor_msgs/LaserScan.h"
+#include "sensor_msgs/PointCloud.h"
 
 #include "rigid2d/rigid2d.hpp"
 #include "nuslam/cylinder_detect.hpp"
@@ -27,7 +29,7 @@
 static double distance_threshold = 0;
 static double radius_threshold = 0;
 static std::string frame_id = "Did not Fill";
-static ros::Publisher pub_cmd;
+static ros::Publisher pub_cmd, pub_pc;
 
 
 /// \brief converts a point in polar coordinates into cartesian coordinates
@@ -43,10 +45,18 @@ rigid2d::Vector2D polar2cart(double r, double theta)
 /// \brief Callback function for the sensor subscriber
 void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
 {
+  ros::NodeHandle temp_n("~");
+  int plot_cluster = 0;
+
+  temp_n.getParam("plot_cluster", plot_cluster);
 
   std::vector<rigid2d::Vector2D> temp_points; // Temporary cluster of points
   std::vector<std::vector<rigid2d::Vector2D>> buf_points_list; // list of all point clusters
   std::vector<std::vector<rigid2d::Vector2D>> points_list; // list of all point clusters
+  std::vector<geometry_msgs::Point32> pc_points;
+  geometry_msgs::Point32 pc_point;
+
+  sensor_msgs::PointCloud pointcloud;
 
   double cur_range = 0;
   double cur_theta = 0;
@@ -68,7 +78,7 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
     if(cur_range < max_range && cur_range > min_range)
     {
 
-      // if the current cluster is still empty, add point to the list
+      // if the current cluster is empty, add point to the list
       if(temp_points.empty())
       {
         temp_points.push_back(polar2cart(cur_range, cur_theta));
@@ -86,12 +96,6 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
       else if(std::fabs(cur_range - data->ranges.at(i-1)) > distance_threshold)
       {
         buf_points_list.push_back(temp_points);
-
-        // for(unsigned int buf_ctr = 0; buf_ctr < temp_points.size(); buf_ctr++)
-        // {
-        //   ROS_INFO_STREAM("Cluster: " << temp_points.at(buf_ctr));
-        // }
-
         temp_points.clear();
         temp_points.push_back(polar2cart(cur_range,cur_theta));
       }
@@ -113,10 +117,25 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
     buf_points_list.push_back(temp_points);
   }
 
+  // Plot one cluster of data
+  for(unsigned int buf_ctr = 0; buf_ctr < buf_points_list.at(plot_cluster).size()-1; buf_ctr++)
+  {
+    pc_point.x = buf_points_list.at(plot_cluster).at(buf_ctr).x;
+    pc_point.y = buf_points_list.at(plot_cluster).at(buf_ctr).y;
+    pc_point.z = 0.1;
+    pc_points.push_back(pc_point);
+  }
 
+  pointcloud.points = pc_points;
+  pointcloud.header.frame_id = frame_id;
+  pointcloud.header.stamp = ros::Time::now();
+  pub_pc.publish(pointcloud);
+  pc_points.clear();
+
+  int total_clusters = buf_points_list.size();
 
   // Prune clusters with less than 3 points
-  for(unsigned int j = 0; j < buf_points_list.size(); j++)
+  for(int j = 0; j < total_clusters; j++)
   {
     temp_points.clear();
     temp_points = buf_points_list.back();
@@ -183,6 +202,7 @@ int main(int argc, char** argv)
 
   ros::Subscriber sub_scan = n.subscribe("scan", 1, callback_robotScan);
   pub_cmd = n.advertise<nuslam::TurtleMap>("landmark_data", 1);
+  pub_pc = n.advertise<sensor_msgs::PointCloud>("pointcloud_data", 12);
 
   pn.getParam("distance_threshold", distance_threshold);
   pn.getParam("radius_threshold", radius_threshold);

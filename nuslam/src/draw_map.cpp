@@ -62,8 +62,8 @@ int main(int argc, char** argv)
       marker.pose.orientation.z = 0;
       marker.pose.orientation.w = 1;
 
-      marker.scale.x = radii.at(i);
-      marker.scale.y = radii.at(i);
+      marker.scale.x = radii.at(i) * 2.0;
+      marker.scale.y = radii.at(i) * 2.0;
       marker.scale.z = .1;
 
       marker.color.r = 0.0f;

@@ -52,7 +52,6 @@ namespace cylinder
 
       // STEP 4: Assemble Z matrix
       Zmat.row(r) << z, shift_x, shift_y, 1;
-
       r++;
     }
 
