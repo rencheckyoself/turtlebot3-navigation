@@ -11,6 +11,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+	gazebo_msgs
 	geometry_msgs
 	message_generation
 	rigid2d
@@ -113,7 +114,7 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES ${PROJECT_NAME}
- CATKIN_DEPENDS geometry_msgs message_runtime roscpp sensor_msgs std_msgs
+ CATKIN_DEPENDS gazebo_msgs geometry_msgs message_runtime roscpp sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
@@ -132,6 +133,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/cylinder_detect.cpp
+	src/${PROJECT_NAME}/ekf_slam.cpp
 )
 
 ## Add cmake target dependencies of the library
@@ -147,6 +149,7 @@ add_dependencies(${PROJECT_NAME}
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_landmarks src/landmarks.cpp)
 add_executable(${PROJECT_NAME}_draw_map src/draw_map.cpp)
+add_executable(${PROJECT_NAME}_analysis src/analysis.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,12 +157,14 @@ add_executable(${PROJECT_NAME}_draw_map src/draw_map.cpp)
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 set_target_properties(${PROJECT_NAME}_landmarks PROPERTIES OUTPUT_NAME landmarks PREFIX "")
 set_target_properties(${PROJECT_NAME}_draw_map PROPERTIES OUTPUT_NAME draw_map PREFIX "")
+set_target_properties(${PROJECT_NAME}_analysis PROPERTIES OUTPUT_NAME analysis PREFIX "")
 
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_landmarks ${${PROJECT_NAME}_EXPORTED_TARGETS} ${Eigen3_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_draw_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_analysis ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_landmarks
@@ -169,6 +174,11 @@ target_link_libraries(${PROJECT_NAME}_landmarks
 	${catkin_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME}_draw_map
+	${PROJECT_NAME}
+	${rigid2d_LIBRARIES}
+	${catkin_LIBRARIES})
+
+target_link_libraries(${PROJECT_NAME}_analysis
 	${PROJECT_NAME}
 	${rigid2d_LIBRARIES}
 	${catkin_LIBRARIES})
@@ -192,6 +202,7 @@ target_link_libraries(${PROJECT_NAME}_draw_map
 install(TARGETS
 	${PROJECT_NAME}_landmarks
 	${PROJECT_NAME}_draw_map
+	${PROJECT_NAME}_analysis
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

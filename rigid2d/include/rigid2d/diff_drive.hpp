@@ -25,6 +25,7 @@ namespace rigid2d
   {
   public:
       /// \brief the default constructor creates a robot at (0,0,0), with a default wheel base and wheel radius
+      ///
       DiffDrive();
 
       /// \brief create a DiffDrive model by specifying the pose, and geometry

@@ -1,0 +1,32 @@
+<launch>
+
+  <arg name="robot" default="-1" doc="'Argument to specify which robot is being used. -1 to use local machine with simulation'"/>
+  <arg name="debug" default="1" doc="If true, launch the slam node using groundtruth data from gazebo"/>
+
+  <!-- Load YAML Files -->
+  <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
+  <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
+  <rosparam command="load" file="$(find nuturtle_robot)/config/traj_params.yaml"/>
+
+  <!-- Set up host machine and start serial communications -->
+  <include file="$(find nuturtle_robot)/launch/basic_remote.launch">
+    <arg name="robot" value="$(arg robot)"/>
+  </include>
+
+  <!-- Start simulation if robot == -1 -->
+  <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch" if="$(eval 0 >= robot)"/>
+
+  <!-- Launch interface node to the turtlebot -->
+  <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
+
+  <!-- Launch teleoperation node for the turtlebot -->
+  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen" machine="turtlebot" if="$(eval robot != 0)"/>
+
+  <!-- Publish robot transforms -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- start visualization if robot not 0-->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_and_laser.rviz" if="$(eval robot != 0)"/>
+
+
+</launch>

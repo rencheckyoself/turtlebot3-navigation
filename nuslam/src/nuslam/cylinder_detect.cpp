@@ -171,5 +171,5 @@ namespace cylinder
     return {a + average_point.x, b + average_point.y, std::sqrt(radius2)};
   }
 
-    // Compute MSE Function
+  // Compute MSE Function
 }
