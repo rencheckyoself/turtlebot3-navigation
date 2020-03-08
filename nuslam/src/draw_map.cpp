@@ -11,6 +11,7 @@
 #include <ros/ros.h>
 
 #include "geometry_msgs/Point.h"
+#include "visualization_msgs/MarkerArray.h"
 #include "visualization_msgs/Marker.h"
 #include "nuslam/TurtleMap.h"
 
@@ -34,10 +35,11 @@ int main(int argc, char** argv)
   ros::NodeHandle n;
 
   ros::Subscriber sub_landmarks = n.subscribe<nuslam::TurtleMap>("landmark_data", 1, callback_landmark_data);
-  ros::Publisher pub_markers = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
+  ros::Publisher pub_markers = n.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 1);
   // Publish the markers
 
-  ros::Rate r(100); // delay for publishing
+  visualization_msgs::MarkerArray pub_marks;
+  std::vector<visualization_msgs::Marker> markers;
 
   visualization_msgs::Marker marker;
 
@@ -73,9 +75,15 @@ int main(int argc, char** argv)
 
       marker.lifetime = ros::Duration(1); //5Hz to match the sensor publishing freq
 
-      pub_markers.publish(marker);
-      r.sleep();
+      markers.push_back(marker);
+      // r.sleep();
     }
+
+    pub_marks.markers = markers;
+    pub_markers.publish(pub_marks);
+
+    markers.clear();
+
     ros::spinOnce();
   }
 }
