@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(DEFAULT_BUILD_TYPE "Debug") # build type to default to
+
+if(NOT CMAKE_BUILD_TYPE)        # If no build type is set, set one
+  set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE
+    STRING "Type of build." FORCE)
+endif()
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)

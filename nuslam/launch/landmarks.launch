@@ -21,6 +21,8 @@
   </node>
 
   <!-- Draw Markers for landmark data -->
-  <node name="draw_map" pkg="nuslam" type="draw_map" output="screen"/>
+  <node name="draw_map" pkg="nuslam" type="draw_map" output="screen">
+    <param name="frame_id" value="base_scan"/> <!-- Frame to publish the markers relative to -->
+  </node>
 
 </launch>

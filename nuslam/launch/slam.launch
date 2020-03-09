@@ -13,8 +13,21 @@
     <arg name="robot" value="$(arg robot)"/>
   </include>
 
+  <!-- Launch node to publish gazebo landmark data on /landmark topic -->
+  <node ns="real" name="analysis" pkg="nuslam" type="analysis" output="screen" if="$(eval debug == 1 and robot == -1)"/>
+
   <!-- Start simulation if robot == -1 -->
-  <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch" if="$(eval 0 >= robot)"/>
+  <group if="$(eval 0 > robot)">
+    <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch" if="$(eval 0 >= robot)">
+      <arg name="world_name" value="$(find nuturtlebot)/worlds/block.world"/>
+    </include>
+  </group>
+
+  <!-- Stuff to vizualize in only rviz -->
+  <group if="$(eval robot >= 0)">
+    <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  </group>
 
   <!-- Launch interface node to the turtlebot -->
   <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
@@ -22,11 +35,7 @@
   <!-- Launch teleoperation node for the turtlebot -->
   <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen" machine="turtlebot" if="$(eval robot != 0)"/>
 
-  <!-- Publish robot transforms -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
-
-  <!-- start visualization if robot not 0-->
+  <!-- start visualization if robot not 0 -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_and_laser.rviz" if="$(eval robot != 0)"/>
-
 
 </launch>

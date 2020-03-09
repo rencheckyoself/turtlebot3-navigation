@@ -19,7 +19,7 @@
 
 static std::vector<geometry_msgs::Point> centroids;
 static std::vector<double> radii;
-static std::string frame_id = "odom";
+static std::string frame_id = "base_scan";
 
 /// \brief callback fuction for to save the landmark data
 void callback_landmark_data(nuslam::TurtleMap::ConstPtr data)
@@ -34,9 +34,12 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "draw_map");
   ros::NodeHandle n;
 
+  ros::NodeHandle pn("~");
   ros::Subscriber sub_landmarks = n.subscribe<nuslam::TurtleMap>("landmark_data", 1, callback_landmark_data);
   ros::Publisher pub_markers = n.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 1);
   // Publish the markers
+
+  pn.getParam("frame_id", frame_id);
 
   visualization_msgs::MarkerArray pub_marks;
   std::vector<visualization_msgs::Marker> markers;
@@ -47,7 +50,7 @@ int main(int argc, char** argv)
   {
     for(unsigned int i = 0; i < centroids.size(); i++)
     {
-      marker.header.frame_id = "/odom";
+      marker.header.frame_id = frame_id;
       marker.header.stamp = ros::Time::now();
 
       marker.ns = "landmarks";
