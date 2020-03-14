@@ -1,0 +1,30 @@
+<launch>
+  <arg name="robot" default="-1" doc="'Argument to specify which robot is being used. -1 to use local machine with simulation'"/>
+
+  <!-- spawn robot in the desired world -->
+  <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch">
+    <arg name="world_name" value="$(find nuturtlebot)/worlds/block.world"/>
+  </include>
+
+  <!-- Create the appropirate machine tag and turtlebot control nodes -->
+  <include file="$(find nuturtle_robot)/launch/teleop_turtle.launch">
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="with_rviz" value="True"/>
+  </include>
+
+  <!-- Gazebo Model States Conversion node -->
+  <node name="analysis" pkg="nuslam" type="analysis" ns="real" output="screen">
+    <param name="radius_threshold" value="1000"/> <!-- radius for "seen" landmarks -->
+    <param name="landmark_frame_id" value="/base_scan"/> <!-- frame the laser scan data is relative to -->
+    <param name="robot_name" value="diff_drive"/> <!-- frame the laser scan data is relative to -->
+
+    <remap from="gazebo/model_states" to="/gazebo/model_states"/>
+  </node>
+
+  <!-- Draw Markers for landmark data -->
+  <node name="draw_map" pkg="nuslam" type="draw_map" output="screen">
+    <remap from="landmark_data" to="real/landmark_data"/>
+    <param name="frame_id" value="base_scan"/> <!-- Frame to publish the markers relative to -->
+  </node>
+
+</launch>

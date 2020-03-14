@@ -3,6 +3,9 @@
   <arg name="robot" default="-1" doc="'Argument to specify which robot is being used. -1 to use local machine with simulation'"/>
   <arg name="debug" default="1" doc="If true, launch the slam node using groundtruth data from gazebo"/>
 
+  <arg name="data_topic" value="real/analysis" doc="Data topic to use for SLAM" if="eval(debug == 1)"/>
+  <arg name="data_topic" value="real/analysis" doc="Data topic to use for SLAM"/>
+
   <!-- Load YAML Files -->
   <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
   <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
