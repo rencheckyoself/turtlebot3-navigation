@@ -3,42 +3,54 @@
   <arg name="robot" default="-1" doc="'Argument to specify which robot is being used. -1 to use local machine with simulation'"/>
   <arg name="debug" default="1" doc="If true, launch the slam node using groundtruth data from gazebo"/>
 
-  <arg name="data_topic" value="real/analysis" doc="Data topic to use for SLAM" if="eval(debug == 1)"/>
-  <arg name="data_topic" value="real/analysis" doc="Data topic to use for SLAM"/>
-
   <!-- Load YAML Files -->
   <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
   <rosparam command="load" file="$(find rigid2d)/config/frame_link_names.yaml"/>
   <rosparam command="load" file="$(find nuturtle_robot)/config/traj_params.yaml"/>
 
-  <!-- Set up host machine and start serial communications -->
-  <include file="$(find nuturtle_robot)/launch/basic_remote.launch">
+  <!-- turtlebot control functionality and rviz -->
+  <include file="$(find nuturtle_robot)/launch/teleop_turtle.launch">
     <arg name="robot" value="$(arg robot)"/>
+    <arg name='with_rviz' value="True"/>
+    <arg name='rviz_file' value="-d $(find nuturtle_description)/config/slam.rviz"/>
   </include>
-
-  <!-- Launch node to publish gazebo landmark data on /landmark topic -->
-  <node ns="real" name="analysis" pkg="nuslam" type="analysis" output="screen" if="$(eval debug == 1 and robot == -1)"/>
 
   <!-- Start simulation if robot == -1 -->
   <group if="$(eval 0 > robot)">
-    <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch" if="$(eval 0 >= robot)">
+
+    <!-- Launch gazebo -->
+    <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch">
       <arg name="world_name" value="$(find nuturtlebot)/worlds/block.world"/>
     </include>
+
+    <!-- Gazebo Model States Conversion node -->
+    <node name="analysis" pkg="nuslam" type="analysis" ns="real" output="screen" if="$(eval debug == 1)">
+      <param name="radius_threshold" value="1000"/> <!-- radius for "seen" landmarks -->
+      <param name="landmark_frame_id" value="/base_scan"/> <!-- frame the laser scan data is relative to -->
+      <param name="robot_name" value="diff_drive"/> <!-- frame the laser scan data is relative to -->
+
+      <remap from="gazebo/model_states" to="/gazebo/model_states"/>
+    </node>
+
+    <!-- Draw Markers for analysis data -->
+    <node name="draw_map" pkg="nuslam" type="draw_map" output="screen" if="$(eval debug == 1)">
+      <remap from="landmark_data" to="real/landmark_data"/>
+      <param name="frame_id" value="base_scan"/> <!-- Frame to publish the markers relative to -->
+    </node>
   </group>
 
-  <!-- Stuff to vizualize in only rviz -->
-  <group if="$(eval robot >= 0)">
-    <param name="robot_description" command="xacro '$(find nuturtle_description)/urdf/diff_drive.urdf.xacro'"/>
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
-  </group>
+  <!-- launch SLAM node -->
+  <!-- launch-prefix="gdb -ex run -''-args" -->
+  <node name="slam" pkg="nuslam" type="slam" output="screen" >
+    <remap from="landmark_data" to="real/landmark_data"/>
 
-  <!-- Launch interface node to the turtlebot -->
-  <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
+    <param name="map_frame_id" value="map"/>
+    <param name="num_landmarks" value="12"/>
 
-  <!-- Launch teleoperation node for the turtlebot -->
-  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen" machine="turtlebot" if="$(eval robot != 0)"/>
-
-  <!-- start visualization if robot not 0 -->
-  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_and_laser.rviz" if="$(eval robot != 0)"/>
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame_id" value="base_link"/>
+    <param name="left_wheel_joint" value="left_wheel_axel"/>
+    <param name="right_wheel_joint" value="right_wheel_axel"/>
+  </node>
 
 </launch>

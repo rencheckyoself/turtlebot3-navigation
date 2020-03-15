@@ -3,6 +3,7 @@
   <!-- Launch Settings -->
   <arg name='robot' default='0' doc='Argument to specify which robot is being used. 0 to uses local machine'/>
   <arg name='with_rviz' default="False" doc="launch everything with/without rviz. There is a noticable difference in perfomance with it running. Defaults to without (False)."/>
+  <arg name='rviz_file' default="-d $(find nuturtle_description)/config/odom_and_laser.rviz" doc="Config file for rviz."/>
 
   <!-- Load YAML Files -->
   <rosparam command="load" file="$(find nuturtle_description)/config/diff_params.yaml"/>
@@ -31,7 +32,7 @@
 
   <!-- Launch rviz as a required node -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_view.rviz" if="$(eval with_rviz and robot == 0)"/>
-  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_and_laser.rviz" if="$(eval with_rviz and robot != 0)"/>
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="$(arg rviz_file)" if="$(eval with_rviz and robot != 0)"/>
 
   <!-- Simulate encoders for perfect feed forward control -->
   <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" machine="turtlebot" output="screen">

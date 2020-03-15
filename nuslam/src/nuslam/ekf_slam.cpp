@@ -12,7 +12,7 @@
 
 namespace ekf_slam
 {
-  std::mt19937 & get_random()
+  static std::mt19937 & get_random()
   {
       // static variables inside a function are created once and persist for the remainder of the program
       static std::random_device rd{};
@@ -29,7 +29,7 @@ namespace ekf_slam
   }
 
   /////////////// Slam CLASS /////////////////////////
-  Slam::Slam(int num_landmarks, Eigen::Matrix3d q_var, Eigen::Matrix3d r_var)
+  Slam::Slam(int num_landmarks, Eigen::Matrix3d q_var, Eigen::Matrix2d r_var)
   {
     Qnoise = q_var;
     Rnoise = r_var;
@@ -86,6 +86,7 @@ namespace ekf_slam
     prev_state(2) += update(2) + noise(2);
 
     // Landmarks do not move so no need to update that part of the state matrix
+    std::cout << "Motion Update" << "\n" << prev_state << "\n\n";
 
     Slam::updateCovarPrediction(dupdate);
   }
@@ -161,7 +162,8 @@ namespace ekf_slam
 
     Eigen::Vector3d noise = Eigen::Vector3d::Zero();
 
-    double cur_x = 0, cur_y = 0, cur_r = 0;
+    double cur_x = 0, cur_y = 0;
+    // double cur_r = 0;
     auto landmark_index = 0;
     double del_x = 0, del_y = 0, dist = 0;
 
@@ -169,9 +171,18 @@ namespace ekf_slam
     {
       cur_x = map_data.centers.at(i).x;
       cur_y = map_data.centers.at(i).y;
-      cur_r = map_data.radii.at(i);
+      // cur_r = map_data.radii.at(i);
 
-      landmark_index = 3 + 2*i; // replace this with data association later
+      landmark_index = 3 + 2*i;
+
+      // replace this with data association later
+      if(prev_state(landmark_index) == 0 && prev_state(landmark_index+1) == 0)
+      {
+        prev_state(landmark_index) = cur_x;
+        prev_state(landmark_index+1) = cur_y;
+      }
+
+      // std::cout << prev_state << "\n\n";
 
       // Compute the expected measurment
       noise = Slam::getMeasurementNoise();
@@ -230,7 +241,7 @@ namespace ekf_slam
     Eigen::MatrixXd pt3(2,2);
     pt3 << x/sqd, y/sqd, -y/d, x/d;
 
-    Eigen::MatrixXd pt4 = Eigen::MatrixXd::Zero(2, state_size - 3 - 2*id);
+    Eigen::MatrixXd pt4 = Eigen::MatrixXd::Zero(2, state_size - 3 - 2*(id+1));
 
     Hi << pt1, pt2, pt3, pt4;
 

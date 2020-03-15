@@ -156,6 +156,7 @@ add_dependencies(${PROJECT_NAME}
 add_executable(${PROJECT_NAME}_landmarks src/landmarks.cpp)
 add_executable(${PROJECT_NAME}_draw_map src/draw_map.cpp)
 add_executable(${PROJECT_NAME}_analysis src/analysis.cpp)
+add_executable(${PROJECT_NAME}_slam src/slam.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -164,6 +165,7 @@ add_executable(${PROJECT_NAME}_analysis src/analysis.cpp)
 set_target_properties(${PROJECT_NAME}_landmarks PROPERTIES OUTPUT_NAME landmarks PREFIX "")
 set_target_properties(${PROJECT_NAME}_draw_map PROPERTIES OUTPUT_NAME draw_map PREFIX "")
 set_target_properties(${PROJECT_NAME}_analysis PROPERTIES OUTPUT_NAME analysis PREFIX "")
+set_target_properties(${PROJECT_NAME}_slam PROPERTIES OUTPUT_NAME slam PREFIX "")
 
 
 ## Add cmake target dependencies of the executable
@@ -171,6 +173,7 @@ set_target_properties(${PROJECT_NAME}_analysis PROPERTIES OUTPUT_NAME analysis P
 add_dependencies(${PROJECT_NAME}_landmarks ${${PROJECT_NAME}_EXPORTED_TARGETS} ${Eigen3_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_draw_map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_analysis ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_slam ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_landmarks
@@ -188,6 +191,11 @@ target_link_libraries(${PROJECT_NAME}_analysis
 	${PROJECT_NAME}
 	${rigid2d_LIBRARIES}
 	${catkin_LIBRARIES})
+
+	target_link_libraries(${PROJECT_NAME}_slam
+		${PROJECT_NAME}
+		${rigid2d_LIBRARIES}
+		${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -209,6 +217,7 @@ install(TARGETS
 	${PROJECT_NAME}_landmarks
 	${PROJECT_NAME}_draw_map
 	${PROJECT_NAME}_analysis
+	${PROJECT_NAME}_slam
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

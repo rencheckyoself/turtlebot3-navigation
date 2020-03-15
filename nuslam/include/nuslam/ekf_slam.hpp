@@ -7,7 +7,7 @@
 namespace ekf_slam
 {
 
-  std::mt19937 & get_random();
+  // std::mt19937 & get_random();
   double sampleNormalDistribution();
 
   class Slam
@@ -15,7 +15,7 @@ namespace ekf_slam
   public:
     /// \brief Initialize an instance of EKF Slam. Initializes the covarience matrix.
     /// \param num_landmarks the number of landmarks in the map
-    Slam(int num_landmarks, Eigen::Matrix3d q_var, Eigen::Matrix3d h_var);
+    Slam(int num_landmarks, Eigen::Matrix3d q_var, Eigen::Matrix2d r_var);
 
     /// \brief Predict the current state of the robot using the motion model.
     /// \param tw a twist command the robot will follow
@@ -66,7 +66,7 @@ namespace ekf_slam
     int state_size=0;
 
     Eigen::Matrix3d Qnoise;
-    Eigen::Matrix3d Rnoise;
+    Eigen::Matrix2d Rnoise;
   };
 
 }
