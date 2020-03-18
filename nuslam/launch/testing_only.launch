@@ -1,7 +1,7 @@
 <launch>
   <!-- launch SLAM node -->
   <node name="slam" pkg="nuslam" type="slam" output="screen" launch-prefix="gdb --args">
-    <remap from="landmark_data" to="real/landmark_data"/> <!-- Subscribe to the debug data -->
+    <!-- <remap from="landmark_data" to="real/landmark_data"/> -->
 
     <param name="map_frame_id" value="map"/>
     <param name="num_landmarks" value="12"/>

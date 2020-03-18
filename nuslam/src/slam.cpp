@@ -258,7 +258,7 @@ int main(int argc, char** argv)
           slam_path_pub.publish(slam_path);
 
           est_landmarks.header.stamp = ros::Time::now();
-          est_landmarks.header.frame_id = "base_scan";
+          est_landmarks.header.frame_id = "map";
 
           est_landmarks.centers = robot.getLandmarkStates();
           est_landmarks.radii = cur_landmarks.radii;

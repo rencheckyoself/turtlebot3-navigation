@@ -22,12 +22,15 @@
 #include "geometry_msgs/Point.h"
 #include "geometry_msgs/Pose.h"
 #include "nuslam/TurtleMap.h"
+#include "nav_msgs/Path.h"
 
 #include "rigid2d/rigid2d.hpp"
 
-ros::Publisher landmark_pub;
+ros::Publisher landmark_pub, gt_path_pub;
 std::string landmark_frame_id = "base_scan";
+std::string path_frame_id = "map";
 std::string robot_name = "diff_drive";
+std::vector<geometry_msgs::PoseStamped> gt_points;
 
 int radius_threshold = 0;
 
@@ -47,6 +50,9 @@ void callback_gazebo_data(const gazebo_msgs::ModelStates &data)
   std::vector<double> radius;
   std::vector<geometry_msgs::Point> cyl_centers;
   geometry_msgs::Point center;
+
+  geometry_msgs::PoseStamped gt_point;
+
   center.z = 0;
 
   auto dd_iter = std::find(data.name.begin(), data.name.end(), robot_name);
@@ -57,20 +63,28 @@ void callback_gazebo_data(const gazebo_msgs::ModelStates &data)
 
   rigid2d::Transform2D T_mr(rigid2d::Pose2D(yaw, dd_pose.position.x, dd_pose.position.y));
 
-  // ROS_INFO_STREAM("Gazb x: "<< dd_pose.position.x << " Gazb y: " << dd_pose.position.y);
-  // ROS_INFO_STREAM("T_mr x: "<< T_mr.displacement().x << " T_mr y: " << T_mr.displacement().y);
-
   nuslam::TurtleMap map;
+  nav_msgs::Path gt_path;
+
+  gt_point.header.frame_id = path_frame_id;
+  gt_point.header.stamp = ros::Time::now();
+
+  gt_point.pose = dd_pose;
+
+  gt_points.push_back(gt_point);
+
+  gt_path.header.frame_id = path_frame_id;
+  gt_path.header.stamp = ros::Time::now();
+
+  gt_path.poses = gt_points;
+
+  gt_path_pub.publish(gt_path);
 
   for(unsigned int i =0; i < model_names.size()-1; i++)
   {
     //if this model is a cylinder, get the pose
     if(!model_names.at(i).compare(0, 8, "cylinder"))
     {
-
-      // center.x = data.pose.at(i).position.x - dd_pose.position.x;
-      // center.y = data.pose.at(i).position.y - dd_pose.position.y;
-      // double dist_from_bot = sqrt(center.x*center.x + center.y*center.y);
 
       rigid2d::Transform2D T_ml(rigid2d::Pose2D(0, data.pose.at(i).position.x, data.pose.at(i).position.y));
 
@@ -82,8 +96,14 @@ void callback_gazebo_data(const gazebo_msgs::ModelStates &data)
       center.x = T_rl.displacement().x;
       center.y = T_rl.displacement().y;
 
-      cyl_centers.push_back(center);
-      radius.push_back(0.01);
+      double dist = std::sqrt(center.x*center.x + center.y*center.y);
+
+      // if it is within the radius threshold add the landmark to the
+      if(dist < radius_threshold)
+      {
+        cyl_centers.push_back(center);
+        radius.push_back(0.01);
+      }
     }
   }
 
@@ -113,6 +133,7 @@ int main(int argc, char** argv)
   ros::service::waitForService("/gazebo/get_model_state");
 
   landmark_pub = n.advertise<nuslam::TurtleMap>("landmark_data", 1);
+  gt_path_pub = n.advertise<nav_msgs::Path>("groundtruth_path", 1);
   ros::Subscriber sub_gazebo = n.subscribe("gazebo/model_states", 1, callback_gazebo_data);
 
   ros::spin();

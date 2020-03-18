@@ -14,7 +14,6 @@
 #include "visualization_msgs/MarkerArray.h"
 #include "visualization_msgs/Marker.h"
 #include "nuslam/TurtleMap.h"
-
 #include "rigid2d/rigid2d.hpp"
 
 static std::vector<geometry_msgs::Point> centroids;
@@ -26,7 +25,7 @@ void callback_landmark_data(nuslam::TurtleMap::ConstPtr data)
 {
   centroids = data->centers;
   radii = data->radii;
-  frame_id = data->header.frame_id;
+  // frame_id = data->header.frame_id;
 }
 /// \brief main function to create the real_waypoints node
 int main(int argc, char** argv)
@@ -39,10 +38,11 @@ int main(int argc, char** argv)
   ros::Publisher pub_markers = n.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 1);
   // Publish the markers
 
-  pn.getParam("frame_id", frame_id);
-
+  std::string ns = "landmarks";
   float r = 1.0, g = 1.0, b = 1.0;
 
+  pn.getParam("frame_id", frame_id);
+  pn.getParam("ns", ns);
   pn.getParam("r", r);
   pn.getParam("g", g);
   pn.getParam("b", b);
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
       marker.header.frame_id = frame_id;
       marker.header.stamp = ros::Time::now();
 
-      marker.ns = "landmarks";
+      marker.ns = ns;
       marker.id = i;
 
       marker.type = visualization_msgs::Marker::CYLINDER;

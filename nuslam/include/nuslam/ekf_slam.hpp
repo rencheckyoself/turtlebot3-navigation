@@ -10,6 +10,9 @@ namespace ekf_slam
 {
 
   // std::mt19937 & get_random();
+
+  /// \brief Draw a random value from a normal distribution
+  ///
   double sampleNormalDistribution();
 
   class Slam
@@ -62,17 +65,23 @@ namespace ekf_slam
     /// \returns a 2xstate_size matrix, H
     Eigen::MatrixXd getHMatrix(double x, double y, double d, int id);
 
-    /// \brief Get a random number from a normal distribution
-    /// \returns a random number
-    double normalDistributionVal();
+    /// \brief associate incoming data to features stored in the state matrix
+    /// \param x the measured x location of a landmark
+    /// \param y the measured y location of a landmark
+    /// \returns the index of the matched landmark or -1 to indicate no match
+    int associate_data(double x, double y);
 
-    Eigen::MatrixXd sigma, sigma_bar;
-    Eigen::VectorXd prev_state;
+    Eigen::MatrixXd sigma, sigma_bar; // Covarience matricies
+    Eigen::VectorXd prev_state; // state vector
 
-    int state_size=0;
+    int tot_landmarks = 0;
+    int state_size = 0; // state vector size
+    int created_landmarks = 0; // number of landmarks
+    double deadband_min = 0.05; // 5 cm radius
+    double deadband_max = 0.1; // 10 cm radius
 
-    Eigen::Matrix3d Qnoise;
-    Eigen::Matrix2d Rnoise;
+    Eigen::Matrix3d Qnoise; // motion noise model
+    Eigen::Matrix2d Rnoise; // sensor noise model
   };
 
 }
