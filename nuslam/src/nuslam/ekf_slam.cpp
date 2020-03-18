@@ -31,9 +31,15 @@ namespace ekf_slam
     return d(get_random());
   }
 
-  Eigen::Vector2d cart2polar(double cur_x, double cur_y)
+  Eigen::Vector2d cart2polar(double x, double y)
   {
-    
+      Eigen::Vector2d output;
+      output.setZero();
+
+      output(0) = std::sqrt(x*x + y*y);
+      output(1) = std::atan2(y,x);
+
+      return output;
   }
 
   /////////////// Slam CLASS /////////////////////////
@@ -191,12 +197,12 @@ namespace ekf_slam
 
       landmark_index = 3 + 2*i;
 
-      // replace this with data association later
+      // replace this with data association later also update to convert relative measurment to the map frame
       if(prev_state(landmark_index) == 0 && prev_state(landmark_index+1) == 0)
       {
         std::cout << "New Landmark! setting index " << landmark_index << "\n";
-        prev_state(landmark_index) = cur_x;
-        prev_state(landmark_index+1) = cur_y;
+        prev_state(landmark_index) = cur_x + prev_state(1);
+        prev_state(landmark_index+1) = cur_y + prev_state(2);
       }
 
       // std::cout << "Landmark act_x: " << cur_x << " " << "exp_x: " << prev_state(landmark_index) << "\n";
@@ -206,18 +212,18 @@ namespace ekf_slam
       noise = Eigen::Vector2d::Zero();
       z_actual = cart2polar(cur_x, cur_y);
 
-      std::cout << "Z act: " << z_actual << "\n";
+      // std::cout << "Z act: " << z_actual << "\n";
 
       // Compute the expected measurment
-      del_x = prev_state(landmark_index) - prev_state(1);
-      del_y = prev_state(landmark_index + 1) - prev_state(2);
 
       noise = Slam::getMeasurementNoise();
-      z_expected = sensorModel(del_x, del_y, noise);
+      z_expected = sensorModel(prev_state(landmark_index), prev_state(landmark_index + 1), noise);
 
-      std::cout << "Bearing Noise: " << noise(1) << "\n";
-      std::cout << "Z exp: " << z_expected << "\n";
+      // std::cout << "Bearing Noise: " << noise(1) << "\n";
+      // std::cout << "Z exp: " << z_expected << "\n";
 
+      del_x = prev_state(landmark_index) - prev_state(1);
+      del_y = prev_state(landmark_index + 1) - prev_state(2);
       dist = del_x*del_x + del_y*del_y;
 
       // Assemble H Matrix
@@ -248,15 +254,14 @@ namespace ekf_slam
   {
     Eigen::Vector2d output;
 
-    double del_x = prev_state(landmark_index) - prev_state(1);
-    double del_y = prev_state(landmark_index + 1) - prev_state(2);
+    double del_x = x - prev_state(1);
+    double del_y = y - prev_state(2);
 
-    // range calculation
-    output(0) = std::sqrt(del_x*del_x + del_y*del_y) + noise(0);
+    output = cart2polar(del_x, del_y);
 
-    // bearing calculation
-    output(1) = std::atan2(del_y, del_x) - prev_state(0) + noise(1);
-
+    output += noise;
+    output(1) -= prev_state(0);
+    
     output(1) = rigid2d::normalize_angle(output(1));
 
     if (output(1) > rigid2d::PI || output(1) < -rigid2d::PI)
