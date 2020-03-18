@@ -19,7 +19,7 @@
   <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
 
   <!-- Launch teleoperation node for the turtlebot -->
-  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen" machine="turtlebot" if="$(eval robot != 0)"/>
+  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard" machine="turtlebot" if="$(eval robot != 0)"/>
 
   <!-- Launch odometer node to track the turtlebot encoders -->
   <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot">

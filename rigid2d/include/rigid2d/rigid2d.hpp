@@ -49,9 +49,9 @@ namespace rigid2d
     constexpr double normalize_angle(double rad)
     {
       double ang = 0;
-      int i = 0;
+      double i = 0;
 
-      i = (rad + PI)/(2.0 * PI);
+      i = std::floor((rad + PI)/(2.0 * PI));
       ang = rad + PI - (i * 2.0 * PI);
       if(ang < 0)
       {
@@ -89,6 +89,8 @@ namespace rigid2d
     static_assert(almost_equal(normalize_angle(2.5*PI),PI/2, 1e-4), "normalized angle falied");
     static_assert(almost_equal(normalize_angle(-1.5*PI),PI/2, 1e-4), "normalized angle falied");
     static_assert(almost_equal(normalize_angle(-2.5*PI),-PI/2, 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(deg2rad(370)), deg2rad(10), 1e-4), "normalized angle falied");
+    static_assert(almost_equal(normalize_angle(deg2rad(-190)),deg2rad(170), 1e-4), "normalized angle falied");
 
 
     static constexpr double x_test[2] = {-6.35492,6.35492};

@@ -41,6 +41,12 @@ int main(int argc, char** argv)
 
   pn.getParam("frame_id", frame_id);
 
+  float r = 1.0, g = 1.0, b = 1.0;
+
+  pn.getParam("r", r);
+  pn.getParam("g", g);
+  pn.getParam("b", b);
+
   visualization_msgs::MarkerArray pub_marks;
   std::vector<visualization_msgs::Marker> markers;
 
@@ -71,9 +77,9 @@ int main(int argc, char** argv)
       marker.scale.y = radii.at(i) * 2.0;
       marker.scale.z = .1;
 
-      marker.color.r = 0.0f;
-      marker.color.b = 0.5f;
-      marker.color.g = 0.5f;
+      marker.color.r = r;
+      marker.color.b = b;
+      marker.color.g = g;
       marker.color.a = 1.0;
 
       marker.lifetime = ros::Duration(1); //5Hz to match the sensor publishing freq

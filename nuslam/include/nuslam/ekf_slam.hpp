@@ -2,6 +2,8 @@
 #include <vector>
 #include <iostream>
 
+#include "geometry_msgs/Point.h"
+
 #include "rigid2d/rigid2d.hpp"
 
 namespace ekf_slam
@@ -23,11 +25,15 @@ namespace ekf_slam
 
     /// \brief Incorperate sensor information into the prediction from the motion model
     /// \param &map_data a reference to the landmarks observed by the robot
-    void MeasurmentModelUpdate(nuslam::TurtleMap &map_data);
+    void MeasurmentModelUpdate(nuslam::TurtleMap map_data);
 
     /// \brief Extract the robot state
     /// \returns a vector of the robot state (th, x, y)
     std::vector<double> getRobotState();
+
+    /// \brief Extract the landmark states
+    /// \returns a vector of the points
+    std::vector<geometry_msgs::Point> getLandmarkStates();
 
   private:
     /// \brief Update the Covar based on the the motion model prediction
@@ -60,7 +66,7 @@ namespace ekf_slam
     /// \returns a random number
     double normalDistributionVal();
 
-    Eigen::MatrixXd sigma;
+    Eigen::MatrixXd sigma, sigma_bar;
     Eigen::VectorXd prev_state;
 
     int state_size=0;

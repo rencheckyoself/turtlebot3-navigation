@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     // ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 1);
     ros::Publisher odom_path_pub = n.advertise<nav_msgs::Path>("odom_path", 1);
 
-    std::string odom_frame_id, base_frame_id, left_wheel_joint, right_wheel_joint;;
+    std::string odom_frame_id, base_frame_id, left_wheel_joint, right_wheel_joint;
     double frequency;
     double wheel_base, wheel_radius;
 
@@ -135,7 +135,9 @@ int main(int argc, char** argv)
 
 // SLAM INITIALIZAIONS /////////////////////////////////////////////////////////
     ros::Subscriber landmark_sub = n.subscribe<nuslam::TurtleMap>("landmark_data", 1, callback_landmarks);
+
     ros::Publisher slam_path_pub = n.advertise<nav_msgs::Path>("slam_path", 1);
+    ros::Publisher slam_landmark_pub = n.advertise<nuslam::TurtleMap>("slam_landmark_data", 1);
 
     tf2_ros::TransformBroadcaster Tmo_br;
 
@@ -147,13 +149,13 @@ int main(int argc, char** argv)
 
     Eigen::Matrix3d Qnoise;
 
-    Qnoise << 1e-10, 0, 0,
-              0, 1e-10, 0,
-              0, 0, 1e-10;
+    Qnoise << 1e-8, 0, 0,
+              0, 1e-8, 0,
+              0, 0, 1e-8;
 
     Eigen::Matrix2d Rnoise;
-    Rnoise << 1e-10, 0,
-              0, 1e-10;
+    Rnoise << 1e-8, 0,
+              0, 1e-8;
 
     ROS_INFO_STREAM("SLAM: Got number of landmarks: " << num_landmarks);
     ROS_INFO_STREAM("SLAM: Got map frame id: " << map_frame_id);
@@ -171,7 +173,7 @@ int main(int argc, char** argv)
     std::vector<geometry_msgs::PoseStamped> slam_points;
     nav_msgs::Path slam_path;
 
-    rigid2d::Transform2D last_T_or(rigid2d::Pose2D(0,0,0));
+    nuslam::TurtleMap est_landmarks;
 
     while(ros::ok())
     {
@@ -199,7 +201,7 @@ int main(int argc, char** argv)
         q.setRPY(0, 0, pos.th);
         q_geo = tf2::toMsg(q);
 
-        odom_point.header.frame_id = odom_frame_id;
+        odom_point.header.frame_id = map_frame_id;
         odom_point.header.stamp = ros::Time::now();
 
         odom_point.pose.position.x = pos.x;
@@ -209,7 +211,7 @@ int main(int argc, char** argv)
 
         odom_points.push_back(odom_point);
 
-        odom_path.header.frame_id = odom_frame_id;
+        odom_path.header.frame_id = map_frame_id;
         odom_path.header.stamp = ros::Time::now();
 
         odom_path.poses = odom_points;
@@ -220,19 +222,19 @@ int main(int argc, char** argv)
         if(got_slam_data == 1)
         {
           // Get twist from the last SLAM update til now
-          rigid2d::WheelVelocities ekf_cmd = ekf_bot.updateOdometry(ekf_enc_l, ekf_enc_r);
+          rigid2d::WheelVelocities ekf_cmd = ekf_bot.updateOdometry(cur_js.position[lw_i], cur_js.position[rw_i]);
           rigid2d::Twist2D ekf_tw = ekf_bot.wheelsToTwist(ekf_cmd);
 
-          ekf_enc_l = 0;
-          ekf_enc_r = 0;
-
           // update SLAM state
-          // ROS_INFO_STREAM("SLAM Twist: " << ekf_tw);
           robot.MotionModelUpdate(ekf_tw);
           robot.MeasurmentModelUpdate(cur_landmarks);
 
           // Publish SLAM Path Message
           slam_pose = robot.getRobotState(); // returns robot state vector in (th, x, y) syntax
+
+          slam_pose2d.x = slam_pose.at(1);
+          slam_pose2d.y = slam_pose.at(2);
+          slam_pose2d.th = slam_pose.at(0);
 
           slam_point.header.frame_id = map_frame_id;
           slam_point.header.stamp = ros::Time::now();
@@ -255,6 +257,14 @@ int main(int argc, char** argv)
 
           slam_path_pub.publish(slam_path);
 
+          est_landmarks.header.stamp = ros::Time::now();
+          est_landmarks.header.frame_id = "base_scan";
+
+          est_landmarks.centers = robot.getLandmarkStates();
+          est_landmarks.radii = cur_landmarks.radii;
+
+          slam_landmark_pub.publish(est_landmarks);
+
           got_slam_data = 0;
         }
 
@@ -266,7 +276,7 @@ int main(int argc, char** argv)
         rigid2d::Transform2D T_mo = T_mr * T_or.inv();
 
         tf2::Quaternion q;
-        q.setRPY(0,0,T_mo.displacement().th);
+        q.setRPY(0,0,T_mo.displacementRad().th);
 
         geometry_msgs::TransformStamped T_map_odom;
 
