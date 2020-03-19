@@ -17,7 +17,6 @@
 
   <!-- Start simulation if robot == -1 -->
   <group if="$(eval 0 > robot)">
-
     <!-- Launch gazebo -->
     <include file="$(find nuturtle_gazebo)/launch/diff_drive_gazebo.launch">
       <arg name="world_name" value="$(find nuturtlebot)/worlds/block.world"/>
@@ -25,7 +24,7 @@
 
     <!-- Gazebo Model States Conversion node -->
     <node name="analysis" pkg="nuslam" type="analysis" ns="real" output="screen">
-      <param name="radius_threshold" value="1000"/> <!-- radius for "seen" landmarks -->
+      <param name="radius_threshold" value="1"/> <!-- radius for "seen" landmarks -->
       <param name="landmark_frame_id" value="/base_scan"/> <!-- frame the laser scan data is relative to -->
       <param name="robot_name" value="diff_drive"/> <!-- frame the laser scan data is relative to -->
 
@@ -36,7 +35,7 @@
     <node name="draw_map_gt" pkg="nuslam" type="draw_map" output="screen">
       <remap from="landmark_data" to="real/landmark_data"/> <!-- Subscribe to the debug data -->
       <param name="ns" value="landmarks_gt"/> <!-- marker namespace -->
-      <param name="frame_id" value="base_scan"/> <!-- Frame to publish the markers relative to -->
+      <param name="frame_id" value="base_link"/> <!-- Frame to publish the markers relative to -->
       <param name="r" value="0"/> <!-- color settings -->
       <param name="g" value="1"/>
       <param name="b" value="0"/>

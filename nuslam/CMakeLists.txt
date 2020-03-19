@@ -8,8 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(DEFAULT_BUILD_TYPE "Debug") # build type to default to
 
-if(NOT CMAKE_BUILD_TYPE)        # If no build type is set, set one
-  set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE
+if(NOT _CMAKE_BUILD_TYPE)        # If no build type is set, set one
+  set(${PROJECT_NAME}_CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE
     STRING "Type of build." FORCE)
 endif()
 
@@ -176,26 +176,27 @@ add_dependencies(${PROJECT_NAME}_analysis ${${PROJECT_NAME}_EXPORTED_TARGETS} ${
 add_dependencies(${PROJECT_NAME}_slam ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}_landmarks
-	${PROJECT_NAME}
-	${rigid2d_LIBRARIES}
-	Eigen3::Eigen
-	${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_analysis
+${PROJECT_NAME}
+${rigid2d_LIBRARIES}
+${catkin_LIBRARIES})
+
 
 target_link_libraries(${PROJECT_NAME}_draw_map
 	${PROJECT_NAME}
 	${rigid2d_LIBRARIES}
 	${catkin_LIBRARIES})
 
-target_link_libraries(${PROJECT_NAME}_analysis
+target_link_libraries(${PROJECT_NAME}_landmarks
+	${PROJECT_NAME}
+	${rigid2d_LIBRARIES}
+	Eigen3::Eigen
+	${catkin_LIBRARIES})
+
+target_link_libraries(${PROJECT_NAME}_slam
 	${PROJECT_NAME}
 	${rigid2d_LIBRARIES}
 	${catkin_LIBRARIES})
-
-	target_link_libraries(${PROJECT_NAME}_slam
-		${PROJECT_NAME}
-		${rigid2d_LIBRARIES}
-		${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -214,9 +215,9 @@ target_link_libraries(${PROJECT_NAME}_analysis
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
 install(TARGETS
-	${PROJECT_NAME}_landmarks
-	${PROJECT_NAME}_draw_map
 	${PROJECT_NAME}_analysis
+	${PROJECT_NAME}_draw_map
+	${PROJECT_NAME}_landmarks
 	${PROJECT_NAME}_slam
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

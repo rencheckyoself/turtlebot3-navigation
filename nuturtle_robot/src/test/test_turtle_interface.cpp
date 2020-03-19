@@ -37,6 +37,7 @@ void callback_wheels(nuturtlebot::WheelCommands::ConstPtr data)
 /// \breif Callback for joint_states subscriber
 void callback_joints(sensor_msgs::JointState::ConstPtr data)
 {
+  std::cout << "Made it\n";
   js_data = *data;
   got_sensor_data = 1;
 }
@@ -105,6 +106,19 @@ TEST(TurtleInterface, ValidEncs)
   // Proper result for a sensor message to joint_states conversion
   nuturtlebot::SensorData enc_vals;
 
+  enc_vals.left_encoder = 0;
+  enc_vals.right_encoder = 0;
+
+  pub_sensors.publish(enc_vals);
+
+  // Wait for two messages to be sent
+  got_sensor_data = 0;
+  while(got_sensor_data == 0)
+  {
+    ros::spinOnce();
+    // wait for data to be recieved...
+  }
+
   enc_vals.left_encoder = 4096/4;
   enc_vals.right_encoder = 4096/4;
 
@@ -113,8 +127,8 @@ TEST(TurtleInterface, ValidEncs)
   got_sensor_data = 0;
   while(got_sensor_data == 0)
   {
-      ros::spinOnce();
-      // wait for data to be recieved...
+    ros::spinOnce();
+    // wait for data to be recieved...
   }
 
   ASSERT_NEAR(js_data.position.at(0), rigid2d::PI/2, 1e-4);

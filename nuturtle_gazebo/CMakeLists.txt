@@ -128,8 +128,6 @@ include_directories(
 	${GAZEBO_INCLUDE_DIRS}
 )
 
-link_directories(${GAZEBO_LIBRARY_DIRS})
-
 # Declare a C++ library
 add_library(${PROJECT_NAME}_plugin SHARED src/turtle_drive_plugin.cpp)
 

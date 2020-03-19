@@ -5,10 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /TF1
         - /TF1/Frames1
         - /TF1/Frames1/base_link1
-        - /Path3
       Splitter Ratio: 0.5
     Tree Height: 746
   - Class: rviz/Selection
@@ -207,7 +205,6 @@ Visualization Manager:
       Name: MarkerArray
       Namespaces:
         landmarks_gt: true
-        landmarks_scan: true
         landmarks_slam: true
       Queue Size: 100
       Value: true
@@ -308,22 +305,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.798971652984619
+      Distance: 3.5110299587249756
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: -0.04250622168183327
+        Y: -0.12753605842590332
+        Z: -0.06690400838851929
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0697962045669556
+      Pitch: 1.0647962093353271
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
       Yaw: 3.93540096282959

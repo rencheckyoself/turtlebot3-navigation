@@ -1,5 +1,5 @@
 /// \file
-/// \brief This node publishes the Odometry messages per ROS standard format
+/// \brief This node publishes an estimate of the robot state using EKF SLAM
 ///
 /// PARAMETERS:
 ///     odom_frame_id (std::string) the name of the odometer frame
@@ -9,12 +9,15 @@
 ///     wheel_base (double) the distance between the two wheels of the diff drive robot
 ///     wheel_radius (double) the radius of the wheels
 ///     frequency (double) the frequency to publish joint states at
+///     num_landmarks (int) the number of landmarks allowed in the state vector
+///     map_frame_id (std::string) the name of the map frame
 /// PUBLISHES:
-///     /odom (nav_msgs/Odometry): The calculated odometry of the diff drive robot
+///     /odom_path (nav_msgs/Path): The path of the robot following purely odometry
+///     /slam_path (nav_msgs/Path): The path of the robot following slam estimate
+///     /slam_landmark_data (nuslam/TurtleMap): landmark state estimate from slam
 /// SUBSCRIBES:
 ///     /joint_states (sensor_msgs/JointState): Retrieves the calculated wheel velocities and change in wheel position
-/// SERVICES:
-///     /set_pose (rigid2d/SetPose): Sets the pose of the robot to the provided values
+///     /landmark_data (nuslam/TurtleMap): landmark position and size information
 
 #include <iostream>
 
@@ -44,8 +47,6 @@ static nuslam::TurtleMap cur_landmarks;
 static int got_odom_data = 0;
 static int got_slam_data = 0;
 static rigid2d::DiffDrive bot;
-
-static double ekf_enc_l = 0.0, ekf_enc_r = 0.0;
 
 /// \brief Use to search through the all joint names and return the index of the desired joint
 /// \param joints - a vector of all the joint names
@@ -87,7 +88,6 @@ int main(int argc, char** argv)
 
 // ODOMETRY INITIALIZAIONS /////////////////////////////////////////////////////
     ros::Subscriber joint_sub = n.subscribe<sensor_msgs::JointState>("joint_states", 1, callback_joints);
-    // ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 1);
     ros::Publisher odom_path_pub = n.advertise<nav_msgs::Path>("odom_path", 1);
 
     std::string odom_frame_id, base_frame_id, left_wheel_joint, right_wheel_joint;
@@ -189,10 +189,6 @@ int main(int argc, char** argv)
         joints = cur_js.name;
         lw_i = findJointIndex(joints, left_wheel_joint);
         rw_i = findJointIndex(joints, right_wheel_joint);
-
-        // track encoder position for ekf update
-        ekf_enc_l += cur_js.position[lw_i];
-        ekf_enc_r += cur_js.position[rw_i];
 
         // Update the odometer of the robot using the new wheel positions
         cmd = (bot.updateOdometry(cur_js.position[lw_i], cur_js.position[rw_i]));

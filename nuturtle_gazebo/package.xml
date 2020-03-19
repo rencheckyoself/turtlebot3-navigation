@@ -50,6 +50,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
+  <build_depend>gazebo</build_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>nuturtlebot</build_depend>
   <build_depend>rigid2d</build_depend>
