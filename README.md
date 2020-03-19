@@ -6,10 +6,11 @@
 - Task A.006
 - Task G.000 - G.005
 - Task S.000 - S.001
+- Task L.000 - L.003
 
 ## Completed:
 
-- Task A.000 - A.005
+- Task A.000 - A.006
 - Task B.000 - B.006
 - Task C.000 - C.010
 - Task E.000 - E.007

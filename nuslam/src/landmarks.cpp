@@ -181,7 +181,7 @@ void callback_robotScan(sensor_msgs::LaserScan::ConstPtr data)
     }
   }
 
-  ROS_INFO_STREAM("Init Clusters: " << points_list.size() << " Fin Clusters: " << center_points.size());
+  // ROS_INFO_STREAM("Init Clusters: " << points_list.size() << " Fin Clusters: " << center_points.size());
 
   // Assemble variable to publish
   cluster_data.header.frame_id = frame_id;

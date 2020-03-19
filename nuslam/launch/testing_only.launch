@@ -1,15 +1,13 @@
 <launch>
-  <!-- launch SLAM node -->
-  <node name="slam" pkg="nuslam" type="slam" output="screen" launch-prefix="gdb --args">
-    <!-- <remap from="landmark_data" to="real/landmark_data"/> -->
+  <!-- Publish slam landmark states -->
+  <node name="draw_map_slam" pkg="nuslam" type="draw_map" output="screen" launch-prefix="gdb -ex r --args">
+    <remap from="landmark_data" to="slam_landmark_data"/> <!-- Subscribe to the slam estimated data -->
 
-    <param name="map_frame_id" value="map"/>
-    <param name="num_landmarks" value="12"/>
-
-    <param name="odom_frame_id" value="odom"/>
-    <param name="base_frame_id" value="base_link"/>
-    <param name="left_wheel_joint" value="left_wheel_axel"/>
-    <param name="right_wheel_joint" value="right_wheel_axel"/>
+    <param name="frame_id" value="map"/> <!-- Frame to publish the markers relative to -->
+    <param name="ns" value="landmarks_slam"/> <!-- marker namespace -->
+    <param name="r" value="0"/> <!-- color settings -->
+    <param name="g" value="0"/>
+    <param name="b" value="1"/>
   </node>
 
 </launch>

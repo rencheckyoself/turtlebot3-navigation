@@ -47,6 +47,13 @@ int main(int argc, char** argv)
   pn.getParam("g", g);
   pn.getParam("b", b);
 
+  ROS_INFO_STREAM("MAP: frame_id: " << frame_id);
+  ROS_INFO_STREAM("MAP: namespace: " << ns);
+  ROS_INFO_STREAM("MAP: r: " << r);
+  ROS_INFO_STREAM("MAP: g: " << g);
+  ROS_INFO_STREAM("MAP: b: " << b);
+
+
   visualization_msgs::MarkerArray pub_marks;
   std::vector<visualization_msgs::Marker> markers;
 

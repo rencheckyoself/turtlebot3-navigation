@@ -53,9 +53,9 @@
 
   <!-- display Converted laser scan data -->
   <node name="draw_map_scan" pkg="nuslam" type="draw_map" output="screen" if="$(eval debug != 1)">
-    <param name="frame_id" value="map"/> <!-- Frame to publish the markers relative to -->
-    <param name="ns" value="landmarks_scan"/> <!-- marker namespace -->
-    <param name="r" value="1"/> <!-- color settings -->
+    <param name="frame_id" value="base_scan"/>
+    <param name="ns" value="landmarks_scan"/>
+    <param name="r" value="1"/>
     <param name="g" value="0"/>
     <param name="b" value="0"/>
   </node>

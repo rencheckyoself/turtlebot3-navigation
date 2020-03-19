@@ -275,7 +275,7 @@ namespace ekf_slam
 
       if(dist < deadband_min) // if less than the deadband, consider this a match
       {
-        std::cout << "Matched landmark data id " << i << ": " << x << " " << y << "\n with state data: " << prev_state(landmark_index) << " " << prev_state(landmark_index+1) << "\n\n";
+        // std::cout << "Matched landmark data id " << i << ": " << x << " " << y << "\n with state data: " << prev_state(landmark_index) << " " << prev_state(landmark_index+1) << "\n\n";
         output_index = landmark_index;
         break;
       }
@@ -285,7 +285,7 @@ namespace ekf_slam
       }
       else // if inside the deadband, ignore the data
       {
-        std::cout  << "Deadband hit\n";
+        // std::cout  << "Deadband hit\n";
         output_index -= 1;
       }
     }
