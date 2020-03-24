@@ -16,7 +16,7 @@ namespace rigid2d
   geometry_msgs::Twist Twist2DtoGeoTwist(Twist2D tw);
 
   /// \brief convert a geometry_msgs::Twist into a Twist2D
-  /// \param twg - a geometry_msgs::Twist to convert
+  /// \param gtw - a geometry_msgs::Twist to convert
   /// \return the equivalent Twist2D
   Twist2D GeoTwisttoTwist2D(geometry_msgs::Twist gtw);
 

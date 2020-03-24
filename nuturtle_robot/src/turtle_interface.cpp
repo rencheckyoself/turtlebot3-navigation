@@ -48,6 +48,7 @@ static int init_enc_right = 0;
 static int init_data = 0;
 
 /// \brief Calculates the proper wheel command given a twist
+///
 void pubWheelCommands()
 {
   rigid2d::Twist2D tw;
@@ -75,6 +76,7 @@ void pubWheelCommands()
 }
 
 /// \brief callback funtion for the cmd_vel subscriber
+///
 void callback_twist(geometry_msgs::Twist::ConstPtr data)
 {
 
@@ -95,6 +97,7 @@ void callback_twist(geometry_msgs::Twist::ConstPtr data)
 }
 
 /// \brief callback funtion for the sensor_data subscriber
+///
 void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 {
   if(init_data == 0)
@@ -123,6 +126,7 @@ void callback_sensors(nuturtlebot::SensorData::ConstPtr data)
 
 
 /// \brief Main function to create the turtle_interface node
+///
 int main(int argc, char** argv)
 {
     // ros initializations

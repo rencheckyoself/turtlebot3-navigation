@@ -98,17 +98,15 @@ Include dependency graph for real_waypoints.cpp:</div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6101e6c32b9cbe3586175efc2a0096eb"><td class="memItemLeft" align="right" valign="top"><a id="a6101e6c32b9cbe3586175efc2a0096eb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc7/real__waypoints_8cpp.html#a6101e6c32b9cbe3586175efc2a0096eb">callback_start</a> (std_srvs::Empty::Request &amp;, std_srvs::Empty::Response &amp;)</td></tr>
-<tr class="memdesc:a6101e6c32b9cbe3586175efc2a0096eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for the start service <br /></td></tr>
+<tr class="memitem:a6101e6c32b9cbe3586175efc2a0096eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc7/real__waypoints_8cpp.html#a6101e6c32b9cbe3586175efc2a0096eb">callback_start</a> (std_srvs::Empty::Request &amp;, std_srvs::Empty::Response &amp;)</td></tr>
+<tr class="memdesc:a6101e6c32b9cbe3586175efc2a0096eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for the start service.  <a href="#a6101e6c32b9cbe3586175efc2a0096eb">More...</a><br /></td></tr>
 <tr class="separator:a6101e6c32b9cbe3586175efc2a0096eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f5d827466617c084abe7ac286d4f27"><td class="memItemLeft" align="right" valign="top"><a id="ae6f5d827466617c084abe7ac286d4f27"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc7/real__waypoints_8cpp.html#ae6f5d827466617c084abe7ac286d4f27">callback_pose</a> (nav_msgs::Odometry::ConstPtr odom)</td></tr>
-<tr class="memdesc:ae6f5d827466617c084abe7ac286d4f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for the odom subscriber <br /></td></tr>
+<tr class="memdesc:ae6f5d827466617c084abe7ac286d4f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for the odom subscriber. <br /></td></tr>
 <tr class="separator:ae6f5d827466617c084abe7ac286d4f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bc0a8cc07be82fba19164d8a67bcb66"><td class="memItemLeft" align="right" valign="top"><a id="a8bc0a8cc07be82fba19164d8a67bcb66"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc7/real__waypoints_8cpp.html#a8bc0a8cc07be82fba19164d8a67bcb66">callback_stop</a> (std_srvs::Empty::Request &amp;, std_srvs::Empty::Response &amp;)</td></tr>
-<tr class="memdesc:a8bc0a8cc07be82fba19164d8a67bcb66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for the stop service <br /></td></tr>
+<tr class="memitem:a8bc0a8cc07be82fba19164d8a67bcb66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc7/real__waypoints_8cpp.html#a8bc0a8cc07be82fba19164d8a67bcb66">callback_stop</a> (std_srvs::Empty::Request &amp;, std_srvs::Empty::Response &amp;)</td></tr>
+<tr class="memdesc:a8bc0a8cc07be82fba19164d8a67bcb66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for the stop service.  <a href="#a8bc0a8cc07be82fba19164d8a67bcb66">More...</a><br /></td></tr>
 <tr class="separator:a8bc0a8cc07be82fba19164d8a67bcb66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top"><a id="a3c04138a5bfe5d72780bb7e82a18e627"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc7/real__waypoints_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
@@ -124,7 +122,70 @@ ros::Publisher&#160;</td><td class="memItemRight" valign="bottom"><b>marker_pub<
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This node publishes a twist to drive the turtlebot along a path of waypoints. </p>
 <p>PARAMETERS: frac_val: (double) proportion of max speed to use avel_lim: (double) max robot angular velocity tvel_lim: (double) max robot linear velocity frequency: (int) frequency to publish at waypoint_x: (double) A list of the x coordinates for a series of waypoints waypoint_y: (double) A list of the y coordinates for a series of waypoints PUBLISHES: /cmd_vel: (geometry_msgs/Twist) the twist command SUBSCRIBES: /odom: (nav_msgs/Odometry) the current estimated pose of the robot SERIVCES: /start: (std_srvs/Empty) Starts the movement of the robot /stop: (std_srvs/Empty) Stops the movement of the robot </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a6101e6c32b9cbe3586175efc2a0096eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6101e6c32b9cbe3586175efc2a0096eb">&#9670;&nbsp;</a></span>callback_start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool callback_start </td>
+          <td>(</td>
+          <td class="paramtype">std_srvs::Empty::Request &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std_srvs::Empty::Response &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback for the start service. </p>
+<dl class="section return"><dt>Returns</dt><dd>1 for success </dd></dl>
+
+</div>
+</div>
+<a id="a8bc0a8cc07be82fba19164d8a67bcb66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bc0a8cc07be82fba19164d8a67bcb66">&#9670;&nbsp;</a></span>callback_stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool callback_stop </td>
+          <td>(</td>
+          <td class="paramtype">std_srvs::Empty::Request &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std_srvs::Empty::Response &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback for the stop service. </p>
+<dl class="section return"><dt>Returns</dt><dd>1 for success </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

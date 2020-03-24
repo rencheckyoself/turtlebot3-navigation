@@ -18,8 +18,7 @@ This node publishes a twist to drive the turtlebot along a path of waypoints.
 {\ttfamily \#include \char`\"{}rigid2d/\+Set\+Pose.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}rigid2d/\+Pose.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$visualization\+\_\+msgs/\+Marker.\+h$>$}\newline
-Include dependency graph for real\+\_\+waypoints.\+cpp\+:
-\nopagebreak
+Include dependency graph for real\+\_\+waypoints.\+cpp\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -29,15 +28,13 @@ Include dependency graph for real\+\_\+waypoints.\+cpp\+:
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}\label{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}} 
 bool \hyperlink{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}{callback\+\_\+start} (std\+\_\+srvs\+::\+Empty\+::\+Request \&, std\+\_\+srvs\+::\+Empty\+::\+Response \&)
-\begin{DoxyCompactList}\small\item\em Callback for the start service \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Callback for the start service. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{real__waypoints_8cpp_ae6f5d827466617c084abe7ac286d4f27}\label{real__waypoints_8cpp_ae6f5d827466617c084abe7ac286d4f27}} 
 void \hyperlink{real__waypoints_8cpp_ae6f5d827466617c084abe7ac286d4f27}{callback\+\_\+pose} (nav\+\_\+msgs\+::\+Odometry\+::\+Const\+Ptr odom)
-\begin{DoxyCompactList}\small\item\em Callback for the odom subscriber \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}\label{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}} 
+\begin{DoxyCompactList}\small\item\em Callback for the odom subscriber. \end{DoxyCompactList}\item 
 bool \hyperlink{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}{callback\+\_\+stop} (std\+\_\+srvs\+::\+Empty\+::\+Request \&, std\+\_\+srvs\+::\+Empty\+::\+Response \&)
-\begin{DoxyCompactList}\small\item\em Callback for the stop service \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Callback for the stop service. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{real__waypoints_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{real__waypoints_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
 int \hyperlink{real__waypoints_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
 \begin{DoxyCompactList}\small\item\em main function to create the real\+\_\+waypoints node \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -53,3 +50,31 @@ ros\+::\+Publisher {\bfseries marker\+\_\+pub}
 This node publishes a twist to drive the turtlebot along a path of waypoints. 
 
 P\+A\+R\+A\+M\+E\+T\+E\+RS\+: frac\+\_\+val\+: (double) proportion of max speed to use avel\+\_\+lim\+: (double) max robot angular velocity tvel\+\_\+lim\+: (double) max robot linear velocity frequency\+: (int) frequency to publish at waypoint\+\_\+x\+: (double) A list of the x coordinates for a series of waypoints waypoint\+\_\+y\+: (double) A list of the y coordinates for a series of waypoints P\+U\+B\+L\+I\+S\+H\+ES\+: /cmd\+\_\+vel\+: (geometry\+\_\+msgs/\+Twist) the twist command S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /odom\+: (nav\+\_\+msgs/\+Odometry) the current estimated pose of the robot S\+E\+R\+I\+V\+C\+ES\+: /start\+: (std\+\_\+srvs/\+Empty) Starts the movement of the robot /stop\+: (std\+\_\+srvs/\+Empty) Stops the movement of the robot 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}\label{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}} 
+\index{real\+\_\+waypoints.\+cpp@{real\+\_\+waypoints.\+cpp}!callback\+\_\+start@{callback\+\_\+start}}
+\index{callback\+\_\+start@{callback\+\_\+start}!real\+\_\+waypoints.\+cpp@{real\+\_\+waypoints.\+cpp}}
+\subsubsection{\texorpdfstring{callback\+\_\+start()}{callback\_start()}}
+{\footnotesize\ttfamily bool callback\+\_\+start (\begin{DoxyParamCaption}\item[{std\+\_\+srvs\+::\+Empty\+::\+Request \&}]{,  }\item[{std\+\_\+srvs\+::\+Empty\+::\+Response \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Callback for the start service. 
+
+\begin{DoxyReturn}{Returns}
+1 for success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}\label{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}} 
+\index{real\+\_\+waypoints.\+cpp@{real\+\_\+waypoints.\+cpp}!callback\+\_\+stop@{callback\+\_\+stop}}
+\index{callback\+\_\+stop@{callback\+\_\+stop}!real\+\_\+waypoints.\+cpp@{real\+\_\+waypoints.\+cpp}}
+\subsubsection{\texorpdfstring{callback\+\_\+stop()}{callback\_stop()}}
+{\footnotesize\ttfamily bool callback\+\_\+stop (\begin{DoxyParamCaption}\item[{std\+\_\+srvs\+::\+Empty\+::\+Request \&}]{,  }\item[{std\+\_\+srvs\+::\+Empty\+::\+Response \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Callback for the stop service. 
+
+\begin{DoxyReturn}{Returns}
+1 for success 
+\end{DoxyReturn}

@@ -11,8 +11,8 @@ namespace rigid2d
   /// \brief Wheel velocities for a diff drive robot.
   struct WheelVelocities
   {
-      double ur = 0;
-      double ul = 0;
+      double ur = 0; ///< right wheel vel
+      double ul = 0; ///< left wheel vel
 
       /// \brief sets wheel velocities to zero
       WheelVelocities();
@@ -72,13 +72,13 @@ namespace rigid2d
       /// \returns the current pose of the robot
       Pose2D pose() const;
 
-      /// \breif get the current absolute encoder position
+      /// \brief get the current absolute encoder position
       /// \return the encoder position
       WheelVelocities getEncoders() const;
 
       /// \brief get the wheel speeds, based on the last encoder update
       /// \returns the velocity of the wheels, which is equivalent to
-      ///          displacement because \Delta T = 1
+      ///          displacement because Delta_T = 1
       WheelVelocities wheelVelocities() const;
 
       /// \brief reset the robot to the given position/orientation

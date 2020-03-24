@@ -7,16 +7,14 @@ Library for two-\/dimensional rigid body transformations.
 
 {\ttfamily \#include $<$iosfwd$>$}\newline
 {\ttfamily \#include $<$cmath$>$}\newline
-Include dependency graph for rigid2d.\+hpp\+:
-\nopagebreak
+Include dependency graph for rigid2d.\+hpp\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=190pt]{d9/d5e/rigid2d_8hpp__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -45,9 +43,8 @@ constexpr double \hyperlink{rigid2d_8hpp_a6883dbf1c0018c962e890754e9d5f62f}{rigi
 \begin{DoxyCompactList}\small\item\em convert radians to degrees \end{DoxyCompactList}\item 
 constexpr double \hyperlink{rigid2d_8hpp_a0366e0678d25f256b74525151b28b1e0}{rigid2d\+::normalize\+\_\+angle} (double rad)
 \begin{DoxyCompactList}\small\item\em maps an angle to the range \mbox{[}-\/pi, pi) \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{rigid2d_8hpp_aff95bc5b895478d464a8424063ed6de4}\label{rigid2d_8hpp_aff95bc5b895478d464a8424063ed6de4}} 
-constexpr double {\bfseries rigid2d\+::lin\+Interp} (double x, const double xlims\mbox{[}$\,$\mbox{]}, const double ylims\mbox{[}$\,$\mbox{]})
-\item 
+constexpr double \hyperlink{rigid2d_8hpp_aff95bc5b895478d464a8424063ed6de4}{rigid2d\+::lin\+Interp} (double x, const double xlims\mbox{[}$\,$\mbox{]}, const double ylims\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Linear Interpolation function. \end{DoxyCompactList}\item 
 Vector2D \hyperlink{rigid2d_8hpp_ab95aed81cda08daff1f578f143356af5}{rigid2d\+::operator+} (Vector2D lhs, const Vector2D \&rhs)
 \begin{DoxyCompactList}\small\item\em add two vectors together, returning their composition \end{DoxyCompactList}\item 
 Vector2D \hyperlink{rigid2d_8hpp_a05afe9efdfd7e1d908b43fb110eacd0a}{rigid2d\+::operator-\/} (Vector2D lhs, const Vector2D \&rhs)
@@ -128,6 +125,28 @@ convert degrees to radians
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 radians N\+O\+TE\+: implement this in the header file constexpr means that the function can be computed at compile time if given a compile-\/time constant as input 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rigid2d_8hpp_file_aff95bc5b895478d464a8424063ed6de4}\label{rigid2d_8hpp_file_aff95bc5b895478d464a8424063ed6de4}} 
+\index{rigid2d.\+hpp@{rigid2d.\+hpp}!lin\+Interp@{lin\+Interp}}
+\index{lin\+Interp@{lin\+Interp}!rigid2d.\+hpp@{rigid2d.\+hpp}}
+\subsubsection{\texorpdfstring{lin\+Interp()}{linInterp()}}
+{\footnotesize\ttfamily constexpr double rigid2d\+::lin\+Interp (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{const double}]{xlims\mbox{[}$\,$\mbox{]},  }\item[{const double}]{ylims\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Linear Interpolation function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & value to interpolate from xlims to ylims \\
+\hline
+{\em xlims} & limits for the input range \\
+\hline
+{\em ylims} & limits for the output range \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+angle mapped to the range \mbox{[}-\/pi, pi) 
 \end{DoxyReturn}
 \mbox{\Hypertarget{rigid2d_8hpp_file_a0366e0678d25f256b74525151b28b1e0}\label{rigid2d_8hpp_file_a0366e0678d25f256b74525151b28b1e0}} 
 \index{rigid2d.\+hpp@{rigid2d.\+hpp}!normalize\+\_\+angle@{normalize\+\_\+angle}}

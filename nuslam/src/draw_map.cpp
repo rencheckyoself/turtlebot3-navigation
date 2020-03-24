@@ -3,7 +3,7 @@
 ///
 /// PARAMETERS:
 /// PUBLISHES:
-///     /markers....
+///     /visualization_marker_array (visualization_msgs::MarkerArray) markers
 /// SUBSCRIBES:
 ///     /landmark_data: (nuslam/TurtleMap) a list of centers and radii for cylindrical landmarks
 /// SERIVCES:
@@ -27,6 +27,7 @@ void callback_landmark_data(nuslam::TurtleMap::ConstPtr data)
   radii = data->radii;
   // frame_id = data->header.frame_id;
 }
+
 /// \brief main function to create the real_waypoints node
 int main(int argc, char** argv)
 {

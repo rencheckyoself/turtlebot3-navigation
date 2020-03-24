@@ -79,8 +79,6 @@ $(function() {
 Include dependency graph for rigid2d.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d5e/rigid2d_8hpp__incl.png" border="0" usemap="#rigid2d_2include_2rigid2d_2rigid2d_8hpp" alt=""/></div>
-<map name="rigid2d_2include_2rigid2d_2rigid2d_8hpp" id="rigid2d_2include_2rigid2d_2rigid2d_8hpp">
-</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -142,8 +140,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a0366e0678d25f256b74525151b28b1e0"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddc/rigid2d_8hpp.html#a0366e0678d25f256b74525151b28b1e0">rigid2d::normalize_angle</a> (double rad)</td></tr>
 <tr class="memdesc:a0366e0678d25f256b74525151b28b1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">maps an angle to the range [-pi, pi)  <a href="../../d2/ddc/rigid2d_8hpp.html#a0366e0678d25f256b74525151b28b1e0">More...</a><br /></td></tr>
 <tr class="separator:a0366e0678d25f256b74525151b28b1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff95bc5b895478d464a8424063ed6de4"><td class="memItemLeft" align="right" valign="top"><a id="aff95bc5b895478d464a8424063ed6de4"></a>
-constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>rigid2d::linInterp</b> (double x, const double xlims[], const double ylims[])</td></tr>
+<tr class="memitem:aff95bc5b895478d464a8424063ed6de4"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddc/rigid2d_8hpp.html#aff95bc5b895478d464a8424063ed6de4">rigid2d::linInterp</a> (double x, const double xlims[], const double ylims[])</td></tr>
+<tr class="memdesc:aff95bc5b895478d464a8424063ed6de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear Interpolation function.  <a href="../../d2/ddc/rigid2d_8hpp.html#aff95bc5b895478d464a8424063ed6de4">More...</a><br /></td></tr>
 <tr class="separator:aff95bc5b895478d464a8424063ed6de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95aed81cda08daff1f578f143356af5"><td class="memItemLeft" align="right" valign="top">Vector2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddc/rigid2d_8hpp.html#ab95aed81cda08daff1f578f143356af5">rigid2d::operator+</a> (Vector2D lhs, const Vector2D &amp;rhs)</td></tr>
 <tr class="memdesc:ab95aed81cda08daff1f578f143356af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">add two vectors together, returning their composition  <a href="../../d2/ddc/rigid2d_8hpp.html#ab95aed81cda08daff1f578f143356af5">More...</a><br /></td></tr>
@@ -263,6 +261,51 @@ constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>radians NOTE: implement this in the header file constexpr means that the function can be computed at compile time if given a compile-time constant as input </dd></dl>
+
+</div>
+</div>
+<a id="file_aff95bc5b895478d464a8424063ed6de4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_aff95bc5b895478d464a8424063ed6de4">&#9670;&nbsp;</a></span>linInterp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr double rigid2d::linInterp </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>xlims</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>ylims</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Linear Interpolation function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>value to interpolate from xlims to ylims </td></tr>
+    <tr><td class="paramname">xlims</td><td>limits for the input range </td></tr>
+    <tr><td class="paramname">ylims</td><td>limits for the output range </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>angle mapped to the range [-pi, pi) </dd></dl>
 
 </div>
 </div>

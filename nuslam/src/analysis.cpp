@@ -1,15 +1,11 @@
 /// \file
 /// \brief This node takes the information from gazebo and publishes it for debuggin SLAM node
 ///
-/// PARAMETERS:
 /// PUBLISHES:
 ///   landmarks: (nuslam/TurtleMap) The groundtruth landmark information
 /// SUBSCRIBES:
 ///   gazebo/model_states (gazebo_msgs/ModelStates) The groundtruth position of all of the landmarks
-/// SERIVCES:
-///
 
-// TODO: Add a radius limit
 
 #include <ros/ros.h>
 #include <string.h>
@@ -26,14 +22,26 @@
 
 #include "rigid2d/rigid2d.hpp"
 
+/// publishers for data
 ros::Publisher landmark_pub, gt_path_pub;
+
+/// frame to publish landmarks in
 std::string landmark_frame_id = "base_scan";
+
+/// frame to publish landmarks in
 std::string path_frame_id = "map";
+
+/// robot name from urdf
 std::string robot_name = "diff_drive";
+
+/// groundtruth poses over time
 std::vector<geometry_msgs::PoseStamped> gt_points;
 
-int radius_threshold = 0;
+/// radius threshold
+double radius_threshold = 0;
 
+/// \brief Get the yaw from a ros pose message
+///
 static double getYawFromPose(geometry_msgs::Pose pose)
 {
   auto r = 0.0, p = 0.0, y = 0.0;
@@ -44,6 +52,8 @@ static double getYawFromPose(geometry_msgs::Pose pose)
   return y;
 }
 
+/// \brief Convert gazebo data to TurtleMap format
+///
 void callback_gazebo_data(const gazebo_msgs::ModelStates &data)
 {
   std::vector<std::string> model_names = data.name;
@@ -116,6 +126,8 @@ void callback_gazebo_data(const gazebo_msgs::ModelStates &data)
   landmark_pub.publish(map);
 }
 
+/// \brief main function
+///
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "analysis");

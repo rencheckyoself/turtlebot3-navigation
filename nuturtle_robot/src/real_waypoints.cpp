@@ -48,11 +48,13 @@ static std::vector<rigid2d::Vector2D> waypoint_list;
 static rigid2d::Pose init_pos;
 static rigid2d::Pose2D expected_pose;
 
+// publisher
 ros::Publisher marker_pub;
 
 static int cycles_to_stop = 1;
 
-/// \breif Callback for the start service
+/// \brief Callback for the start service
+/// \returns 1 for success
 bool callback_start(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
 {
 
@@ -116,7 +118,8 @@ bool callback_start(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
   return 1;
 }
 
-/// \breif Callback for the odom subscriber
+/// \brief Callback for the odom subscriber
+///
 void callback_pose(nav_msgs::Odometry::ConstPtr odom)
 {
   expected_pose.x = odom->pose.pose.position.x;
@@ -131,14 +134,16 @@ void callback_pose(nav_msgs::Odometry::ConstPtr odom)
   expected_pose.th = y;
 }
 
-/// \breif Callback for the stop service
+/// \brief Callback for the stop service
+/// \returns 1 for success
 bool callback_stop(std_srvs::Empty::Request &, std_srvs::Empty::Response&)
 {
   robot_state = -1;
   return 1;
 }
 
-/// \breif main function to create the real_waypoints node
+/// \brief main function to create the real_waypoints node
+///
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "real_waypoints");

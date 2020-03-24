@@ -29,7 +29,8 @@ static int dir = 1;
 static int move_limit = 0;
 static int motion_type = 0;
 
-/// \breif Callback for start service
+/// \brief Callback for start service
+/// \returns 1 for success
 bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response&)
 {
   ros::NodeHandle temp_n;
@@ -70,7 +71,8 @@ bool callback_start(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response
   return 1;
 }
 
-/// \breif Callback for Timer
+/// \brief Callback for Timer
+/// \returns 1 for success
 void callback_timer(const ros::TimerEvent&)
 {
 
@@ -135,7 +137,8 @@ void callback_timer(const ros::TimerEvent&)
   pub_cmd.publish(speed_cmd);
 }
 
-/// \breif main function to create the rotation node
+/// \brief main function to create the rotation node
+///
 int main(int argc, char** argv)
 {
 

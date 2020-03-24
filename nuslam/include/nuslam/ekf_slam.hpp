@@ -26,6 +26,8 @@ namespace ekf_slam
   public:
     /// \brief Initialize an instance of EKF Slam. Initializes the covarience matrix.
     /// \param num_landmarks the number of landmarks in the map
+    /// \param q_var the process noise
+    /// \param r_var the sensor noise
     Slam(int num_landmarks, Eigen::Matrix3d q_var, Eigen::Matrix2d r_var);
 
     /// \brief Predict the current state of the robot using the motion model.

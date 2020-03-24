@@ -23,7 +23,7 @@ void \hyperlink{classrigid2d_1_1DiffDrive_aed9b82741312243d9ea1f705afc372dc}{set
 \hyperlink{structrigid2d_1_1Pose2D}{Pose2D} \hyperlink{classrigid2d_1_1DiffDrive_a3af583df8981ddfb338bba07b7297ff2}{pose} () const
 \begin{DoxyCompactList}\small\item\em get the current pose of the robot \end{DoxyCompactList}\item 
 \hyperlink{structrigid2d_1_1WheelVelocities}{Wheel\+Velocities} \hyperlink{classrigid2d_1_1DiffDrive_add7b4cb6d5e4edaffdcefbfa930a2f43}{get\+Encoders} () const
-\item 
+\begin{DoxyCompactList}\small\item\em get the current absolute encoder position \end{DoxyCompactList}\item 
 \hyperlink{structrigid2d_1_1WheelVelocities}{Wheel\+Velocities} \hyperlink{classrigid2d_1_1DiffDrive_a4153bdc614be0535b88d5e43461df7dc}{wheel\+Velocities} () const
 \begin{DoxyCompactList}\small\item\em get the wheel speeds, based on the last encoder update \end{DoxyCompactList}\item 
 void \hyperlink{classrigid2d_1_1DiffDrive_afffa18508c27b368767182dba1a7d367}{reset} (\hyperlink{structrigid2d_1_1Pose2D}{Pose2D} ps)
@@ -74,7 +74,11 @@ update the odometry of the diff drive robot, assuming that it follows the given 
 \subsubsection{\texorpdfstring{get\+Encoders()}{getEncoders()}}
 {\footnotesize\ttfamily \hyperlink{structrigid2d_1_1WheelVelocities}{Wheel\+Velocities} rigid2d\+::\+Diff\+Drive\+::get\+Encoders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
 
-get the current absolute encoder position \begin{DoxyReturn}{Returns}
+
+
+get the current absolute encoder position 
+
+\begin{DoxyReturn}{Returns}
 the encoder position 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classrigid2d_1_1DiffDrive_a3af583df8981ddfb338bba07b7297ff2}\label{classrigid2d_1_1DiffDrive_a3af583df8981ddfb338bba07b7297ff2}} 
@@ -207,7 +211,7 @@ twist in the original body frame of the robot
 get the wheel speeds, based on the last encoder update 
 
 \begin{DoxyReturn}{Returns}
-the velocity of the wheels, which is equivalent to displacement because  T = 1 
+the velocity of the wheels, which is equivalent to displacement because Delta\+\_\+T = 1 
 \end{DoxyReturn}
 
 

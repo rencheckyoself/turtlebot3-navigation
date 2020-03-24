@@ -60,6 +60,11 @@ namespace rigid2d
       return ang - PI;
     }
 
+    /// \brief Linear Interpolation function
+    /// \param x value to interpolate from xlims to ylims
+    /// \param xlims limits for the input range
+    /// \param ylims limits for the output range
+    /// \return angle mapped to the range [-pi, pi)
     constexpr double linInterp(double x, const double xlims[], const double ylims[])
     {
       double y = 0;
@@ -92,8 +97,9 @@ namespace rigid2d
     static_assert(almost_equal(normalize_angle(deg2rad(370)), deg2rad(10), 1e-4), "normalized angle falied");
     static_assert(almost_equal(normalize_angle(deg2rad(-190)),deg2rad(170), 1e-4), "normalized angle falied");
 
-
+    // lin interpolate assert input array
     static constexpr double x_test[2] = {-6.35492,6.35492};
+    // lin interpolate assert output array
     static constexpr double y_test[2] = {-265,265};
 
     static_assert(almost_equal(linInterp(-6.35492, x_test, y_test), -265), "Linear Interpolation Failed");
@@ -105,8 +111,8 @@ namespace rigid2d
     /// \brief A 2-Dimensional Vector
     struct Vector2D
     {
-        double x;
-        double y;
+        double x; ///< x val of vector
+        double y; ///< y val of vector
 
         /// \brief create an empty vector
         Vector2D();
@@ -191,22 +197,23 @@ namespace rigid2d
     public:
 
       // angular z, linear x and y
-      double wz = 0.0;
-      double vx = 0.0;
-      double vy = 0.0;
+      double wz = 0.0; ///< rotational velocity
+      double vx = 0.0; ///< x translational velocity
+      double vy = 0.0; ///< y translational velocity
 
-      /// \brief create an empty twist
+      /// \brief create an zero twist
+      ///
       Twist2D();
 
       /// \brief create a twist
       /// \param ang - the angular component
-      /// \param xlin - the x velocity component
-      /// \param ylin - the y velocity component
+      /// \param linx - the x velocity component
+      /// \param liny - the y velocity component
       Twist2D(double ang, double linx, double liny);
 
       /// \brief scale this twist based on the current unit time
       /// \param dt - the unit time
-      /// \return this twist scaled by dt to
+      /// \returns this twist scaled by dt to
       Twist2D scaleTwist(double dt);
     };
 
@@ -216,9 +223,9 @@ namespace rigid2d
     public:
 
       // heading, x, and y
-      double th = 0.0;
-      double x = 0.0;
-      double y = 0.0;
+      double th = 0.0; ///< heading angle
+      double x = 0.0; ///< x position
+      double y = 0.0; ///< y position
 
       /// \brief create an empty pose
       Pose2D();
@@ -257,7 +264,7 @@ namespace rigid2d
         /// \brief Create a transformation with a translational and rotational
         /// component
         /// \param trans - the translation
-        /// \param rot - the rotation, in radians
+        /// \param radians - the rotation, in radians
         Transform2D(const Vector2D & trans, double radians);
 
         /// \brief Create a transformation with a translational and rotational
@@ -271,7 +278,7 @@ namespace rigid2d
         Vector2D operator()(Vector2D v) const;
 
         /// \brief apply a transformation to a Twist2D
-        /// \param v - the twist to transform
+        /// \param tw - the twist to transform
         /// \return a twist in the new frame
         Twist2D operator()(Twist2D tw) const;
 
@@ -311,7 +318,7 @@ namespace rigid2d
 
     /// \brief Compute the transform relative to the initial position after following the given twist
     /// \param tw - the twist to follow
-    /// \return the transform relative to the initial position after following the given twist
+    /// \returns the transform relative to the initial position after following the given twist
     Transform2D transformFromTwist(Twist2D tw);
 
     /// \brief should print a human readable version of the transform:
