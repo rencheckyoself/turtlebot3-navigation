@@ -1,5 +1,7 @@
 #ifndef LANDMARK_INCLUDE_GUARD_HPP
 #define LANDMARK_INCLUDE_GUARD_HPP
+/// \file
+/// \brief function to fit circles.
 
 #include <vector>
 #include "rigid2d/rigid2d.hpp"

@@ -1,0 +1,36 @@
+\hypertarget{draw__map_8cpp}{}\section{nuslam/src/draw\+\_\+map.cpp File Reference}
+\label{draw__map_8cpp}\index{nuslam/src/draw\+\_\+map.\+cpp@{nuslam/src/draw\+\_\+map.\+cpp}}
+
+
+This node takes a list of centers and radii to draw the coresponding map.  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Point.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}visualization\+\_\+msgs/\+Marker\+Array.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}visualization\+\_\+msgs/\+Marker.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuslam/\+Turtle\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+Include dependency graph for draw\+\_\+map.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{df/de5/draw__map_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{draw__map_8cpp_a382b97f22527718198670efe9d2f07aa}\label{draw__map_8cpp_a382b97f22527718198670efe9d2f07aa}} 
+void \hyperlink{draw__map_8cpp_a382b97f22527718198670efe9d2f07aa}{callback\+\_\+landmark\+\_\+data} (nuslam\+::\+Turtle\+Map\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em callback fuction for to save the landmark data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{draw__map_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{draw__map_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{draw__map_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em main function to create the real\+\_\+waypoints node \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node takes a list of centers and radii to draw the coresponding map. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: P\+U\+B\+L\+I\+S\+H\+ES\+: /markers.... S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /landmark\+\_\+data\+: (nuslam/\+Turtle\+Map) a list of centers and radii for cylindrical landmarks S\+E\+R\+I\+V\+C\+ES\+: 

@@ -1,0 +1,255 @@
+\hypertarget{classrigid2d_1_1Transform2D}{}\section{rigid2d\+:\+:Transform2D Class Reference}
+\label{classrigid2d_1_1Transform2D}\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+
+
+a rigid body transformation in 2 dimensions  
+
+
+
+
+{\ttfamily \#include $<$rigid2d.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_a455fbd07f86d3aeaaeca954a0904397a}\label{classrigid2d_1_1Transform2D_a455fbd07f86d3aeaaeca954a0904397a}} 
+\hyperlink{classrigid2d_1_1Transform2D_a455fbd07f86d3aeaaeca954a0904397a}{Transform2D} ()
+\begin{DoxyCompactList}\small\item\em Create an identity transformation. \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D_ab3e595da2315ed50ba8eb24ead0c8d78}{Transform2D} (const \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \&trans)
+\begin{DoxyCompactList}\small\item\em create a transformation that is a pure translation \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D_a3f2f654cb039320e331931c0877b39a3}{Transform2D} (double radians)
+\begin{DoxyCompactList}\small\item\em create a pure rotation \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D_a47de6c24f25c57da553a0fdaf13e2138}{Transform2D} (const \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \&trans, double radians)
+\begin{DoxyCompactList}\small\item\em Create a transformation with a translational and rotational component. \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D_a7eee10e3bf1cfdc0df928b9401750dba}{Transform2D} (const \hyperlink{structrigid2d_1_1Pose2D}{Pose2D})
+\begin{DoxyCompactList}\small\item\em Create a transformation with a translational and rotational component. \end{DoxyCompactList}\item 
+\hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \hyperlink{classrigid2d_1_1Transform2D_aab68d8df21419767d4291e226e0a3481}{operator()} (\hyperlink{structrigid2d_1_1Vector2D}{Vector2D} v) const
+\begin{DoxyCompactList}\small\item\em apply a transformation to a \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \end{DoxyCompactList}\item 
+\hyperlink{structrigid2d_1_1Twist2D}{Twist2D} \hyperlink{classrigid2d_1_1Transform2D_ad31ac545a107b5aea5a9a2c69b77ab6c}{operator()} (\hyperlink{structrigid2d_1_1Twist2D}{Twist2D} tw) const
+\begin{DoxyCompactList}\small\item\em apply a transformation to a \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \hyperlink{classrigid2d_1_1Transform2D_a921bb5138fd83e48aaf75349dfd51653}{inv} () const
+\begin{DoxyCompactList}\small\item\em invert the transformation \end{DoxyCompactList}\item 
+\hyperlink{structrigid2d_1_1Pose2D}{Pose2D} \hyperlink{classrigid2d_1_1Transform2D_adb4a148944f3629222080db727397f0a}{displacement} () const
+\begin{DoxyCompactList}\small\item\em retrieve information about the transform \end{DoxyCompactList}\item 
+\hyperlink{structrigid2d_1_1Pose2D}{Pose2D} \hyperlink{classrigid2d_1_1Transform2D_a95c036e753f2a5a44086a15462c20064}{displacement\+Rad} () const
+\begin{DoxyCompactList}\small\item\em retrieve information about the transform \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \hyperlink{classrigid2d_1_1Transform2D_ae8b441ce0be1b5ea4176f81fe596e5a5}{integrate\+Twist} (const \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} tw) const
+\begin{DoxyCompactList}\small\item\em advance the current transform by a twist for one time unit \end{DoxyCompactList}\item 
+\hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \& \hyperlink{classrigid2d_1_1Transform2D_ab8ae83c47e43afdcc0b2bcca0ae34fb7}{operator$\ast$=} (const \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \&rhs)
+\begin{DoxyCompactList}\small\item\em compose this transform with another and store the result in this object \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{classrigid2d_1_1Transform2D_ad5239a3fa3a0f9cebd73c39f34c2075f}{operator$<$$<$} (std\+::ostream \&os, const \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \&tf)
+\begin{DoxyCompactList}\small\item\em should print a human readable version of the transform\+: An example output\+: dtheta (degrees)\+: 90 dx\+: 3 dy\+: 5 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+a rigid body transformation in 2 dimensions 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_ab3e595da2315ed50ba8eb24ead0c8d78}\label{classrigid2d_1_1Transform2D_ab3e595da2315ed50ba8eb24ead0c8d78}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!Transform2D@{Transform2D}}
+\index{Transform2D@{Transform2D}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{Transform2\+D()}{Transform2D()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily rigid2d\+::\+Transform2\+D\+::\+Transform2D (\begin{DoxyParamCaption}\item[{const \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \&}]{trans }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+create a transformation that is a pure translation 
+
+
+\begin{DoxyParams}{Parameters}
+{\em trans} & -\/ the vector by which to translate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_a3f2f654cb039320e331931c0877b39a3}\label{classrigid2d_1_1Transform2D_a3f2f654cb039320e331931c0877b39a3}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!Transform2D@{Transform2D}}
+\index{Transform2D@{Transform2D}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{Transform2\+D()}{Transform2D()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily rigid2d\+::\+Transform2\+D\+::\+Transform2D (\begin{DoxyParamCaption}\item[{double}]{radians }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+create a pure rotation 
+
+
+\begin{DoxyParams}{Parameters}
+{\em radians} & -\/ angle of the rotation, in radians \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_a47de6c24f25c57da553a0fdaf13e2138}\label{classrigid2d_1_1Transform2D_a47de6c24f25c57da553a0fdaf13e2138}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!Transform2D@{Transform2D}}
+\index{Transform2D@{Transform2D}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{Transform2\+D()}{Transform2D()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily rigid2d\+::\+Transform2\+D\+::\+Transform2D (\begin{DoxyParamCaption}\item[{const \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \&}]{trans,  }\item[{double}]{radians }\end{DoxyParamCaption})}
+
+
+
+Create a transformation with a translational and rotational component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em trans} & -\/ the translation \\
+\hline
+{\em rot} & -\/ the rotation, in radians \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_a7eee10e3bf1cfdc0df928b9401750dba}\label{classrigid2d_1_1Transform2D_a7eee10e3bf1cfdc0df928b9401750dba}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!Transform2D@{Transform2D}}
+\index{Transform2D@{Transform2D}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{Transform2\+D()}{Transform2D()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily rigid2d\+::\+Transform2\+D\+::\+Transform2D (\begin{DoxyParamCaption}\item[{const \hyperlink{structrigid2d_1_1Pose2D}{Pose2D}}]{pose }\end{DoxyParamCaption})}
+
+
+
+Create a transformation with a translational and rotational component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pose} & -\/ the translation and rotation \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_adb4a148944f3629222080db727397f0a}\label{classrigid2d_1_1Transform2D_adb4a148944f3629222080db727397f0a}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!displacement@{displacement}}
+\index{displacement@{displacement}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{displacement()}{displacement()}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Pose2D}{Pose2D} rigid2d\+::\+Transform2\+D\+::displacement (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+retrieve information about the transform 
+
+\begin{DoxyReturn}{Returns}
+the angle (in degs) and translation of the transform 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_a95c036e753f2a5a44086a15462c20064}\label{classrigid2d_1_1Transform2D_a95c036e753f2a5a44086a15462c20064}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!displacement\+Rad@{displacement\+Rad}}
+\index{displacement\+Rad@{displacement\+Rad}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{displacement\+Rad()}{displacementRad()}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Pose2D}{Pose2D} rigid2d\+::\+Transform2\+D\+::displacement\+Rad (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+retrieve information about the transform 
+
+\begin{DoxyReturn}{Returns}
+the angle (in rads) and translation of the transform 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_ae8b441ce0be1b5ea4176f81fe596e5a5}\label{classrigid2d_1_1Transform2D_ae8b441ce0be1b5ea4176f81fe596e5a5}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!integrate\+Twist@{integrate\+Twist}}
+\index{integrate\+Twist@{integrate\+Twist}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{integrate\+Twist()}{integrateTwist()}}
+{\footnotesize\ttfamily \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} rigid2d\+::\+Transform2\+D\+::integrate\+Twist (\begin{DoxyParamCaption}\item[{const \hyperlink{structrigid2d_1_1Twist2D}{Twist2D}}]{tw }\end{DoxyParamCaption}) const}
+
+
+
+advance the current transform by a twist for one time unit 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tw} & -\/ the twist to follow \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The transform relative to the world after following the given twist 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_a921bb5138fd83e48aaf75349dfd51653}\label{classrigid2d_1_1Transform2D_a921bb5138fd83e48aaf75349dfd51653}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!inv@{inv}}
+\index{inv@{inv}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{inv()}{inv()}}
+{\footnotesize\ttfamily \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} rigid2d\+::\+Transform2\+D\+::inv (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+invert the transformation 
+
+\begin{DoxyReturn}{Returns}
+the inverse transformation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_aab68d8df21419767d4291e226e0a3481}\label{classrigid2d_1_1Transform2D_aab68d8df21419767d4291e226e0a3481}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!operator()@{operator()}}
+\index{operator()@{operator()}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} rigid2d\+::\+Transform2\+D\+::operator() (\begin{DoxyParamCaption}\item[{\hyperlink{structrigid2d_1_1Vector2D}{Vector2D}}]{v }\end{DoxyParamCaption}) const}
+
+
+
+apply a transformation to a \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & -\/ the vector to transform \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a vector in the new coordinate system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_ad31ac545a107b5aea5a9a2c69b77ab6c}\label{classrigid2d_1_1Transform2D_ad31ac545a107b5aea5a9a2c69b77ab6c}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!operator()@{operator()}}
+\index{operator()@{operator()}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} rigid2d\+::\+Transform2\+D\+::operator() (\begin{DoxyParamCaption}\item[{\hyperlink{structrigid2d_1_1Twist2D}{Twist2D}}]{tw }\end{DoxyParamCaption}) const}
+
+
+
+apply a transformation to a \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & -\/ the twist to transform \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a twist in the new frame 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_ab8ae83c47e43afdcc0b2bcca0ae34fb7}\label{classrigid2d_1_1Transform2D_ab8ae83c47e43afdcc0b2bcca0ae34fb7}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!operator$\ast$=@{operator$\ast$=}}
+\index{operator$\ast$=@{operator$\ast$=}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{operator$\ast$=()}{operator*=()}}
+{\footnotesize\ttfamily \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \& rigid2d\+::\+Transform2\+D\+::operator$\ast$= (\begin{DoxyParamCaption}\item[{const \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+compose this transform with another and store the result in this object 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & -\/ the first transform to apply \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference to the newly transformed operator 
+\end{DoxyReturn}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classrigid2d_1_1Transform2D_ad5239a3fa3a0f9cebd73c39f34c2075f}\label{classrigid2d_1_1Transform2D_ad5239a3fa3a0f9cebd73c39f34c2075f}} 
+\index{rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!rigid2d\+::\+Transform2D@{rigid2d\+::\+Transform2D}}
+\subsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \hyperlink{classrigid2d_1_1Transform2D}{Transform2D} \&}]{tf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+should print a human readable version of the transform\+: An example output\+: dtheta (degrees)\+: 90 dx\+: 3 dy\+: 5 
+
+\begin{DoxySeeAlso}{See also}
+operator$<$$<$(...) (declared outside this class) for a description
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em os} & -\/ an output stream \\
+\hline
+{\em tf} & -\/ the transform to print \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+rigid2d/include/rigid2d/\hyperlink{rigid2d_8hpp}{rigid2d.\+hpp}\item 
+rigid2d/src/rigid2d/\hyperlink{rigid2d_8cpp}{rigid2d.\+cpp}\end{DoxyCompactItemize}

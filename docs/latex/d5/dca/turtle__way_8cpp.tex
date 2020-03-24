@@ -1,0 +1,46 @@
+\hypertarget{turtle__way_8cpp}{}\section{tsim/src/turtle\+\_\+way.cpp File Reference}
+\label{turtle__way_8cpp}\index{tsim/src/turtle\+\_\+way.\+cpp@{tsim/src/turtle\+\_\+way.\+cpp}}
+
+
+This file contains the source code for the turtle\+\_\+way node. It reads in a list of waypoints and sends commands to turtlesim to follow that path.  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}std\+\_\+srvs/\+Empty.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}turtlesim/\+Set\+Pen.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}turtlesim/\+Teleport\+Absolute.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}turtlesim/\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Twist.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tsim/\+Pose\+Error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/diff\+\_\+drive.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/waypoints.\+hpp\char`\"{}}\newline
+Include dependency graph for turtle\+\_\+way.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dd/dab/turtle__way_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{turtle__way_8cpp_aedd77161b6e4a108a487d13b225a51f3}\label{turtle__way_8cpp_aedd77161b6e4a108a487d13b225a51f3}} 
+void \hyperlink{turtle__way_8cpp_aedd77161b6e4a108a487d13b225a51f3}{teleport\+\_\+turtle} (\hyperlink{structrigid2d_1_1Pose2D}{rigid2d\+::\+Pose2D} tele)
+\begin{DoxyCompactList}\small\item\em A helper function to teleport the turtle to the beginning of the trajectory. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__way_8cpp_a3bb8cd026aadeaeb2ab3eb9aa00eed6b}\label{turtle__way_8cpp_a3bb8cd026aadeaeb2ab3eb9aa00eed6b}} 
+void \hyperlink{turtle__way_8cpp_a3bb8cd026aadeaeb2ab3eb9aa00eed6b}{calc\+\_\+error} ()
+\begin{DoxyCompactList}\small\item\em Helper function to calculate the current positional error. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__way_8cpp_ae25546bb8a12b178c2644754e7875f1d}\label{turtle__way_8cpp_ae25546bb8a12b178c2644754e7875f1d}} 
+void \hyperlink{turtle__way_8cpp_ae25546bb8a12b178c2644754e7875f1d}{callback\+\_\+pose} (const turtlesim\+::\+Pose \&msg)
+\begin{DoxyCompactList}\small\item\em Callback function for the /turtle1/pose subscriber. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__way_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{turtle__way_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{turtle__way_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main function to create the turtle\+\_\+way node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the source code for the turtle\+\_\+way node. It reads in a list of waypoints and sends commands to turtlesim to follow that path. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: waypoint\+\_\+x\+: (int) A list of the x coordinates for a series of waypoints waypoint\+\_\+y\+: (int) A list of the y coordinates for a series of waypoints trans\+\_\+vel\+: (int) The translational velocity of the robot rot\+\_\+vel\+: (int) The rotational velocity of the robot frequency\+: (int) The frequency of the control loop wheel\+\_\+radius\+: (double) The radius of the wheels wheel\+\_\+base\+: (double) The distance between two wheels P\+U\+B\+L\+I\+S\+H\+ES\+: /pose\+\_\+error (tsim/\+Pose\+Error)\+: The positional error of the turtle at each cycle. /turtle1/cmd\+\_\+vel (geometry\+\_\+msgs/\+Twist)\+: The velcotiy command to control the turtle. S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /turtle1/pose (turtlesim/\+Pose)\+: Retrieves the current pose of the turtle 

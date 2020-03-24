@@ -1,0 +1,37 @@
+\hypertarget{fake__diff__encoders_8cpp}{}\section{rigid2d/src/fake\+\_\+diff\+\_\+encoders.cpp File Reference}
+\label{fake__diff__encoders_8cpp}\index{rigid2d/src/fake\+\_\+diff\+\_\+encoders.\+cpp@{rigid2d/src/fake\+\_\+diff\+\_\+encoders.\+cpp}}
+
+
+This file contains the source code for the turtle\+\_\+rect node. It pulls in parameters set from the yaml file and uses feed forward control to drive the turtle in a rectangle. It also calculates the positional error over time.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Twist.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/\+Joint\+State.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/diff\+\_\+drive.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/waypoints.\+hpp\char`\"{}}\newline
+Include dependency graph for fake\+\_\+diff\+\_\+encoders.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dd/d93/fake__diff__encoders_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{fake__diff__encoders_8cpp_a44c94965143735655ba35b308a070518}\label{fake__diff__encoders_8cpp_a44c94965143735655ba35b308a070518}} 
+void \hyperlink{fake__diff__encoders_8cpp_a44c94965143735655ba35b308a070518}{callback\+\_\+twist} (geometry\+\_\+msgs\+::\+Twist\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em callback funtion for the /turtle1/cmd\+\_\+vel subscriber \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fake__diff__encoders_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{fake__diff__encoders_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{fake__diff__encoders_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main function to create the fake\+\_\+diff\+\_\+encoders node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the source code for the turtle\+\_\+rect node. It pulls in parameters set from the yaml file and uses feed forward control to drive the turtle in a rectangle. It also calculates the positional error over time. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: left\+\_\+wheel\+\_\+joint (std\+::string) the name of the left wheel joint right\+\_\+wheel\+\_\+joint (std\+::string) the name of the right wheel joint wheel\+\_\+base (double) the distance between the two wheels of the diff drive robot wheel\+\_\+radius (double) the radius of the wheels frequency (double) the frequency to publish joint states at P\+U\+B\+L\+I\+S\+H\+ES\+: /joint\+\_\+states (sensor\+\_\+msgs/\+Joint\+State) publishs the scaled wheel velocities and the resulting distance of rotation for wheels moving at that velocity S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /turtle1/cmd\+\_\+vel (geometry\+\_\+msgs/\+Twist)\+: Retrieves the current twist of the turtle 

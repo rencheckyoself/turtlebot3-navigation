@@ -43,7 +43,7 @@
   </group>
 
   <!-- Convert laser scan data into landmarks -->
-  <node name="landmarks" pkg="nuslam" type="landmarks" output="screen" if="$(eval debug != 1)">
+  <node name="landmarks" pkg="nuslam" type="landmarks" output="screen" machine="turtlebot" if="$(eval debug != 1)">
     <param name="distance_threshold" value=".075"/> <!-- Threshold to determine a landmark -->
     <param name="radius_threshold" value="0.07"/> <!-- Threshold to the radius of a landmark -->
     <param name="frame_id" value="base_scan"/> <!-- frame the laser scan data is relative to -->

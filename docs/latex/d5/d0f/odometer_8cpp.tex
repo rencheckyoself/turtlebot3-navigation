@@ -1,0 +1,69 @@
+\hypertarget{odometer_8cpp}{}\section{rigid2d/src/odometer.cpp File Reference}
+\label{odometer_8cpp}\index{rigid2d/src/odometer.\+cpp@{rigid2d/src/odometer.\+cpp}}
+
+
+This node publishes the Odometry messages per R\+OS standard format.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$tf2\+\_\+ros/transform\+\_\+broadcaster.\+h$>$}\newline
+{\ttfamily \#include $<$tf2/\+Linear\+Math/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$tf2\+\_\+geometry\+\_\+msgs/tf2\+\_\+geometry\+\_\+msgs.\+h$>$}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Transform\+Stamped.\+h$>$}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$nav\+\_\+msgs/\+Odometry.\+h$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/\+Joint\+State.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/\+Set\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/diff\+\_\+drive.\+hpp\char`\"{}}\newline
+Include dependency graph for odometer.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d3/d0e/odometer_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{odometer_8cpp_ad248270d37c5224dcb705be8b925ff29}{find\+Joint\+Index} (std\+::vector$<$ std\+::string $>$ joints, std\+::string target)
+\begin{DoxyCompactList}\small\item\em Use to search through the all joint names and return the index of the desired joint. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{odometer_8cpp_a32393f00b4e0f87fc20fd049f9f29e13}\label{odometer_8cpp_a32393f00b4e0f87fc20fd049f9f29e13}} 
+void \hyperlink{odometer_8cpp_a32393f00b4e0f87fc20fd049f9f29e13}{callback\+\_\+joints} (const sensor\+\_\+msgs\+::\+Joint\+State\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em Callback for the joint state subscriber. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{odometer_8cpp_aae64b337e2786fc1bc955743eb5921bd}\label{odometer_8cpp_aae64b337e2786fc1bc955743eb5921bd}} 
+bool \hyperlink{odometer_8cpp_aae64b337e2786fc1bc955743eb5921bd}{callback\+\_\+set\+\_\+pose} (rigid2d\+::\+Set\+Pose\+::\+Request \&req, rigid2d\+::\+Set\+Pose\+::\+Response \&)
+\begin{DoxyCompactList}\small\item\em Callback for the set\+\_\+pose service. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{odometer_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{odometer_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{odometer_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main function for the odometer node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node publishes the Odometry messages per R\+OS standard format. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: odom\+\_\+frame\+\_\+id (std\+::string) the name of the odometer frame base\+\_\+frame\+\_\+id (std\+::string) the name of the base frame left\+\_\+wheel\+\_\+joint (std\+::string) the name of the left wheel joint right\+\_\+wheel\+\_\+joint (std\+::string) the name of the right wheel joint wheel\+\_\+base (double) the distance between the two wheels of the diff drive robot wheel\+\_\+radius (double) the radius of the wheels frequency (double) the frequency to publish joint states at P\+U\+B\+L\+I\+S\+H\+ES\+: /odom (nav\+\_\+msgs/\+Odometry)\+: The calculated odometry of the diff drive robot S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /joint\+\_\+states (sensor\+\_\+msgs/\+Joint\+State)\+: Retrieves the calculated wheel velocities and change in wheel position S\+E\+R\+V\+I\+C\+ES\+: /set\+\_\+pose (rigid2d/\+Set\+Pose)\+: Sets the pose of the robot to the provided values 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{odometer_8cpp_ad248270d37c5224dcb705be8b925ff29}\label{odometer_8cpp_ad248270d37c5224dcb705be8b925ff29}} 
+\index{odometer.\+cpp@{odometer.\+cpp}!find\+Joint\+Index@{find\+Joint\+Index}}
+\index{find\+Joint\+Index@{find\+Joint\+Index}!odometer.\+cpp@{odometer.\+cpp}}
+\subsubsection{\texorpdfstring{find\+Joint\+Index()}{findJointIndex()}}
+{\footnotesize\ttfamily int find\+Joint\+Index (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$}]{joints,  }\item[{std\+::string}]{target }\end{DoxyParamCaption})}
+
+
+
+Use to search through the all joint names and return the index of the desired joint. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em joints} & -\/ a vector of all the joint names \\
+\hline
+{\em target} & -\/ the desire joint name to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the index of the desired joint name 
+\end{DoxyReturn}

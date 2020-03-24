@@ -1,0 +1,53 @@
+\hypertarget{test__turtle__interface_8cpp}{}\section{nuturtle\+\_\+robot/src/test/test\+\_\+turtle\+\_\+interface.cpp File Reference}
+\label{test__turtle__interface_8cpp}\index{nuturtle\+\_\+robot/src/test/test\+\_\+turtle\+\_\+interface.\+cpp@{nuturtle\+\_\+robot/src/test/test\+\_\+turtle\+\_\+interface.\+cpp}}
+
+
+This node tests the turtle interface node.  
+
+
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Twist.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuturtlebot/\+Wheel\+Commands.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuturtlebot/\+Sensor\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sensor\+\_\+msgs/\+Joint\+State.\+h\char`\"{}}\newline
+Include dependency graph for test\+\_\+turtle\+\_\+interface.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d0/df1/test__turtle__interface_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_aba35a82eceda5d601d138e18c85739c4}\label{test__turtle__interface_8cpp_aba35a82eceda5d601d138e18c85739c4}} 
+void \hyperlink{test__turtle__interface_8cpp_aba35a82eceda5d601d138e18c85739c4}{callback\+\_\+wheels} (nuturtlebot\+::\+Wheel\+Commands\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em Callback for wheel\+\_\+cmd subscriber \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_a04d67c3fcfa3f2187242f4f77997ab41}\label{test__turtle__interface_8cpp_a04d67c3fcfa3f2187242f4f77997ab41}} 
+void \hyperlink{test__turtle__interface_8cpp_a04d67c3fcfa3f2187242f4f77997ab41}{callback\+\_\+joints} (sensor\+\_\+msgs\+::\+Joint\+State\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em Callback for joint\+\_\+states subscriber \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_a171da9d53bcf1e807cacb1669fdf90a2}\label{test__turtle__interface_8cpp_a171da9d53bcf1e807cacb1669fdf90a2}} 
+{\bfseries T\+E\+ST} (Turtle\+Interface, Trans\+Only)
+\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_adeeeef210e8b88091ff2bcbf5029ce13}\label{test__turtle__interface_8cpp_adeeeef210e8b88091ff2bcbf5029ce13}} 
+{\bfseries T\+E\+ST} (Turtle\+Interface, Rot\+Only)
+\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_a9255d0ecfb79606f015d9d6a8a379bcd}\label{test__turtle__interface_8cpp_a9255d0ecfb79606f015d9d6a8a379bcd}} 
+{\bfseries T\+E\+ST} (Turtle\+Interface, Rot\+And\+Trans)
+\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_a95b1341f9409103ab6305ef4b678facd}\label{test__turtle__interface_8cpp_a95b1341f9409103ab6305ef4b678facd}} 
+{\bfseries T\+E\+ST} (Turtle\+Interface, Valid\+Encs)
+\item 
+\mbox{\Hypertarget{test__turtle__interface_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{test__turtle__interface_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int {\bfseries main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node tests the turtle interface node. 
+
+P\+U\+B\+L\+I\+S\+H\+ES\+: /cmd\+\_\+vel (geometry\+\_\+msgs/\+Twist)\+: the twist command from the turtlesim package /sensor\+\_\+data (nuturtlebot/\+Sensor\+Data)\+: retrives sensor info from the turtlebot S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /wheel\+\_\+cmd (nutrutlebot/\+Wheel\+Commands)\+: a command to control the motors on the turtlebot /joint\+\_\+states (sensor\+\_\+msgs/\+Joint\+State)\+: the wheel position and velocities of the turtlebot 

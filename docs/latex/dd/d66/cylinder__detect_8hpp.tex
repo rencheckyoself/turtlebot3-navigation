@@ -1,0 +1,56 @@
+\hypertarget{cylinder__detect_8hpp}{}\section{nuslam/include/nuslam/cylinder\+\_\+detect.hpp File Reference}
+\label{cylinder__detect_8hpp}\index{nuslam/include/nuslam/cylinder\+\_\+detect.\+hpp@{nuslam/include/nuslam/cylinder\+\_\+detect.\+hpp}}
+
+
+function to fit circles.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+Include dependency graph for cylinder\+\_\+detect.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{dd/d3a/cylinder__detect_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d9/d9e/cylinder__detect_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ double $>$ \hyperlink{cylinder__detect_8hpp_a5351498f6edb96444bf8d93c4f743793}{cylinder\+::fit\+\_\+circles} (std\+::vector$<$ \hyperlink{structrigid2d_1_1Vector2D}{rigid2d\+::\+Vector2D} $>$ cluster)
+\begin{DoxyCompactList}\small\item\em function to fit a circle to a cluster of points \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+function to fit circles. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{cylinder__detect_8hpp_file_a5351498f6edb96444bf8d93c4f743793}\label{cylinder__detect_8hpp_file_a5351498f6edb96444bf8d93c4f743793}} 
+\index{cylinder\+\_\+detect.\+hpp@{cylinder\+\_\+detect.\+hpp}!fit\+\_\+circles@{fit\+\_\+circles}}
+\index{fit\+\_\+circles@{fit\+\_\+circles}!cylinder\+\_\+detect.\+hpp@{cylinder\+\_\+detect.\+hpp}}
+\subsubsection{\texorpdfstring{fit\+\_\+circles()}{fit\_circles()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ cylinder\+::fit\+\_\+circles (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \hyperlink{structrigid2d_1_1Vector2D}{rigid2d\+::\+Vector2D} $>$}]{cluster }\end{DoxyParamCaption})}
+
+
+
+function to fit a circle to a cluster of points 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cluster} & a vector of x,y points that are physically near each other \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+circle\+\_\+params\+: a vector where the first two number are the cenroid coordinates and the third is the radius 
+\end{DoxyReturn}

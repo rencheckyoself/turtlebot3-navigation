@@ -1,0 +1,7 @@
+<map id="rigid2d/include/rigid2d/waypoints.hpp" name="rigid2d/include/rigid2d/waypoints.hpp">
+<area shape="rect" id="node2" href="$d2/dc7/real__waypoints_8cpp.html" title="This node publishes a twist to drive the turtlebot along a path of waypoints. " alt="" coords="5,95,144,136"/>
+<area shape="rect" id="node3" href="$d3/dee/turtle__interface_8cpp.html" title="This node interfaces between a main computer and the raspberri pi on the turtlebot. " alt="" coords="169,95,306,136"/>
+<area shape="rect" id="node4" href="$d1/d45/fake__diff__encoders_8cpp.html" title="This file contains the source code for the turtle_rect node. It pulls in parameters set from the yaml..." alt="" coords="331,95,467,136"/>
+<area shape="rect" id="node5" href="$d2/de7/waypoints_8cpp.html" title="Library for calculating the velocities to move between waypoints. " alt="" coords="491,95,615,136"/>
+<area shape="rect" id="node6" href="$d5/dca/turtle__way_8cpp.html" title="This file contains the source code for the turtle_way node. It reads in a list of waypoints and sends..." alt="" coords="639,102,798,129"/>
+</map>

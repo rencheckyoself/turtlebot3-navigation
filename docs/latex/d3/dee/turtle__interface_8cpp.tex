@@ -1,0 +1,44 @@
+\hypertarget{turtle__interface_8cpp}{}\section{nuturtle\+\_\+robot/src/turtle\+\_\+interface.cpp File Reference}
+\label{turtle__interface_8cpp}\index{nuturtle\+\_\+robot/src/turtle\+\_\+interface.\+cpp@{nuturtle\+\_\+robot/src/turtle\+\_\+interface.\+cpp}}
+
+
+This node interfaces between a main computer and the raspberri pi on the turtlebot.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Twist.\+h$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/\+Joint\+State.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}nuturtlebot/\+Sensor\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuturtlebot/\+Wheel\+Commands.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/diff\+\_\+drive.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/waypoints.\+hpp\char`\"{}}\newline
+Include dependency graph for turtle\+\_\+interface.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d5/d71/turtle__interface_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{turtle__interface_8cpp_aa32dbd2ab8d28b3c08460b9f2a3d62c7}\label{turtle__interface_8cpp_aa32dbd2ab8d28b3c08460b9f2a3d62c7}} 
+void \hyperlink{turtle__interface_8cpp_aa32dbd2ab8d28b3c08460b9f2a3d62c7}{pub\+Wheel\+Commands} ()
+\begin{DoxyCompactList}\small\item\em Calculates the proper wheel command given a twist. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__interface_8cpp_a44c94965143735655ba35b308a070518}\label{turtle__interface_8cpp_a44c94965143735655ba35b308a070518}} 
+void \hyperlink{turtle__interface_8cpp_a44c94965143735655ba35b308a070518}{callback\+\_\+twist} (geometry\+\_\+msgs\+::\+Twist\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em callback funtion for the cmd\+\_\+vel subscriber \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__interface_8cpp_af39206c46f7e964bd309340466518ee3}\label{turtle__interface_8cpp_af39206c46f7e964bd309340466518ee3}} 
+void \hyperlink{turtle__interface_8cpp_af39206c46f7e964bd309340466518ee3}{callback\+\_\+sensors} (nuturtlebot\+::\+Sensor\+Data\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em callback funtion for the sensor\+\_\+data subscriber \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__interface_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{turtle__interface_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{turtle__interface_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main function to create the turtle\+\_\+interface node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node interfaces between a main computer and the raspberri pi on the turtlebot. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: left\+\_\+wheel\+\_\+joint (std\+::string)\+: the name of the left wheel joint right\+\_\+wheel\+\_\+joint (std\+::string)\+: the name of the right wheel joint wheel\+\_\+base (double)\+: the distance between the two wheels of the diff drive robot wheel\+\_\+radius (double)\+: the radius of the wheels frequency (double)\+: the frequency to publish joint states at tvel\+\_\+lim (double)\+: the maximum translational velocity avel\+\_\+lim (double)\+: the maximum angular velocity motor\+\_\+lim (double)\+: the maximum rotation velocity of the motor encoder\+\_\+ticks\+\_\+per\+\_\+rev (int)\+: the number of encoder pulses per revolution of the wheel motor\+\_\+power (int)\+: the max command value to send the motor P\+U\+B\+L\+I\+S\+H\+ES\+: /wheel\+\_\+cmd (nuturtlebot/\+Wheel\+Commands)\+: a command to control the motors on the turtlebot /joint\+\_\+states (sensor\+\_\+msgs/\+Joint\+State)\+: the wheel position and velocities of the turtlebot S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /cmd\+\_\+vel (geometry\+\_\+msgs/\+Twist)\+: the twist command from the turtlesim package /sensor\+\_\+data (nuturtlebot/\+Sensor\+Data)\+: retrives sensor info from the turtlebot 

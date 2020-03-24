@@ -19,7 +19,7 @@
   <node name="turtle_interface" pkg="nuturtle_robot" type="turtle_interface" machine="turtlebot" output="screen"/>
 
   <!-- Launch teleoperation node for the turtlebot -->
-  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard" machine="turtlebot" if="$(eval robot != 0)"/>
+  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard" if="$(eval robot != 0)"/>
 
   <!-- Launch odometer node to track the turtlebot encoders -->
   <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot">
@@ -33,24 +33,5 @@
   <!-- Launch rviz as a required node -->
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find nuturtle_description)/config/odom_view.rviz" if="$(eval with_rviz and robot == 0)"/>
   <node name="rviz" pkg="rviz" type="rviz" required="true" args="$(arg rviz_file)" if="$(eval with_rviz and robot != 0)"/>
-
-  <!-- Simulate encoders for perfect feed forward control -->
-  <!-- <node name="fake_diff_encoders" pkg="rigid2d" type="fake_diff_encoders" machine="turtlebot" output="screen">
-    <remap from="turtle1/cmd_vel" to="/cmd_vel"/>
-    <remap from="joint_states" to="fake/joint_states"/>
-  </node> -->
-
-  <!-- Track the simulated encoders -->
-  <!-- <group ns="fake">
-    <node name="odometer" pkg="rigid2d" type="odometer" machine="turtlebot" output="screen">
-      <param name="odom_frame_id" value="fake_odom"/>
-      <param name="base_frame_id" value="fake_base_link"/>
-      <param name="left_wheel_joint" value="left_wheel_axel"/>
-      <param name="right_wheel_joint" value="right_wheel_axel"/>
-    </node>
-  </group> -->
-
-  <!-- Link the simulated robot to the real robot -->
-  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="static_transform_publisher" args="0 0 0 0 0 0 1 odom fake_odom" /> -->
 
 </launch>

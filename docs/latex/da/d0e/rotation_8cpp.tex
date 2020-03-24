@@ -1,0 +1,39 @@
+\hypertarget{rotation_8cpp}{}\section{nuturtle\+\_\+robot/src/rotation.cpp File Reference}
+\label{rotation_8cpp}\index{nuturtle\+\_\+robot/src/rotation.\+cpp@{nuturtle\+\_\+robot/src/rotation.\+cpp}}
+
+
+This node interfaces between a main computer and the raspberri pi on the turtlebot.  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Twist.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+srvs/\+Set\+Bool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/\+Set\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/\+Pose.\+h\char`\"{}}\newline
+Include dependency graph for rotation.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dc/df1/rotation_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{rotation_8cpp_a8a003764bae77bc3a8d005a76365ce0b}\label{rotation_8cpp_a8a003764bae77bc3a8d005a76365ce0b}} 
+bool \hyperlink{rotation_8cpp_a8a003764bae77bc3a8d005a76365ce0b}{callback\+\_\+start} (std\+\_\+srvs\+::\+Set\+Bool\+::\+Request \&req, std\+\_\+srvs\+::\+Set\+Bool\+::\+Response \&)
+\begin{DoxyCompactList}\small\item\em Callback for start service \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rotation_8cpp_a6f56faf21488465a1fc832f74a795952}\label{rotation_8cpp_a6f56faf21488465a1fc832f74a795952}} 
+void \hyperlink{rotation_8cpp_a6f56faf21488465a1fc832f74a795952}{callback\+\_\+timer} (const ros\+::\+Timer\+Event \&)
+\begin{DoxyCompactList}\small\item\em Callback for Timer \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rotation_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{rotation_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{rotation_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em main function to create the rotation node \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node interfaces between a main computer and the raspberri pi on the turtlebot. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: /rotation/frac\+\_\+val\+: proportion of max speed to use /avel\+\_\+lim\+: max robot angular velocity P\+U\+B\+L\+I\+S\+H\+ES\+: /cmd\+\_\+vel (geometry\+\_\+msgs/\+Twist)\+: the twist command S\+E\+R\+I\+V\+C\+ES\+: /start (std\+\_\+srvs/\+Set\+Bool)\+: Starts the movement of the robot given an initial direction. 0 is C\+C\+W/\+Forwards, 1 is C\+W/\+Backwards 

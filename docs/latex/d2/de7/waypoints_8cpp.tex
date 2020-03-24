@@ -1,0 +1,72 @@
+\hypertarget{waypoints_8cpp}{}\section{rigid2d/src/rigid2d/waypoints.cpp File Reference}
+\label{waypoints_8cpp}\index{rigid2d/src/rigid2d/waypoints.\+cpp@{rigid2d/src/rigid2d/waypoints.\+cpp}}
+
+
+Library for calculating the velocities to move between waypoints.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Twist.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/diff\+\_\+drive.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/waypoints.\+hpp\char`\"{}}\newline
+Include dependency graph for waypoints.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d0/db7/waypoints_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+geometry\+\_\+msgs\+::\+Twist \hyperlink{waypoints_8hpp_a4fb2a740032a89733675537e6816e767}{rigid2d\+::\+Twist2\+Dto\+Geo\+Twist} (Twist2D tw)
+\begin{DoxyCompactList}\small\item\em convert a \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} into a geometry\+\_\+msgs\+::\+Twist \end{DoxyCompactList}\item 
+Twist2D \hyperlink{waypoints_8hpp_a01bafc1ac1170daac0d7f781eb010d02}{rigid2d\+::\+Geo\+Twistto\+Twist2D} (geometry\+\_\+msgs\+::\+Twist gtw)
+\begin{DoxyCompactList}\small\item\em convert a geometry\+\_\+msgs\+::\+Twist into a \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Library for calculating the velocities to move between waypoints. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{waypoints_8hpp_file_a01bafc1ac1170daac0d7f781eb010d02}\label{waypoints_8hpp_file_a01bafc1ac1170daac0d7f781eb010d02}} 
+\index{waypoints.\+cpp@{waypoints.\+cpp}!Geo\+Twistto\+Twist2D@{Geo\+Twistto\+Twist2D}}
+\index{Geo\+Twistto\+Twist2D@{Geo\+Twistto\+Twist2D}!waypoints.\+cpp@{waypoints.\+cpp}}
+\subsubsection{\texorpdfstring{Geo\+Twistto\+Twist2\+D()}{GeoTwisttoTwist2D()}}
+{\footnotesize\ttfamily Twist2D rigid2d\+::\+Geo\+Twistto\+Twist2D (\begin{DoxyParamCaption}\item[{geometry\+\_\+msgs\+::\+Twist}]{gtw }\end{DoxyParamCaption})}
+
+
+
+convert a geometry\+\_\+msgs\+::\+Twist into a Twist2D 
+
+
+\begin{DoxyParams}{Parameters}
+{\em twg} & -\/ a geometry\+\_\+msgs\+::\+Twist to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the equivalent Twist2D 
+\end{DoxyReturn}
+\mbox{\Hypertarget{waypoints_8hpp_file_a4fb2a740032a89733675537e6816e767}\label{waypoints_8hpp_file_a4fb2a740032a89733675537e6816e767}} 
+\index{waypoints.\+cpp@{waypoints.\+cpp}!Twist2\+Dto\+Geo\+Twist@{Twist2\+Dto\+Geo\+Twist}}
+\index{Twist2\+Dto\+Geo\+Twist@{Twist2\+Dto\+Geo\+Twist}!waypoints.\+cpp@{waypoints.\+cpp}}
+\subsubsection{\texorpdfstring{Twist2\+Dto\+Geo\+Twist()}{Twist2DtoGeoTwist()}}
+{\footnotesize\ttfamily geometry\+\_\+msgs\+::\+Twist rigid2d\+::\+Twist2\+Dto\+Geo\+Twist (\begin{DoxyParamCaption}\item[{\hyperlink{structrigid2d_1_1Twist2D}{Twist2D}}]{tw }\end{DoxyParamCaption})}
+
+
+
+convert a Twist2D into a geometry\+\_\+msgs\+::\+Twist 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tw} & -\/ a Twist2D to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the equivalent geometry\+\_\+msgs\+::\+Twist 
+\end{DoxyReturn}

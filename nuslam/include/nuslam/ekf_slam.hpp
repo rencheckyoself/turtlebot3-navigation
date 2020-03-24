@@ -1,3 +1,8 @@
+#ifndef LANDMARK_INCLUDE_GUARD_HPP
+#define LANDMARK_INCLUDE_GUARD_HPP
+/// \file
+/// \brief Library to contain SLAM class and supporting functions
+
 #include <eigen3/Eigen/Dense>
 #include <vector>
 #include <iostream>
@@ -5,6 +10,7 @@
 #include "geometry_msgs/Point.h"
 
 #include "rigid2d/rigid2d.hpp"
+
 
 namespace ekf_slam
 {
@@ -85,3 +91,4 @@ namespace ekf_slam
   };
 
 }
+#endif

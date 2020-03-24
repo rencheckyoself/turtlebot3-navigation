@@ -1,0 +1,98 @@
+\hypertarget{classekf__slam_1_1Slam}{}\section{ekf\+\_\+slam\+:\+:Slam Class Reference}
+\label{classekf__slam_1_1Slam}\index{ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classekf__slam_1_1Slam_abc573b570700f3dfb0ff1e80c0263255}{Slam} (int num\+\_\+landmarks, Eigen\+::\+Matrix3d q\+\_\+var, Eigen\+::\+Matrix2d r\+\_\+var)
+\begin{DoxyCompactList}\small\item\em Initialize an instance of E\+KF \hyperlink{classekf__slam_1_1Slam}{Slam}. Initializes the covarience matrix. \end{DoxyCompactList}\item 
+void \hyperlink{classekf__slam_1_1Slam_ab26e0c13cbaaa3bce75be953f8c3b39d}{Motion\+Model\+Update} (\hyperlink{structrigid2d_1_1Twist2D}{rigid2d\+::\+Twist2D} tw)
+\begin{DoxyCompactList}\small\item\em Predict the current state of the robot using the motion model. \end{DoxyCompactList}\item 
+void \hyperlink{classekf__slam_1_1Slam_ae95105bbeeea067f5dc09e44e594dd3e}{Measurment\+Model\+Update} (nuslam\+::\+Turtle\+Map map\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Incorperate sensor information into the prediction from the motion model. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \hyperlink{classekf__slam_1_1Slam_a8c218402ba9d30177c6740d001430cac}{get\+Robot\+State} ()
+\begin{DoxyCompactList}\small\item\em Extract the robot state. \end{DoxyCompactList}\item 
+std\+::vector$<$ geometry\+\_\+msgs\+::\+Point $>$ \hyperlink{classekf__slam_1_1Slam_a66a7be45bb77f0c44717385908443832}{get\+Landmark\+States} ()
+\begin{DoxyCompactList}\small\item\em Extract the landmark states. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classekf__slam_1_1Slam_abc573b570700f3dfb0ff1e80c0263255}\label{classekf__slam_1_1Slam_abc573b570700f3dfb0ff1e80c0263255}} 
+\index{ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}!Slam@{Slam}}
+\index{Slam@{Slam}!ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}}
+\subsubsection{\texorpdfstring{Slam()}{Slam()}}
+{\footnotesize\ttfamily ekf\+\_\+slam\+::\+Slam\+::\+Slam (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+landmarks,  }\item[{Eigen\+::\+Matrix3d}]{q\+\_\+var,  }\item[{Eigen\+::\+Matrix2d}]{r\+\_\+var }\end{DoxyParamCaption})}
+
+
+
+Initialize an instance of E\+KF \hyperlink{classekf__slam_1_1Slam}{Slam}. Initializes the covarience matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+landmarks} & the number of landmarks in the map \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classekf__slam_1_1Slam_a66a7be45bb77f0c44717385908443832}\label{classekf__slam_1_1Slam_a66a7be45bb77f0c44717385908443832}} 
+\index{ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}!get\+Landmark\+States@{get\+Landmark\+States}}
+\index{get\+Landmark\+States@{get\+Landmark\+States}!ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}}
+\subsubsection{\texorpdfstring{get\+Landmark\+States()}{getLandmarkStates()}}
+{\footnotesize\ttfamily std\+::vector$<$ geometry\+\_\+msgs\+::\+Point $>$ ekf\+\_\+slam\+::\+Slam\+::get\+Landmark\+States (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Extract the landmark states. 
+
+\begin{DoxyReturn}{Returns}
+a vector of the points 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classekf__slam_1_1Slam_a8c218402ba9d30177c6740d001430cac}\label{classekf__slam_1_1Slam_a8c218402ba9d30177c6740d001430cac}} 
+\index{ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}!get\+Robot\+State@{get\+Robot\+State}}
+\index{get\+Robot\+State@{get\+Robot\+State}!ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}}
+\subsubsection{\texorpdfstring{get\+Robot\+State()}{getRobotState()}}
+{\footnotesize\ttfamily std\+::vector$<$ double $>$ ekf\+\_\+slam\+::\+Slam\+::get\+Robot\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Extract the robot state. 
+
+\begin{DoxyReturn}{Returns}
+a vector of the robot state (th, x, y) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classekf__slam_1_1Slam_ae95105bbeeea067f5dc09e44e594dd3e}\label{classekf__slam_1_1Slam_ae95105bbeeea067f5dc09e44e594dd3e}} 
+\index{ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}!Measurment\+Model\+Update@{Measurment\+Model\+Update}}
+\index{Measurment\+Model\+Update@{Measurment\+Model\+Update}!ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}}
+\subsubsection{\texorpdfstring{Measurment\+Model\+Update()}{MeasurmentModelUpdate()}}
+{\footnotesize\ttfamily void ekf\+\_\+slam\+::\+Slam\+::\+Measurment\+Model\+Update (\begin{DoxyParamCaption}\item[{nuslam\+::\+Turtle\+Map}]{map\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Incorperate sensor information into the prediction from the motion model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \&map\+\_\+data} & a reference to the landmarks observed by the robot \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classekf__slam_1_1Slam_ab26e0c13cbaaa3bce75be953f8c3b39d}\label{classekf__slam_1_1Slam_ab26e0c13cbaaa3bce75be953f8c3b39d}} 
+\index{ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}!Motion\+Model\+Update@{Motion\+Model\+Update}}
+\index{Motion\+Model\+Update@{Motion\+Model\+Update}!ekf\+\_\+slam\+::\+Slam@{ekf\+\_\+slam\+::\+Slam}}
+\subsubsection{\texorpdfstring{Motion\+Model\+Update()}{MotionModelUpdate()}}
+{\footnotesize\ttfamily void ekf\+\_\+slam\+::\+Slam\+::\+Motion\+Model\+Update (\begin{DoxyParamCaption}\item[{\hyperlink{structrigid2d_1_1Twist2D}{rigid2d\+::\+Twist2D}}]{tw }\end{DoxyParamCaption})}
+
+
+
+Predict the current state of the robot using the motion model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tw} & a twist command the robot will follow \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+nuslam/include/nuslam/\hyperlink{ekf__slam_8hpp}{ekf\+\_\+slam.\+hpp}\item 
+nuslam/src/nuslam/ekf\+\_\+slam.\+cpp\end{DoxyCompactItemize}

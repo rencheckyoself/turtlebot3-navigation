@@ -1,0 +1,11 @@
+<map id="rigid2d/include/rigid2d/diff_drive.hpp" name="rigid2d/include/rigid2d/diff_drive.hpp">
+<area shape="rect" id="node2" href="$da/d7e/slam_8cpp.html" title="This node publishes an estimate of the robot state using EKF SLAM. " alt="" coords="55,102,197,129"/>
+<area shape="rect" id="node3" href="$d3/dee/turtle__interface_8cpp.html" title="This node interfaces between a main computer and the raspberri pi on the turtlebot. " alt="" coords="5,184,143,225"/>
+<area shape="rect" id="node4" href="$dc/db9/waypoints_8hpp.html" title="Library for calculating the velocities to move between waypoints. " alt="" coords="323,95,470,136"/>
+<area shape="rect" id="node6" href="$d1/d45/fake__diff__encoders_8cpp.html" title="This file contains the source code for the turtle_rect node. It pulls in parameters set from the yaml..." alt="" coords="167,184,303,225"/>
+<area shape="rect" id="node7" href="$d2/de7/waypoints_8cpp.html" title="Library for calculating the velocities to move between waypoints. " alt="" coords="491,184,615,225"/>
+<area shape="rect" id="node8" href="$d5/dca/turtle__way_8cpp.html" title="This file contains the source code for the turtle_way node. It reads in a list of waypoints and sends..." alt="" coords="639,191,797,218"/>
+<area shape="rect" id="node9" href="$d5/d0f/odometer_8cpp.html" title="This node publishes the Odometry messages per ROS standard format. " alt="" coords="595,102,761,129"/>
+<area shape="rect" id="node10" href="$dc/da6/diff__drive_8cpp.html" title="Source file for Diff Dirve Robot library. " alt="" coords="785,95,909,136"/>
+<area shape="rect" id="node5" href="$d2/dc7/real__waypoints_8cpp.html" title="This node publishes a twist to drive the turtlebot along a path of waypoints. " alt="" coords="327,184,466,225"/>
+</map>

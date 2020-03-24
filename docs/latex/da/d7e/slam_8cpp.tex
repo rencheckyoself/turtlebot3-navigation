@@ -1,0 +1,72 @@
+\hypertarget{slam_8cpp}{}\section{nuslam/src/slam.cpp File Reference}
+\label{slam_8cpp}\index{nuslam/src/slam.\+cpp@{nuslam/src/slam.\+cpp}}
+
+
+This node publishes an estimate of the robot state using E\+KF S\+L\+AM.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$tf2\+\_\+ros/transform\+\_\+broadcaster.\+h$>$}\newline
+{\ttfamily \#include $<$tf2/\+Linear\+Math/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$tf2\+\_\+geometry\+\_\+msgs/tf2\+\_\+geometry\+\_\+msgs.\+h$>$}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Transform\+Stamped.\+h$>$}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$nav\+\_\+msgs/\+Odometry.\+h$>$}\newline
+{\ttfamily \#include $<$nav\+\_\+msgs/\+Path.\+h$>$}\newline
+{\ttfamily \#include $<$sensor\+\_\+msgs/\+Joint\+State.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}nuslam/\+Turtle\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/\+Set\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/diff\+\_\+drive.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuslam/ekf\+\_\+slam.\+hpp\char`\"{}}\newline
+Include dependency graph for slam.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d2/d57/slam_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{slam_8cpp_ad248270d37c5224dcb705be8b925ff29}{find\+Joint\+Index} (std\+::vector$<$ std\+::string $>$ joints, std\+::string target)
+\begin{DoxyCompactList}\small\item\em Use to search through the all joint names and return the index of the desired joint. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{slam_8cpp_a32393f00b4e0f87fc20fd049f9f29e13}\label{slam_8cpp_a32393f00b4e0f87fc20fd049f9f29e13}} 
+void \hyperlink{slam_8cpp_a32393f00b4e0f87fc20fd049f9f29e13}{callback\+\_\+joints} (const sensor\+\_\+msgs\+::\+Joint\+State\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em Callback for the joint state subscriber. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{slam_8cpp_af118ce6bdc73b978a440f3f2b69e32e4}\label{slam_8cpp_af118ce6bdc73b978a440f3f2b69e32e4}} 
+void \hyperlink{slam_8cpp_af118ce6bdc73b978a440f3f2b69e32e4}{callback\+\_\+landmarks} (const nuslam\+::\+Turtle\+Map\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em Callback for the landmark data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{slam_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{slam_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{slam_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main function for the odometer node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node publishes an estimate of the robot state using E\+KF S\+L\+AM. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: odom\+\_\+frame\+\_\+id (std\+::string) the name of the odometer frame base\+\_\+frame\+\_\+id (std\+::string) the name of the base frame left\+\_\+wheel\+\_\+joint (std\+::string) the name of the left wheel joint right\+\_\+wheel\+\_\+joint (std\+::string) the name of the right wheel joint wheel\+\_\+base (double) the distance between the two wheels of the diff drive robot wheel\+\_\+radius (double) the radius of the wheels frequency (double) the frequency to publish joint states at num\+\_\+landmarks (int) the number of landmarks allowed in the state vector map\+\_\+frame\+\_\+id (std\+::string) the name of the map frame P\+U\+B\+L\+I\+S\+H\+ES\+: /odom\+\_\+path (nav\+\_\+msgs/\+Path)\+: The path of the robot following purely odometry /slam\+\_\+path (nav\+\_\+msgs/\+Path)\+: The path of the robot following slam estimate /slam\+\_\+landmark\+\_\+data (nuslam/\+Turtle\+Map)\+: landmark state estimate from slam S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /joint\+\_\+states (sensor\+\_\+msgs/\+Joint\+State)\+: Retrieves the calculated wheel velocities and change in wheel position /landmark\+\_\+data (nuslam/\+Turtle\+Map)\+: landmark position and size information 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{slam_8cpp_ad248270d37c5224dcb705be8b925ff29}\label{slam_8cpp_ad248270d37c5224dcb705be8b925ff29}} 
+\index{slam.\+cpp@{slam.\+cpp}!find\+Joint\+Index@{find\+Joint\+Index}}
+\index{find\+Joint\+Index@{find\+Joint\+Index}!slam.\+cpp@{slam.\+cpp}}
+\subsubsection{\texorpdfstring{find\+Joint\+Index()}{findJointIndex()}}
+{\footnotesize\ttfamily int find\+Joint\+Index (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$}]{joints,  }\item[{std\+::string}]{target }\end{DoxyParamCaption})}
+
+
+
+Use to search through the all joint names and return the index of the desired joint. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em joints} & -\/ a vector of all the joint names \\
+\hline
+{\em target} & -\/ the desire joint name to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the index of the desired joint name 
+\end{DoxyReturn}

@@ -1,0 +1,65 @@
+\hypertarget{landmarks_8cpp}{}\section{nuslam/src/landmarks.cpp File Reference}
+\label{landmarks_8cpp}\index{nuslam/src/landmarks.\+cpp@{nuslam/src/landmarks.\+cpp}}
+
+
+This node clusters laser scan data points and fits each cluster to a circular landmark.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$Eigen/\+Dense$>$}\newline
+{\ttfamily \#include \char`\"{}ros/ros.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}std\+\_\+msgs/\+Header.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Point.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Point32.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuslam/\+Turtle\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sensor\+\_\+msgs/\+Laser\+Scan.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sensor\+\_\+msgs/\+Point\+Cloud.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuslam/cylinder\+\_\+detect.\+hpp\char`\"{}}\newline
+Include dependency graph for landmarks.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d4/d0e/landmarks_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structrigid2d_1_1Vector2D}{rigid2d\+::\+Vector2D} \hyperlink{landmarks_8cpp_a9007899199072a8b1e71eeb2635ef9dd}{polar2cart} (double r, double theta)
+\begin{DoxyCompactList}\small\item\em converts a point in polar coordinates into cartesian coordinates \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{landmarks_8cpp_ab62a3e576fa8343e7c7e299c41ae01f1}\label{landmarks_8cpp_ab62a3e576fa8343e7c7e299c41ae01f1}} 
+void \hyperlink{landmarks_8cpp_ab62a3e576fa8343e7c7e299c41ae01f1}{callback\+\_\+robot\+Scan} (sensor\+\_\+msgs\+::\+Laser\+Scan\+::\+Const\+Ptr data)
+\begin{DoxyCompactList}\small\item\em Callback function for the sensor subscriber. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{landmarks_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{landmarks_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{landmarks_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em main function to create the real\+\_\+waypoints node \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node clusters laser scan data points and fits each cluster to a circular landmark. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: distance\+\_\+threshold\+: (double) Threshold to determine if a point is in a cluster radius\+\_\+threshold\+: (double) Threshold to determine if a cirlce fit is valid for an obstacle frame\+\_\+id\+: (string) The frame the Laser scan data is relative to P\+U\+B\+L\+I\+S\+H\+ES\+: /landmark\+\_\+data\+: (nuslam/\+Turtle\+Map) a list of centers and radii for cylindrical landmarks S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /scan\+: (sensor\+\_\+msgs/\+Laser\+Scan) the raw laser data from the turtlebot S\+E\+R\+I\+V\+C\+ES\+: 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{landmarks_8cpp_a9007899199072a8b1e71eeb2635ef9dd}\label{landmarks_8cpp_a9007899199072a8b1e71eeb2635ef9dd}} 
+\index{landmarks.\+cpp@{landmarks.\+cpp}!polar2cart@{polar2cart}}
+\index{polar2cart@{polar2cart}!landmarks.\+cpp@{landmarks.\+cpp}}
+\subsubsection{\texorpdfstring{polar2cart()}{polar2cart()}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Vector2D}{rigid2d\+::\+Vector2D} polar2cart (\begin{DoxyParamCaption}\item[{double}]{r,  }\item[{double}]{theta }\end{DoxyParamCaption})}
+
+
+
+converts a point in polar coordinates into cartesian coordinates 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & the distange to the point \\
+\hline
+{\em theta} & the angle to the point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+(\hyperlink{structrigid2d_1_1Vector2D}{rigid2d\+::\+Vector2D}) x,y coordinates of the point 
+\end{DoxyReturn}

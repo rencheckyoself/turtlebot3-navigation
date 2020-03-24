@@ -1,0 +1,65 @@
+\hypertarget{analysis_8cpp}{}\section{nuslam/src/analysis.cpp File Reference}
+\label{analysis_8cpp}\index{nuslam/src/analysis.\+cpp@{nuslam/src/analysis.\+cpp}}
+
+
+This node takes the information from gazebo and publishes it for debuggin S\+L\+AM node.  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$tf2/\+Linear\+Math/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$tf2\+\_\+geometry\+\_\+msgs/tf2\+\_\+geometry\+\_\+msgs.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}gazebo\+\_\+msgs/\+Model\+States.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Point.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nuslam/\+Turtle\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nav\+\_\+msgs/\+Path.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+Include dependency graph for analysis.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d5/dbb/analysis_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_ab2abfd62ddd28e7ce8c819816d0ecce3}\label{analysis_8cpp_ab2abfd62ddd28e7ce8c819816d0ecce3}} 
+void {\bfseries callback\+\_\+gazebo\+\_\+data} (const gazebo\+\_\+msgs\+::\+Model\+States \&data)
+\item 
+\mbox{\Hypertarget{analysis_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{analysis_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int {\bfseries main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_af5ed1bf78a7815965ed969a543baa453}\label{analysis_8cpp_af5ed1bf78a7815965ed969a543baa453}} 
+ros\+::\+Publisher {\bfseries landmark\+\_\+pub}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_a24746d09d4d0396dff9b6af1d85d7eab}\label{analysis_8cpp_a24746d09d4d0396dff9b6af1d85d7eab}} 
+ros\+::\+Publisher {\bfseries gt\+\_\+path\+\_\+pub}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_a227c1a91d207173756cbab9b46a53370}\label{analysis_8cpp_a227c1a91d207173756cbab9b46a53370}} 
+std\+::string {\bfseries landmark\+\_\+frame\+\_\+id} = \char`\"{}base\+\_\+scan\char`\"{}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_a724bb3846d820f32ae58cb3b4a863b8d}\label{analysis_8cpp_a724bb3846d820f32ae58cb3b4a863b8d}} 
+std\+::string {\bfseries path\+\_\+frame\+\_\+id} = \char`\"{}map\char`\"{}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_a3b5bbcd0e93dca30ec3cc609f1f5373e}\label{analysis_8cpp_a3b5bbcd0e93dca30ec3cc609f1f5373e}} 
+std\+::string {\bfseries robot\+\_\+name} = \char`\"{}diff\+\_\+drive\char`\"{}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_a916d0ff4a78282a91804e6c3f692e41f}\label{analysis_8cpp_a916d0ff4a78282a91804e6c3f692e41f}} 
+std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ {\bfseries gt\+\_\+points}
+\item 
+\mbox{\Hypertarget{analysis_8cpp_ad9df002a52a8fa034357f39ecc467d8a}\label{analysis_8cpp_ad9df002a52a8fa034357f39ecc467d8a}} 
+int {\bfseries radius\+\_\+threshold} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node takes the information from gazebo and publishes it for debuggin S\+L\+AM node. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: P\+U\+B\+L\+I\+S\+H\+ES\+: landmarks\+: (nuslam/\+Turtle\+Map) The groundtruth landmark information S\+U\+B\+S\+C\+R\+I\+B\+ES\+: gazebo/model\+\_\+states (gazebo\+\_\+msgs/\+Model\+States) The groundtruth position of all of the landmarks S\+E\+R\+I\+V\+C\+ES\+: 

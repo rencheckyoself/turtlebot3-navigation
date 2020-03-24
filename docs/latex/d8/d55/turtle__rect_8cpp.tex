@@ -1,0 +1,52 @@
+\hypertarget{turtle__rect_8cpp}{}\section{tsim/src/turtle\+\_\+rect.cpp File Reference}
+\label{turtle__rect_8cpp}\index{tsim/src/turtle\+\_\+rect.\+cpp@{tsim/src/turtle\+\_\+rect.\+cpp}}
+
+
+This file contains the source code for the turtle\+\_\+rect node. It pulls in parameters set from the yaml file and uses feed forward control to drive the turtle in a rectangle. It also calculates the positional error over time.  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}std\+\_\+srvs/\+Empty.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}turtlesim/\+Set\+Pen.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}turtlesim/\+Teleport\+Absolute.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}turtlesim/\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry\+\_\+msgs/\+Twist.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tsim/\+Pose\+Error.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+Include dependency graph for turtle\+\_\+rect.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d7/df1/turtle__rect_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structPoseVals}{Pose\+Vals}
+\begin{DoxyCompactList}\small\item\em A struct to hold related positional values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{turtle__rect_8cpp_a10acaff3558ec865b3ddf7ac834a0efd}\label{turtle__rect_8cpp_a10acaff3558ec865b3ddf7ac834a0efd}} 
+void \hyperlink{turtle__rect_8cpp_a10acaff3558ec865b3ddf7ac834a0efd}{teleport\+\_\+turtle} ()
+\begin{DoxyCompactList}\small\item\em A helper function to teleport the turtle to the beginning of the trajectory. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__rect_8cpp_a3bb8cd026aadeaeb2ab3eb9aa00eed6b}\label{turtle__rect_8cpp_a3bb8cd026aadeaeb2ab3eb9aa00eed6b}} 
+void \hyperlink{turtle__rect_8cpp_a3bb8cd026aadeaeb2ab3eb9aa00eed6b}{calc\+\_\+error} ()
+\begin{DoxyCompactList}\small\item\em Helper function to calculate the current positional error. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__rect_8cpp_a4bb272c35c99026e08e491f264955c8f}\label{turtle__rect_8cpp_a4bb272c35c99026e08e491f264955c8f}} 
+bool {\bfseries callback\+\_\+reset\+\_\+traj} (std\+\_\+srvs\+::\+Empty\+::\+Request \&, std\+\_\+srvs\+::\+Empty\+::\+Response \&)
+\item 
+\mbox{\Hypertarget{turtle__rect_8cpp_ae25546bb8a12b178c2644754e7875f1d}\label{turtle__rect_8cpp_ae25546bb8a12b178c2644754e7875f1d}} 
+void \hyperlink{turtle__rect_8cpp_ae25546bb8a12b178c2644754e7875f1d}{callback\+\_\+pose} (const turtlesim\+::\+Pose \&msg)
+\begin{DoxyCompactList}\small\item\em Callback function for the /turtle1/pose subscriber. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{turtle__rect_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{turtle__rect_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{turtle__rect_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em Main function to create the turtle\+\_\+rect node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains the source code for the turtle\+\_\+rect node. It pulls in parameters set from the yaml file and uses feed forward control to drive the turtle in a rectangle. It also calculates the positional error over time. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: g\+\_\+x (int) The x coordinate of the lower left corner of a rectangle g\+\_\+y (int) The y coordinate of the lower left corner of a rectangle width (int) The width of the rectangle height (int) The height of the rectangle trans\+\_\+vel (int) The translational velocity of the robot rot\+\_\+vel\+: (int) The rotational velocity of the robot frequency (int) The frequency of the control loop P\+U\+B\+L\+I\+S\+H\+ES\+: /pose\+\_\+error (tsim/\+Pose\+Error)\+: The positional error of the turtle at each cycle. /turtle1/cmd\+\_\+vel (geometry\+\_\+msgs/\+Twist)\+: The velcotiy command to control the turtle. S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /turtle1/pose (turtlesim/\+Pose)\+: Retrieves the current pose of the turtle S\+E\+R\+V\+I\+C\+ES\+: /traj\+\_\+reset (std\+\_\+srvs/\+Empty)\+: resets the turtle to the beginning of the trajectory (lower left corner of the rectangle) 

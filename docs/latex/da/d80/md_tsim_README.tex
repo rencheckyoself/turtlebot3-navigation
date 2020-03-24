@@ -1,0 +1,41 @@
+This package is used to control the turtlesim simulation.
+
+\section*{How to run\+:}
+
+{\ttfamily roslaunch tsim trect.\+launch} -\/ It uses feedforward control to drive the turtle in a rectangle based on the parameters set in the yaml file. It also calculates and plots the positional error.
+
+{\ttfamily roslaunch tsim turtle\+\_\+pent.\+launch} -\/ Drives the turtle in a pentagon using the Waypoints and Diff\+Drive classes from rigid2d.
+
+{\ttfamily roslaunch tsim trutle\+\_\+odom.\+launch} -\/ Uses {\ttfamily fake\+\_\+diff\+\_\+encoders} and {\ttfamily odometer} nodes to control a diff drive robot in rviz to mimic the turtle. (This launch file includes {\ttfamily turtle\+\_\+pent.\+launch})
+
+
+\begin{DoxyCode}
+├── config
+│   └── turtle\_rect\_params.yaml - parameters the determine the turtle trajectory
+├── launch
+│   ├── trect.launch
+│   ├── turtle\_odom.launch
+│   └── turtle\_pent.launch
+├── msg
+│   └── PoseError.msg - custom message to publish positional error values
+└── src
+    ├── turtle\_rect.cpp - main source file for turtle\_rect node
+    └── turtle\_way.cpp - main source file for turtle\_way node
+\end{DoxyCode}
+
+
+\section*{Results}
+
+\subsection*{For {\ttfamily turtle\+\_\+rect.\+launch}}
+
+\href{https://youtu.be/aji3aDB8LBI}{\tt Video Link}
+
+  
+
+\subsection*{For {\ttfamily turtle\+\_\+pent.\+launch}}
+
+
+
+\subsection*{For {\ttfamily turtle\+\_\+odom.\+launch}}
+
+\href{https://youtu.be/058QKyPgfmI}{\tt Video link} 

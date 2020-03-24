@@ -1,0 +1,55 @@
+\hypertarget{real__waypoints_8cpp}{}\section{nuturtle\+\_\+robot/src/real\+\_\+waypoints.cpp File Reference}
+\label{real__waypoints_8cpp}\index{nuturtle\+\_\+robot/src/real\+\_\+waypoints.\+cpp@{nuturtle\+\_\+robot/src/real\+\_\+waypoints.\+cpp}}
+
+
+This node publishes a twist to drive the turtlebot along a path of waypoints.  
+
+
+{\ttfamily \#include $<$ros/ros.\+h$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$tf2/\+Linear\+Math/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$tf2\+\_\+geometry\+\_\+msgs/tf2\+\_\+geometry\+\_\+msgs.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/rigid2d.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/waypoints.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Twist.\+h$>$}\newline
+{\ttfamily \#include $<$geometry\+\_\+msgs/\+Quaternion.\+h$>$}\newline
+{\ttfamily \#include $<$nav\+\_\+msgs/\+Odometry.\+h$>$}\newline
+{\ttfamily \#include $<$std\+\_\+srvs/\+Empty.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rigid2d/\+Set\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rigid2d/\+Pose.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$visualization\+\_\+msgs/\+Marker.\+h$>$}\newline
+Include dependency graph for real\+\_\+waypoints.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dc/d52/real__waypoints_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}\label{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}} 
+bool \hyperlink{real__waypoints_8cpp_a6101e6c32b9cbe3586175efc2a0096eb}{callback\+\_\+start} (std\+\_\+srvs\+::\+Empty\+::\+Request \&, std\+\_\+srvs\+::\+Empty\+::\+Response \&)
+\begin{DoxyCompactList}\small\item\em Callback for the start service \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{real__waypoints_8cpp_ae6f5d827466617c084abe7ac286d4f27}\label{real__waypoints_8cpp_ae6f5d827466617c084abe7ac286d4f27}} 
+void \hyperlink{real__waypoints_8cpp_ae6f5d827466617c084abe7ac286d4f27}{callback\+\_\+pose} (nav\+\_\+msgs\+::\+Odometry\+::\+Const\+Ptr odom)
+\begin{DoxyCompactList}\small\item\em Callback for the odom subscriber \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}\label{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}} 
+bool \hyperlink{real__waypoints_8cpp_a8bc0a8cc07be82fba19164d8a67bcb66}{callback\+\_\+stop} (std\+\_\+srvs\+::\+Empty\+::\+Request \&, std\+\_\+srvs\+::\+Empty\+::\+Response \&)
+\begin{DoxyCompactList}\small\item\em Callback for the stop service \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{real__waypoints_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{real__waypoints_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+int \hyperlink{real__waypoints_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em main function to create the real\+\_\+waypoints node \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{real__waypoints_8cpp_af884c9d7e4937faf15d46131d87c8f93}\label{real__waypoints_8cpp_af884c9d7e4937faf15d46131d87c8f93}} 
+ros\+::\+Publisher {\bfseries marker\+\_\+pub}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node publishes a twist to drive the turtlebot along a path of waypoints. 
+
+P\+A\+R\+A\+M\+E\+T\+E\+RS\+: frac\+\_\+val\+: (double) proportion of max speed to use avel\+\_\+lim\+: (double) max robot angular velocity tvel\+\_\+lim\+: (double) max robot linear velocity frequency\+: (int) frequency to publish at waypoint\+\_\+x\+: (double) A list of the x coordinates for a series of waypoints waypoint\+\_\+y\+: (double) A list of the y coordinates for a series of waypoints P\+U\+B\+L\+I\+S\+H\+ES\+: /cmd\+\_\+vel\+: (geometry\+\_\+msgs/\+Twist) the twist command S\+U\+B\+S\+C\+R\+I\+B\+ES\+: /odom\+: (nav\+\_\+msgs/\+Odometry) the current estimated pose of the robot S\+E\+R\+I\+V\+C\+ES\+: /start\+: (std\+\_\+srvs/\+Empty) Starts the movement of the robot /stop\+: (std\+\_\+srvs/\+Empty) Stops the movement of the robot 

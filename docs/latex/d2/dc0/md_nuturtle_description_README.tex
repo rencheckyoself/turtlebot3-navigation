@@ -1,0 +1,23 @@
+This package contains files to create robot descriptions suitable for simulation. It contains various urdf/xacro files and basic debugging, testing, and visualization code for the robots used in the other packages.
+
+\section*{How to run\+:}
+
+Copy the following into a console window\+:  
+\begin{DoxyCode}
+roslaunch nuturtle\_description view\_diff\_drive.launch
+\end{DoxyCode}
+
+
+\section*{File Tree\+:}
+
+
+\begin{DoxyCode}
+├── config
+│   ├── diff\_params.yaml - contains parameters to define a generic diff drive robot
+│   └── view\_urdf.rviz - rviz config file
+├── launch
+│   └── view\_diff\_drive.launch - main launch file to view diff drive robot
+└── urdf
+    └── diff\_drive.urdf.xacro - xacro file that generates a diff drive robot
+\end{DoxyCode}
+ 

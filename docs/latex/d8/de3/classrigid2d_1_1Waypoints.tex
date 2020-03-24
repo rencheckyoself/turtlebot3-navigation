@@ -1,0 +1,142 @@
+\hypertarget{classrigid2d_1_1Waypoints}{}\section{rigid2d\+:\+:Waypoints Class Reference}
+\label{classrigid2d_1_1Waypoints}\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a8e7579d65c588966c0f53866a73fee43}\label{classrigid2d_1_1Waypoints_a8e7579d65c588966c0f53866a73fee43}} 
+\hyperlink{classrigid2d_1_1Waypoints_a8e7579d65c588966c0f53866a73fee43}{Waypoints} ()
+\begin{DoxyCompactList}\small\item\em Use defualt values for parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a022820eb64ed86a33d3677f9880193fa}\label{classrigid2d_1_1Waypoints_a022820eb64ed86a33d3677f9880193fa}} 
+\hyperlink{classrigid2d_1_1Waypoints_a022820eb64ed86a33d3677f9880193fa}{Waypoints} (std\+::vector$<$ \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} $>$ points, int r, double vlim, double alim)
+\begin{DoxyCompactList}\small\item\em Use a custom waypoint string. \end{DoxyCompactList}\item 
+\hyperlink{structrigid2d_1_1Twist2D}{Twist2D} \hyperlink{classrigid2d_1_1Waypoints_acf263076e58543a95391476650f84c85}{next\+Waypoint} (\hyperlink{structrigid2d_1_1Pose2D}{Pose2D} pos)
+\begin{DoxyCompactList}\small\item\em Method to calculate the next velocity command given the current target waypoint. \end{DoxyCompactList}\item 
+void \hyperlink{classrigid2d_1_1Waypoints_a7ab69beb06eae9eb6f8c110748a6454f}{set\+Vlims} (double lin, double ang)
+\begin{DoxyCompactList}\small\item\em set the internal velocity limits \end{DoxyCompactList}\item 
+void \hyperlink{classrigid2d_1_1Waypoints_a00beb3a1c2d2f3b24e2a107221a8fa9c}{set\+Rate} (int r)
+\begin{DoxyCompactList}\small\item\em set the internal rate \end{DoxyCompactList}\item 
+void \hyperlink{classrigid2d_1_1Waypoints_a056d60e2226093ab70f218f6088e0bd9}{set\+Thresholds} (double alim, double tlim)
+\begin{DoxyCompactList}\small\item\em set the angular and distance thresholds \end{DoxyCompactList}\item 
+void \hyperlink{classrigid2d_1_1Waypoints_a2b29f071318d349824d8b704d01e32bf}{set\+Gains} (double p)
+\begin{DoxyCompactList}\small\item\em set the controls gains \end{DoxyCompactList}\item 
+\hyperlink{structrigid2d_1_1Vector2D}{Vector2D} \hyperlink{classrigid2d_1_1Waypoints_a2d50627bc6c0b74b247bebe0bdbcec38}{get\+Target} ()
+\begin{DoxyCompactList}\small\item\em get the current target \end{DoxyCompactList}\item 
+int \hyperlink{classrigid2d_1_1Waypoints_a75955fd8b5eb08a4da95668e4fb6aee6}{get\+Cycles} ()
+\begin{DoxyCompactList}\small\item\em get the number of completed cycles \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a75955fd8b5eb08a4da95668e4fb6aee6}\label{classrigid2d_1_1Waypoints_a75955fd8b5eb08a4da95668e4fb6aee6}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!get\+Cycles@{get\+Cycles}}
+\index{get\+Cycles@{get\+Cycles}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{get\+Cycles()}{getCycles()}}
+{\footnotesize\ttfamily int rigid2d\+::\+Waypoints\+::get\+Cycles (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get the number of completed cycles 
+
+\begin{DoxyReturn}{Returns}
+the number of completed cycles 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a2d50627bc6c0b74b247bebe0bdbcec38}\label{classrigid2d_1_1Waypoints_a2d50627bc6c0b74b247bebe0bdbcec38}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!get\+Target@{get\+Target}}
+\index{get\+Target@{get\+Target}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{get\+Target()}{getTarget()}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Vector2D}{Vector2D} rigid2d\+::\+Waypoints\+::get\+Target (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get the current target 
+
+\begin{DoxyReturn}{Returns}
+the current target 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_acf263076e58543a95391476650f84c85}\label{classrigid2d_1_1Waypoints_acf263076e58543a95391476650f84c85}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!next\+Waypoint@{next\+Waypoint}}
+\index{next\+Waypoint@{next\+Waypoint}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{next\+Waypoint()}{nextWaypoint()}}
+{\footnotesize\ttfamily \hyperlink{structrigid2d_1_1Twist2D}{Twist2D} rigid2d\+::\+Waypoints\+::next\+Waypoint (\begin{DoxyParamCaption}\item[{\hyperlink{structrigid2d_1_1Pose2D}{Pose2D}}]{pos }\end{DoxyParamCaption})}
+
+
+
+Method to calculate the next velocity command given the current target waypoint. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & -\/ the current pose of the robot \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The velocity command to reach the next waypoint 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a2b29f071318d349824d8b704d01e32bf}\label{classrigid2d_1_1Waypoints_a2b29f071318d349824d8b704d01e32bf}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!set\+Gains@{set\+Gains}}
+\index{set\+Gains@{set\+Gains}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{set\+Gains()}{setGains()}}
+{\footnotesize\ttfamily void rigid2d\+::\+Waypoints\+::set\+Gains (\begin{DoxyParamCaption}\item[{double}]{p }\end{DoxyParamCaption})}
+
+
+
+set the controls gains 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & -\/ the proportional control gain \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a00beb3a1c2d2f3b24e2a107221a8fa9c}\label{classrigid2d_1_1Waypoints_a00beb3a1c2d2f3b24e2a107221a8fa9c}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!set\+Rate@{set\+Rate}}
+\index{set\+Rate@{set\+Rate}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{set\+Rate()}{setRate()}}
+{\footnotesize\ttfamily void rigid2d\+::\+Waypoints\+::set\+Rate (\begin{DoxyParamCaption}\item[{int}]{r }\end{DoxyParamCaption})}
+
+
+
+set the internal rate 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & -\/ the desired rate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a056d60e2226093ab70f218f6088e0bd9}\label{classrigid2d_1_1Waypoints_a056d60e2226093ab70f218f6088e0bd9}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!set\+Thresholds@{set\+Thresholds}}
+\index{set\+Thresholds@{set\+Thresholds}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{set\+Thresholds()}{setThresholds()}}
+{\footnotesize\ttfamily void rigid2d\+::\+Waypoints\+::set\+Thresholds (\begin{DoxyParamCaption}\item[{double}]{alim,  }\item[{double}]{tlim }\end{DoxyParamCaption})}
+
+
+
+set the angular and distance thresholds 
+
+
+\begin{DoxyParams}{Parameters}
+{\em alim} & -\/ the angular position threshold \\
+\hline
+{\em tlim} & -\/ the translation position threshold \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classrigid2d_1_1Waypoints_a7ab69beb06eae9eb6f8c110748a6454f}\label{classrigid2d_1_1Waypoints_a7ab69beb06eae9eb6f8c110748a6454f}} 
+\index{rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}!set\+Vlims@{set\+Vlims}}
+\index{set\+Vlims@{set\+Vlims}!rigid2d\+::\+Waypoints@{rigid2d\+::\+Waypoints}}
+\subsubsection{\texorpdfstring{set\+Vlims()}{setVlims()}}
+{\footnotesize\ttfamily void rigid2d\+::\+Waypoints\+::set\+Vlims (\begin{DoxyParamCaption}\item[{double}]{lin,  }\item[{double}]{ang }\end{DoxyParamCaption})}
+
+
+
+set the internal velocity limits 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lin} & -\/ the linear velocity limit \\
+\hline
+{\em ang} & -\/ the angular velocity limit \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+rigid2d/include/rigid2d/\hyperlink{waypoints_8hpp}{waypoints.\+hpp}\item 
+rigid2d/src/rigid2d/\hyperlink{waypoints_8cpp}{waypoints.\+cpp}\end{DoxyCompactItemize}

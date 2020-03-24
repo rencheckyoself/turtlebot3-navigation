@@ -12,9 +12,9 @@
       <param name="baud" value="115200"/>
   </node>
 
-  <node name="hlds_laser_publisher" pkg="hls_lfcd_lds_driver" type="hlds_laser_publisher" if="$(eval robot >= 0)">
-    <arg name="port" value="/dev/ttyUSB0"/>
-    <arg name="frame_id" value="base_scan"/>
+  <node name="hlds_laser_publisher" pkg="hls_lfcd_lds_driver" type="hlds_laser_publisher" machine="turtlebot" if="$(eval robot >= 0)">
+    <param name="port" value="/dev/ttyUSB0"/>
+    <param name="frame_id" value="base_scan"/>
   </node>
 
 </launch>

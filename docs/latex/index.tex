@@ -1,0 +1,94 @@
+\subsection*{Description}
+
+This repository contains files that that implements odometry and E\+KF S\+L\+AM for a differential drive robot, as well as various supporting libraries and testing nodes. Currently, there is no path planning implementation. The currently repository also contains files to run everything on the Turtle\+Bot3 Burger.
+
+\subsection*{Packages}
+
+Here is a high level description of each package, more details for the nodes and libraries can be found in the A\+PI.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily rigid2d}\+: This package contains nodes and libraries that support all of the odometry based functions.
+\item {\ttfamily nuslam}\+: This package contains nodes and libraries that support all of the S\+L\+AM based functions.
+\item {\ttfamily tsim}\+: This package contains nodes to test various features of the rigid2d package using the built in turtle sim in R\+OS.
+\item {\ttfamily nuturtle\+\_\+robot}\+: This package contains nodes to interface the odometry and S\+L\+AM packages to the Turtle\+Bot3.
+\item {\ttfamily nuturtle\+\_\+gazebo}\+: This package contains a gazebo plugin to run a Turtle\+Bot3 in simulation using the existing files.
+\item {\ttfamily nuturtle\+\_\+description}\+: This package contains all files relevant to the robots visualizations.
+\end{DoxyItemize}
+
+Select libraries and functions also have accompanying test files usings {\ttfamily gtest} and {\ttfamily rostest}.
+
+\subsection*{How to use this repo\+:}
+
+Most likely entirety of this repo will not be plug and play since a lot all of the real world implementations are configured for our lab\textquotesingle{}s specific turtlebots with stripped down firmware targeted at this project. But everything should work out of the box if you use the simulation options instead of the real world options.
+
+\subsubsection*{1) Get all of the necessary files.}
+
+Use the nuturtle.\+rosinstall file to clone this repo as well a peripheral one that contains some custom messages
+
+\subsubsection*{2) Launch something!}
+
+\paragraph*{The main launch files\+:}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily nuslam/slam.\+launch}\+: This file will run the full S\+L\+AM implementation along side a comparison to only odometry. It currently uses the keyboard teleop control to send velocity commands to the turtlebot. Check out demo videos here.
+\end{DoxyItemize}
+
+\subparagraph*{Parameters\+:}
+
+
+\begin{DoxyItemize}
+\item robot\+: Use a value of -\/1 to launch everything based on a gazebo simulation. Using a number $>$ 0 will launch everything using a robot in the real world.
+\item debug\+: Use 1 to feed the S\+L\+AM node groundtruth data to do the pose estimation. Use 0 to feed S\+L\+AM the slam node data from the actual laser scanner.
+\end{DoxyItemize}
+
+{\ttfamily nuturtle\+\_\+robot/follow\+\_\+waypoints.\+launch}\+: This file will run a waypoint following script that uses only odometry to estimate the robot pose as it follows a list of waypoints and compares the pose to the \textquotesingle{}perfect\textquotesingle{} robot (nodes in the {\ttfamily fake} namespace). Once launched, call the {\ttfamily /start} service to actually start sending velocity commands. Once the path has been completed, call {\ttfamily /start} again to complete another loop. Currently only proportional control is used to follow the waypoints. Check out a demo video \href{https://www.youtube.com/watch?v=V_Ljk7B5whE}{\tt here}.
+
+To use this file with the simulated robot, just launch {\ttfamily nuturtle\+\_\+gazebo/gazebo\+\_\+waypoints.\+launch}. No need to pass any arguments.
+
+\subparagraph*{Parameters\+:}
+
+
+\begin{DoxyItemize}
+\item robot\+: Using a number $>$ 0 will launch everything using a robot in the real world. See the lower section for how to set this up. 0 will launch everything only on the local machine and should only be used for testing or running locally on the turtlebot.
+\item with\+\_\+rviz\+: Use True to also launch rviz.
+\end{DoxyItemize}
+
+\paragraph*{The other launch files\+:}
+
+{\ttfamily nuslam}\+:
+\begin{DoxyItemize}
+\item {\ttfamily landmarks.\+launch}\+: test laser scan landmark detection and visualization
+\item {\ttfamily analysis\+\_\+landmarks.\+launch}\+: test gazebo landmark data conversion and visualization {\ttfamily nuturtle\+\_\+description}\+:
+\item {\ttfamily view\+\_\+diff\+\_\+drive.\+launch}\+: view the robot urdf file in rviz
+\end{DoxyItemize}
+
+{\ttfamily nuturtle\+\_\+gazebo}\+:
+\begin{DoxyItemize}
+\item {\ttfamily diff\+\_\+drive\+\_\+gazebo.\+launch}\+: test file for plugin development
+\end{DoxyItemize}
+
+{\ttfamily nuturtle\+\_\+robot}\+:
+\begin{DoxyItemize}
+\item {\ttfamily basic\+\_\+remote.\+launch}\+: used to configure the interface between the real robot and your computer for running remotely.
+\item {\ttfamily teleop\+\_\+turtle.\+launch}\+: used to launch odometry with turtlebot3\textquotesingle{}s keyboard teleop node.
+\item {\ttfamily test\+\_\+movement.\+launch}\+: used to test the interface between the robot sensor data and the odometry calculations.
+\end{DoxyItemize}
+
+{\ttfamily tsim}\+:
+\begin{DoxyItemize}
+\item {\ttfamily trect.\+launch}\+: uses turtle sim to test the rigid2d and diff drive libraries with feed-\/forward control.
+\item {\ttfamily turtle\+\_\+odom.\+launch}\+: uses turtle sim to test the odometer and encoder simulation node.
+\item {\ttfamily turtle\+\_\+pent.\+launch}\+: uses turtle sim to test waypoiont following library.
+\end{DoxyItemize}
+
+\subsection*{Under the hood\+:}
+
+All of the odometry calculations are built on the conversions from the desired body velocity to individual wheel velocity commands that actually are sent to the robot. The derivation for this can be found \href{nuturtle_robot/doc/Kinematics.pdf}{\tt here} in the rigid2d package.
+
+This S\+L\+AM implementation is using an E\+KF to perform the pose estimation for the robot and each landmark. \href{https://nu-msr.github.io/navigation_site/slam.pdf}{\tt Here} is a detailed resource for practically implementing the E\+KF.
+
+This implementation has the constraint that all of the landmarks it expects to see are cylindrical pillars of a uniform radius. The landmarks are identified using laser scan data reported by the simulation/real robot. First the laser scan data is divided into clusters based on the range values reported by the scanner. If a cluster has more than 3 data points it is then processed using a circle fitting algorithm based on this \href{https://nu-msr.github.io/navigation_site/circle_fit.html}{\tt practical guide} to identify the center and estimated radius. For more information on the circle fitting see this \href{https://projecteuclid.org/euclid.ejs/1251119958}{\tt paper} and related \href{https://people.cas.uab.edu/~mosya/cl/CPPcircle.html}{\tt website}. After fitting the circle any fit with a radius greater than the threshold parameter is discarded. Initially, a \href{http://miarn.sourceforge.net/pdf/a1738b.pdf}{\tt classification algorithm} based on this paper was also implemented, but it yielded worse results than screening by radius in this application.
+
+ In order to associate incoming data with the current estimation of the landmark states, Euclidean distance was used. If the the distance between a data point and an estimated landmark is under a minimum threshold it is considered a match to an existing landmark. If the distance between a data point and all estimated landmarks is greater than a maximum threshold it is considered a new landmark. An alternative option for associating data points is using the Mahalanobis distance. While this method is more complex, it has the advantage of taking into account the covarience of the estimated pose. See this \href{https://nu-msr.github.io/navigation_site/data_assoc.html}{\tt resource} for how to implement this type of data association. 
