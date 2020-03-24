@@ -1,0 +1,4 @@
+<map id="nuslam/include/nuslam/cylinder_detect.hpp" name="nuslam/include/nuslam/cylinder_detect.hpp">
+<area shape="rect" id="node2" href="$d4/dd3/landmarks_8cpp.html" title="This node clusters laser scan data points and fits each cluster to a circular landmark. " alt="" coords="5,95,180,121"/>
+<area shape="rect" id="node3" href="$dd/dbd/test__landmarks_8cpp.html" title="This node tests the landmark node circle fitting functions. " alt="" coords="205,95,413,121"/>
+</map>
