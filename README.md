@@ -4,7 +4,7 @@
 This repository contains files that that implements odometry and EKF SLAM for a differential drive robot, as well as various supporting libraries and testing nodes. Currently, there is no path planning implementation. The currently repository also contains files to run everything on the TurtleBot3 Burger.
 
 ## Packages
-Here is a high level description of each package, more details for the nodes and libraries can be found in the API.
+Here is a high level description of each package, more details for the nodes and libraries can be found in the [API](https://rencheckyoself.github.io/turtlebot3-navigation/index.html).
 
 - `rigid2d`: This package contains nodes and libraries that support all of the odometry based functions.
 - `nuslam`: This package contains nodes and libraries that support all of the SLAM based functions.
