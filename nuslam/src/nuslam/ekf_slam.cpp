@@ -163,9 +163,7 @@ namespace ekf_slam
     Eigen::Vector2d noise = Eigen::Vector2d::Zero();
 
     double cur_x = 0, cur_y = 0;
-    // double cur_r = 0;
     auto landmark_index = 0;
-    double del_x = 0, del_y = 0, dist = 0;
 
     int data_size = map_data.centers.size();
 
@@ -190,10 +188,8 @@ namespace ekf_slam
 
       landmark_index = 3 + 2*i;
 
-      // replace this with data association later also update to convert relative measurment to the map frame
-      // landmark_index = -1;
+      // landmark_index = -1; used for
       landmark_index = associate_data(cur_x, cur_y);
-
 
       // If the landmark was unmatched, outside the deadband, and if there is room
       // left in the state vector, add it.
@@ -217,6 +213,7 @@ namespace ekf_slam
       }
       else if(landmark_index <= -1) // data was in the the deadband of an existing landmark
       {
+        std::cout  << "Deadband hit\n";
         continue;
       }
 
@@ -232,10 +229,7 @@ namespace ekf_slam
       z_diff(1) = rigid2d::normalize_angle(z_diff(1));
 
       // Assemble H Matrix
-      del_x = prev_state(landmark_index) - prev_state(1);
-      del_y = prev_state(landmark_index + 1) - prev_state(2);
-      dist = del_x*del_x + del_y*del_y;
-      Hi = getHMatrix(del_x, del_y, dist, landmark_index);
+      Hi = getHMatrix(landmark_index);
 
       // Compute the Kalman Gain
       Ki = sigma_bar * Hi.transpose() * ((Hi * sigma_bar * Hi.transpose() + Rnoise).inverse());
@@ -263,19 +257,14 @@ namespace ekf_slam
     {
       landmark_index = 3 + 2*i;
 
-      Eigen::Vector2d noise;
-      noise.setZero();
+      // double dist = euclidean_distance(x, y, landmark_index);
+      double dist = mahalonbis_distance(x, y, landmark_index);
 
-      Eigen::Vector2d z = sensorModel(prev_state(landmark_index), prev_state(landmark_index + 1), noise);
-
-      double x_diff = x - z(0)*std::cos(z(1));
-      double y_diff = y - z(0)*std::sin(z(1));
-
-      double dist = std::sqrt(x_diff*x_diff + y_diff*y_diff);
+      std::cout << "M distance: " << dist << "\n";
 
       if(dist < deadband_min) // if less than the deadband, consider this a match
       {
-        // std::cout << "Matched landmark data id " << i << ": " << x << " " << y << "\n with state data: " << prev_state(landmark_index) << " " << prev_state(landmark_index+1) << "\n\n";
+        std::cout << "Matched to landmark index " << i << ". Data: " << x << " " << y << "\n SLAM Estimate: " << prev_state(landmark_index) << " " << prev_state(landmark_index+1) << "\n\n";
         output_index = landmark_index;
         break;
       }
@@ -285,12 +274,49 @@ namespace ekf_slam
       }
       else // if inside the deadband, ignore the data
       {
-        // std::cout  << "Deadband hit\n";
         output_index -= 1;
       }
     }
 
     return output_index;
+  }
+
+  double Slam::euclidean_distance(double data_x, double data_y, int id)
+  {
+
+    Eigen::Vector2d noise;
+    noise.setZero();
+
+    // get the landmark state stored in the state vector in the frame of the robot
+    Eigen::Vector2d z = sensorModel(prev_state(id), prev_state(id + 1), noise);
+
+    double x_diff = data_x - z(0)*std::cos(z(1)); // convert z back to cartesian
+    double y_diff = data_y - z(0)*std::sin(z(1)); // convert z back to cartesian
+
+    return std::sqrt(x_diff*x_diff + y_diff*y_diff);
+  }
+
+  double Slam::mahalonbis_distance(double data_x, double data_y, int id)
+  {
+    // get H matrix
+    auto Hi = getHMatrix(id);
+
+    // calculate covarience
+    Eigen::MatrixXd psi = Hi * sigma_bar * Hi.transpose() + Rnoise;
+
+    // calculate expected measurement
+    Eigen::Vector2d noise;
+    noise.setZero();
+    Eigen::Vector2d z_hat = sensorModel(prev_state(id), prev_state(id + 1), noise);
+
+    // get actual measurement
+    Eigen::Vector2d z = cart2polar(data_x, data_y);
+
+    Eigen::Vector2d z_diff = z - z_hat;
+
+    double dist = z_diff.transpose() * psi.inverse() * z_diff;
+
+    return dist;
   }
 
   Eigen::Vector2d Slam::sensorModel(double x, double y, Eigen::VectorXd noise)
@@ -315,9 +341,13 @@ namespace ekf_slam
     return output;
   }
 
-  Eigen::MatrixXd Slam::getHMatrix(double x, double y, double d, int id)
+  Eigen::MatrixXd Slam::getHMatrix(int id)
   {
     Eigen::MatrixXd Hi = Eigen::MatrixXd::Zero(2,state_size);
+
+    double x = prev_state(id) - prev_state(1);
+    double y = prev_state(id + 1) - prev_state(2);
+    double d = x*x + y*y;
     double sqd = std::sqrt(d);
 
     Hi(0,1) = -x/sqd;

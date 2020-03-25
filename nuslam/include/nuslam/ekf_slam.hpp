@@ -66,12 +66,9 @@ namespace ekf_slam
     Eigen::Vector2d sensorModel(double x, double y, Eigen::VectorXd noise);
 
     /// \brief Assemble measurement model derivative matrix
-    /// \param x x distance between the landmark and robot
-    /// \param y y distance between the landmark and robot
-    /// \param d squared distance between the landmark and robot
     /// \param id landmark id
     /// \returns a 2xstate_size matrix, H
-    Eigen::MatrixXd getHMatrix(double x, double y, double d, int id);
+    Eigen::MatrixXd getHMatrix(int id);
 
     /// \brief associate incoming data to features stored in the state matrix
     /// \param x the measured x location of a landmark
@@ -79,14 +76,28 @@ namespace ekf_slam
     /// \returns the index of the matched landmark or -1 to indicate no match
     int associate_data(double x, double y);
 
+    /// \brief caclulate the mahalonbis distance between a landmark data point and an estimated landmark state
+    /// \param data_x the x value of the incoming data
+    /// \param data_y the y value of the incoming data
+    /// \param id the landmark index in the state vector
+    /// \returns the distance between the two states
+    double mahalonbis_distance(double data_x, double data_y, int id);
+
+    /// \brief caclulate the euclidean distance between a landmark data point and an estimated landmark state
+    /// \param data_x the x value of the incoming data
+    /// \param data_y the y value of the incoming data
+    /// \param id the landmark index in the state vector
+    /// \returns the distance between the two states
+    double euclidean_distance(double data_x, double data_y, int id);
+
     Eigen::MatrixXd sigma, sigma_bar; // Covarience matricies
     Eigen::VectorXd prev_state; // state vector
 
     int tot_landmarks = 0;
     int state_size = 0; // state vector size
     int created_landmarks = 0; // number of landmarks
-    double deadband_min = 0.1; // 5 cm radius
-    double deadband_max = 0.2; // 10 cm radius
+    double deadband_min = 100.; // euc 10 cm radius
+    double deadband_max = 5000.; // euc 20 cm radius
 
     Eigen::Matrix3d Qnoise; // motion noise model
     Eigen::Matrix2d Rnoise; // sensor noise model
