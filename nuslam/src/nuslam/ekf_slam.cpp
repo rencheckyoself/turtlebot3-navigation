@@ -64,7 +64,7 @@ namespace ekf_slam
     sigma.topLeftCorner(3, 3) = Eigen::MatrixXd::Identity(3, 3) * 1e-8;
     sigma.topRightCorner(3, 2*num_landmarks).setZero();
     sigma.bottomLeftCorner(2*num_landmarks, 3).setZero();
-    sigma.bottomRightCorner(2*num_landmarks, 2*num_landmarks) = Eigen::MatrixXd::Identity(2*num_landmarks, 2*num_landmarks) * 1e3;
+    sigma.bottomRightCorner(2*num_landmarks, 2*num_landmarks) = Eigen::MatrixXd::Identity(2*num_landmarks, 2*num_landmarks) * 1e6;
   }
 
   void Slam::MotionModelUpdate(rigid2d::Twist2D tw)
@@ -365,7 +365,7 @@ namespace ekf_slam
 
     for(int i = 3; i < state_size - 1; i += 2)
     {
-      buf.x = prev_state(i);
+      buf.x = prev_state(i) + 0.05; // added value to offset state because base_scan is offset from base_link
       buf.y = prev_state(i+1);
 
       output.push_back(buf);

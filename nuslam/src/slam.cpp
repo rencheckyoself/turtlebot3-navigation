@@ -154,8 +154,8 @@ int main(int argc, char** argv)
               0, 0, 1e-7;
 
     Eigen::Matrix2d Rnoise;
-    Rnoise << 1e-4, 0,
-              0, 1e-4;
+    Rnoise << 1e-5, 0,
+              0, 1e-5;
 
     ROS_INFO_STREAM("SLAM: Got number of landmarks: " << num_landmarks);
     ROS_INFO_STREAM("SLAM: Got map frame id: " << map_frame_id);
@@ -260,7 +260,7 @@ int main(int argc, char** argv)
 
 
           est_landmarks.centers = robot.getLandmarkStates();
-          est_landmarks.radii = radii;
+          est_landmarks.radii = std::vector<double>(radii.size(), 0.03);
 
           slam_landmark_pub.publish(est_landmarks);
 

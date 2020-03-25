@@ -112,7 +112,7 @@ void callback_gazebo_data(const gazebo_msgs::ModelStates &data)
       if(dist < radius_threshold)
       {
         cyl_centers.push_back(center);
-        radius.push_back(0.01);
+        radius.push_back(0.05);
       }
     }
   }

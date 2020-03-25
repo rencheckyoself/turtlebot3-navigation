@@ -24,7 +24,7 @@
 
     <!-- Gazebo Model States Conversion node -->
     <node name="analysis" pkg="nuslam" type="analysis" ns="real" output="screen">
-      <param name="radius_threshold" value="1"/> <!-- radius for "seen" landmarks -->
+      <param name="radius_threshold" value="10"/> <!-- radius for "seen" landmarks -->
       <param name="landmark_frame_id" value="/base_scan"/> <!-- frame the laser scan data is relative to -->
       <param name="robot_name" value="diff_drive"/> <!-- frame the laser scan data is relative to -->
 

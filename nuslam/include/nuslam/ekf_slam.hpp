@@ -85,8 +85,8 @@ namespace ekf_slam
     int tot_landmarks = 0;
     int state_size = 0; // state vector size
     int created_landmarks = 0; // number of landmarks
-    double deadband_min = 0.05; // 5 cm radius
-    double deadband_max = 0.1; // 10 cm radius
+    double deadband_min = 0.1; // 5 cm radius
+    double deadband_max = 0.2; // 10 cm radius
 
     Eigen::Matrix3d Qnoise; // motion noise model
     Eigen::Matrix2d Rnoise; // sensor noise model
