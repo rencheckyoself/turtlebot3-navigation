@@ -93,11 +93,11 @@ namespace ekf_slam
     Eigen::MatrixXd sigma, sigma_bar; // Covarience matricies
     Eigen::VectorXd prev_state; // state vector
 
-    int tot_landmarks = 0;
+    int tot_landmarks = 0; // max allowable number of landmarks
+    int created_landmarks = 0; // number of landmarks created in state vector
     int state_size = 0; // state vector size
-    int created_landmarks = 0; // number of landmarks
-    double deadband_min = 3000.; // euc 10 cm radius
-    double deadband_max = 50000.; // euc 20 cm radius
+    double deadband_min = 3000.; // mah: 3000, euc: 10 cm radius
+    double deadband_max = 10000.; // mah: 10000 for groundtruth data, 50000 for real sensor data, euc: 20 cm radius
 
     Eigen::Matrix3d Qnoise; // motion noise model
     Eigen::Matrix2d Rnoise; // sensor noise model

@@ -167,88 +167,45 @@ namespace ekf_slam
 
     int data_size = map_data.centers.size();
 
-    unsigned int landmarks_to_use = 0;
+    std::cout << "Data size: " << data_size << "\n";
 
-    // Limits the amount of data processed to either the size of the incoming data vectors
-    // or the predetermined amount of landmarks
-    if (data_size > (state_size-3)/2)
-    {
-      landmarks_to_use = (state_size-3)/2;
-    }
-    else
-    {
-      landmarks_to_use = data_size;
-    }
-
-    int matches = 0;
-
-    for(unsigned int i = 0; i < landmarks_to_use; i++)
+    for(int i = 0; i < data_size; i++)
     {
       cur_x = map_data.centers.at(i).x;
       cur_y = map_data.centers.at(i).y;
-      // cur_r = map_data.radii.at(i);
 
-      landmark_index = 3 + 2*i;
+      landmark_index = -1;
 
-      // landmark_index = -1; used for
       landmark_index = associate_data(cur_x, cur_y);
 
-      // If the landmark was unmatched, outside the deadband, and if there is room
-      // left in the state vector, add it.
-      if(landmark_index == -1 && created_landmarks < tot_landmarks)
+      // if the data correlates to a landmark process it
+      if(landmark_index >=0)
       {
+        // Compute actual measurment
+        z_actual = cart2polar(cur_x, cur_y);
 
-        int next_landmark = 3 + 2*created_landmarks;
+        // Compute the expected measurment
+        noise = Slam::getMeasurementNoise();
+        z_expected = sensorModel(prev_state(landmark_index), prev_state(landmark_index + 1), noise);
 
-        if(prev_state(next_landmark) == 0 && prev_state(next_landmark+1) == 0)
-        {
-          landmark_index = next_landmark;
-          std::cout << "New Landmark! Setting index " << landmark_index << "\n";
-          prev_state(landmark_index) = cur_x + prev_state(1);
-          prev_state(landmark_index+1) = cur_y + prev_state(2);
-          created_landmarks++;
-        }
-        else // error catching
-        {
-          std::cout << "Tried to overwrite an existing landmark! \n";
-        }
+        // Compute error
+        Eigen::Vector2d z_diff = (z_actual - z_expected);
+        z_diff(1) = rigid2d::normalize_angle(z_diff(1));
+
+        // Assemble H Matrix
+        Hi = getHMatrix(landmark_index);
+
+        // Compute the Kalman Gain
+        Ki = sigma_bar * Hi.transpose() * ((Hi * sigma_bar * Hi.transpose() + Rnoise).inverse());
+
+        // Update the Posterior
+        prev_state += Ki * z_diff;
+        prev_state(0) = rigid2d::normalize_angle(prev_state(0));
+
+        // Update the Covarience
+        sigma_bar = (Eigen::MatrixXd::Identity(state_size, state_size) - Ki * Hi) * sigma_bar;
       }
-      else if(landmark_index <= -1) // data was in the the deadband of an existing landmark
-      {
-        // std::cout  << "Deadband hit\n";
-        continue;
-      }
-      else if(landmark_index >= 0)
-      {
-        matches++;
-      }
-
-      // Compute actual measurment
-      z_actual = cart2polar(cur_x, cur_y);
-
-      // Compute the expected measurment
-      noise = Slam::getMeasurementNoise();
-      z_expected = sensorModel(prev_state(landmark_index), prev_state(landmark_index + 1), noise);
-
-      // Compute error
-      Eigen::Vector2d z_diff = (z_actual - z_expected);
-      z_diff(1) = rigid2d::normalize_angle(z_diff(1));
-
-      // Assemble H Matrix
-      Hi = getHMatrix(landmark_index);
-
-      // Compute the Kalman Gain
-      Ki = sigma_bar * Hi.transpose() * ((Hi * sigma_bar * Hi.transpose() + Rnoise).inverse());
-
-      // Update the Posterior
-      prev_state += Ki * z_diff;
-      prev_state(0) = rigid2d::normalize_angle(prev_state(0));
-
-      // Update the Covarience
-      sigma_bar = (Eigen::MatrixXd::Identity(state_size, state_size) - Ki * Hi) * sigma_bar;
     }
-
-    std::cout << "Matched "<< matches << " of "<< landmarks_to_use << "\n";
 
     // Update Covarience
     sigma = sigma_bar;
@@ -265,7 +222,6 @@ namespace ekf_slam
     {
       landmark_index = 3 + 2*i;
 
-      // double dist = euclidean_distance(x, y, landmark_index);
       double dist = mahalonbis_distance(x, y, landmark_index);
 
       std::cout << "M distance: " << dist << "\n";
@@ -284,6 +240,27 @@ namespace ekf_slam
       {
         output_index -= 1;
       }
+    }
+
+    // If the landmark was unmatched, outside the deadband, and if there is room
+    // left in the state vector, add it.
+    if(output_index == -1 && created_landmarks < tot_landmarks)
+    {
+
+      // Find next open index
+      int j = 0;
+      while(output_index < 0 && j < tot_landmarks)
+      {
+        if(prev_state(3 + (2*j)) == 0 && prev_state(3 + (2*j) + 1) == 0) output_index = 3 + 2*j;
+        j++;
+      }
+
+      std::cout << "New Landmark! Setting index " << output_index << "\n";
+
+      prev_state(output_index) = x + prev_state(1);
+      prev_state(output_index+1) = y + prev_state(2);
+
+      created_landmarks++;
     }
 
     return output_index;
@@ -326,6 +303,11 @@ namespace ekf_slam
 
     return dist;
   }
+
+  // void Slam::landmark_culling();
+  // {
+  //
+  // }
 
   Eigen::Vector2d Slam::sensorModel(double x, double y, Eigen::VectorXd noise)
   {
