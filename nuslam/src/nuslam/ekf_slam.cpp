@@ -180,6 +180,8 @@ namespace ekf_slam
       landmarks_to_use = data_size;
     }
 
+    int matches = 0;
+
     for(unsigned int i = 0; i < landmarks_to_use; i++)
     {
       cur_x = map_data.centers.at(i).x;
@@ -213,8 +215,12 @@ namespace ekf_slam
       }
       else if(landmark_index <= -1) // data was in the the deadband of an existing landmark
       {
-        std::cout  << "Deadband hit\n";
+        // std::cout  << "Deadband hit\n";
         continue;
+      }
+      else if(landmark_index >= 0)
+      {
+        matches++;
       }
 
       // Compute actual measurment
@@ -241,6 +247,8 @@ namespace ekf_slam
       // Update the Covarience
       sigma_bar = (Eigen::MatrixXd::Identity(state_size, state_size) - Ki * Hi) * sigma_bar;
     }
+
+    std::cout << "Matched "<< matches << " of "<< landmarks_to_use << "\n";
 
     // Update Covarience
     sigma = sigma_bar;

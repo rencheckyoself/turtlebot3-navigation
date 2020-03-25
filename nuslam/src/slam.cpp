@@ -149,9 +149,9 @@ int main(int argc, char** argv)
 
     Eigen::Matrix3d Qnoise;
 
-    Qnoise << 1e-7, 0, 0,
-              0, 1e-7, 0,
-              0, 0, 1e-7;
+    Qnoise << 1e-5, 0, 0,
+              0, 1e-5, 0,
+              0, 0, 1e-5;
 
     Eigen::Matrix2d Rnoise;
     Rnoise << 1e-5, 0,
