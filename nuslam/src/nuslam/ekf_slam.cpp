@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 
+#include <ros/ros.h>
 
 #include "nuslam/TurtleMap.h"
 #include "geometry_msgs/Point.h"
@@ -57,10 +58,13 @@ namespace ekf_slam
     prev_state.resize(state_size);
     prev_state.setZero();
 
-    sigma.resize(state_size, state_size); // Resize init covarience
+    landmark_history.resize(state_size, 5);
+    landmark_history.setZero();
+
     sigma_bar.resize(state_size, state_size); // Resize predicted covarience
     sigma_bar.setZero();
 
+    sigma.resize(state_size, state_size); // Resize init covarience
     sigma.topLeftCorner(3, 3) = Eigen::MatrixXd::Identity(3, 3) * 1e-8;
     sigma.topRightCorner(3, 2*num_landmarks).setZero();
     sigma.bottomLeftCorner(2*num_landmarks, 3).setZero();
@@ -167,7 +171,7 @@ namespace ekf_slam
 
     int data_size = map_data.centers.size();
 
-    std::cout << "Data size: " << data_size << "\n";
+    landmark_history.col(4).setZero(); // reset matched info
 
     for(int i = 0; i < data_size; i++)
     {
@@ -207,8 +211,13 @@ namespace ekf_slam
       }
     }
 
+    std::cout << "Matched " << landmark_history.col(4).sum() << " of " << data_size << "======================================\n\n";
+
     // Update Covarience
     sigma = sigma_bar;
+
+    // remove false positive landmarks if possible
+    // landmark_culling();
   }
 
   int Slam::associate_data(double x, double y)
@@ -228,8 +237,14 @@ namespace ekf_slam
 
       if(dist < deadband_min) // if less than the deadband, consider this a match
       {
-        std::cout << "Matched to landmark index " << i << ". Data: " << x << " " << y << "\n SLAM Estimate: " << prev_state(landmark_index) << " " << prev_state(landmark_index+1) << "\n\n";
+        std::cout << "Matched to landmark index " << i << ".\n\tData x:" << x << "\ty:" << y << "\n\tSLAM Estimate x:" << prev_state(landmark_index) << "\ty:" << prev_state(landmark_index+1) << "\n\n";
         output_index = landmark_index;
+
+        // Update history info
+        landmark_history(output_index, 1) = prev_state(1);
+        landmark_history(output_index, 2) = prev_state(2);
+        landmark_history(output_index, 3) = ros::Time::now().toSec();
+        landmark_history(output_index, 4) = 1;
         break;
       }
       else if(dist > deadband_max) // if greater than the deadband, consider this a potentially new landmark
@@ -246,20 +261,24 @@ namespace ekf_slam
     // left in the state vector, add it.
     if(output_index == -1 && created_landmarks < tot_landmarks)
     {
-
       // Find next open index
       int j = 0;
       while(output_index < 0 && j < tot_landmarks)
       {
-        if(prev_state(3 + (2*j)) == 0 && prev_state(3 + (2*j) + 1) == 0) output_index = 3 + 2*j;
+        if(landmark_history(3 + (2*j), 0) == 0) output_index = 3 + 2*j;
         j++;
       }
 
       std::cout << "New Landmark! Setting index " << output_index << "\n";
-
       prev_state(output_index) = x + prev_state(1);
       prev_state(output_index+1) = y + prev_state(2);
 
+      // Update history info
+      landmark_history(output_index, 0) = 1;
+      landmark_history(output_index, 1) = prev_state(1);
+      landmark_history(output_index, 2) = prev_state(2);
+      landmark_history(output_index, 3) = ros::Time::now().toSec();
+      landmark_history(output_index, 4) = 1;
       created_landmarks++;
     }
 
@@ -304,10 +323,53 @@ namespace ekf_slam
     return dist;
   }
 
-  // void Slam::landmark_culling();
-  // {
-  //
-  // }
+  void Slam::landmark_culling()
+  {
+    int landmark_index = 3;
+    for(int i = 0; i < tot_landmarks; i++)
+    {
+      landmark_index = 3 + 2*i;
+
+      // if the landmark has been initialized, but was not matched in the most recent data set. then evalute
+      if(landmark_history(landmark_index, 0) == 1 && landmark_history(landmark_index, 4) == 0)
+      {
+
+        // calculate distance between current pose and last sighting
+        double x = prev_state(1) - landmark_history(landmark_index, 1);
+        double y = prev_state(2) - landmark_history(landmark_index, 2);
+        double d = sqrt(x*x+y*y);
+
+        // calculate time since the last sighting
+        double t = ros::Time::now().toSec() - landmark_history(landmark_index, 3);
+
+        // if the robot is near the last seen location and it is past the time threshold, then remove that landmark from the state vector
+        if(d < robot_pose_threshold && t > time_threshold)
+        {
+
+          // clear history info
+          landmark_history.row(landmark_index).setZero();
+
+          // clear state vector
+          prev_state(landmark_index) = 0;
+          prev_state(landmark_index+1) = 0;
+
+          // clear respective sigma rows
+          sigma.row(landmark_index).setZero();
+          sigma.row(landmark_index+1).setZero();
+          sigma.col(landmark_index).setZero();
+          sigma.col(landmark_index+1).setZero();
+
+          sigma(landmark_index,landmark_index) = 1e6;
+          sigma(landmark_index+1,landmark_index+1) = 1e6;
+
+          std::cout << "Landmark Index " << landmark_index << " removed!\n";
+
+          // decrement created landmarks
+          created_landmarks--;
+        }
+      }
+    }
+  }
 
   Eigen::Vector2d Slam::sensorModel(double x, double y, Eigen::VectorXd noise)
   {

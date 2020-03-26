@@ -41,12 +41,14 @@ int main(int argc, char** argv)
 
   std::string ns = "landmarks";
   float r = 1.0, g = 1.0, b = 1.0;
+  float height = 0.1;
 
   pn.getParam("frame_id", frame_id);
   pn.getParam("ns", ns);
   pn.getParam("r", r);
   pn.getParam("g", g);
   pn.getParam("b", b);
+  pn.getParam("height", height);
 
   ROS_INFO_STREAM("MAP: frame_id: " << frame_id);
   ROS_INFO_STREAM("MAP: namespace: " << ns);
@@ -75,7 +77,7 @@ int main(int argc, char** argv)
 
       marker.pose.position.x = centroids.at(i).x;
       marker.pose.position.y = centroids.at(i).y;
-      marker.pose.position.z = 0;
+      marker.pose.position.z = height/2.;
       marker.pose.orientation.x = 0;
       marker.pose.orientation.y = 0;
       marker.pose.orientation.z = 0;
@@ -83,7 +85,7 @@ int main(int argc, char** argv)
 
       marker.scale.x = radii.at(i) * 2.0;
       marker.scale.y = radii.at(i) * 2.0;
-      marker.scale.z = .1;
+      marker.scale.z = height;
 
       marker.color.r = r;
       marker.color.b = b;

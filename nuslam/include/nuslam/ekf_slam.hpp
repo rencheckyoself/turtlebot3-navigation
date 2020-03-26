@@ -15,8 +15,6 @@
 namespace ekf_slam
 {
 
-  // std::mt19937 & get_random();
-
   /// \brief Draw a random value from a normal distribution
   ///
   double sampleNormalDistribution();
@@ -90,14 +88,23 @@ namespace ekf_slam
     /// \returns the distance between the two states
     double euclidean_distance(double data_x, double data_y, int id);
 
+    /// brief eliminate false positive landmark readings, based on the time and location last seen
+    ///
+    void landmark_culling();
+
     Eigen::MatrixXd sigma, sigma_bar; // Covarience matricies
     Eigen::VectorXd prev_state; // state vector
+
+    Eigen::MatrixXd landmark_history; // used to track sighting information of each landmark, matrix should be X x 5, where each column is initialized, robot_x, robot_y, ros::Time(), matched
 
     int tot_landmarks = 0; // max allowable number of landmarks
     int created_landmarks = 0; // number of landmarks created in state vector
     int state_size = 0; // state vector size
-    double deadband_min = 3000.; // mah: 3000, euc: 10 cm radius
-    double deadband_max = 10000.; // mah: 10000 for groundtruth data, 50000 for real sensor data, euc: 20 cm radius
+    double deadband_min = 500.; // mah: 3000, euc: 10 cm
+    double deadband_max = 30000.; // mah: 10000, euc: 20 cm
+
+    double robot_pose_threshold = 0.1; // distance threshold for landmark culling, 10 cm
+    double time_threshold = 15.0; // time threshold for landmark culling, 15 seconds
 
     Eigen::Matrix3d Qnoise; // motion noise model
     Eigen::Matrix2d Rnoise; // sensor noise model

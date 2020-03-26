@@ -149,6 +149,7 @@ int main(int argc, char** argv)
 
     Eigen::Matrix3d Qnoise;
 
+    // all 1e-5
     Qnoise << 1e-5, 0, 0,
               0, 1e-5, 0,
               0, 0, 1e-5;
@@ -260,7 +261,7 @@ int main(int argc, char** argv)
 
 
           est_landmarks.centers = robot.getLandmarkStates();
-          est_landmarks.radii = std::vector<double>(radii.size(), 0.03);
+          est_landmarks.radii = std::vector<double>(radii.size(), 0.01);
 
           slam_landmark_pub.publish(est_landmarks);
 
