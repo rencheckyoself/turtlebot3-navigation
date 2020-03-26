@@ -101,7 +101,7 @@ namespace ekf_slam
     int created_landmarks = 0; // number of landmarks created in state vector
     int state_size = 0; // state vector size
     double deadband_min = 500.; // mah: 3000, euc: 10 cm
-    double deadband_max = 30000.; // mah: 10000, euc: 20 cm
+    double deadband_max = 10000.; // mah: 10000, euc: 20 cm
 
     double robot_pose_threshold = 0.1; // distance threshold for landmark culling, 10 cm
     double time_threshold = 15.0; // time threshold for landmark culling, 15 seconds

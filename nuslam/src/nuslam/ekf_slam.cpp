@@ -211,7 +211,7 @@ namespace ekf_slam
       }
     }
 
-    std::cout << "Matched " << landmark_history.col(4).sum() << " of " << data_size << "======================================\n\n";
+    // std::cout << "Matched " << landmark_history.col(4).sum() << " of " << data_size << "======================================\n\n";
 
     // Update Covarience
     sigma = sigma_bar;
@@ -233,19 +233,28 @@ namespace ekf_slam
 
       double dist = mahalonbis_distance(x, y, landmark_index);
 
-      std::cout << "M distance: " << dist << "\n";
+      // std::cout << "M distance: " << dist << "\n";
 
       if(dist < deadband_min) // if less than the deadband, consider this a match
       {
-        std::cout << "Matched to landmark index " << i << ".\n\tData x:" << x << "\ty:" << y << "\n\tSLAM Estimate x:" << prev_state(landmark_index) << "\ty:" << prev_state(landmark_index+1) << "\n\n";
-        output_index = landmark_index;
 
-        // Update history info
-        landmark_history(output_index, 1) = prev_state(1);
-        landmark_history(output_index, 2) = prev_state(2);
-        landmark_history(output_index, 3) = ros::Time::now().toSec();
-        landmark_history(output_index, 4) = 1;
-        break;
+        // Catch if a landmark is matched to the 0,0 position
+        if(landmark_history(landmark_index, 0) == 0)
+        {
+          output_index -= 1;
+        }
+        else
+        {
+          // std::cout << "Matched to landmark index " << i << ".\n\tData x:" << x << "\ty:" << y << "\n\tSLAM Estimate x:" << prev_state(landmark_index) << "\ty:" << prev_state(landmark_index+1) << "\n\n";
+          output_index = landmark_index;
+
+          // Update history info
+          landmark_history(output_index, 1) = prev_state(1);
+          landmark_history(output_index, 2) = prev_state(2);
+          landmark_history(output_index, 3) = ros::Time::now().toSec();
+          landmark_history(output_index, 4) = 1;
+          break;
+        }
       }
       else if(dist > deadband_max) // if greater than the deadband, consider this a potentially new landmark
       {
