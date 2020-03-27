@@ -49,17 +49,18 @@ namespace ekf_slam
     /// \param dupdate a vetor containing the elements for the derivative of the motion model
     void updateCovarPrediction(Eigen::Vector3d dupdate);
 
-    /// \brief Generate a random noise based on the process varience
+    /// \brief Generate a random noise based on the process varience using the Cholesky decomposition
     /// \returns a vector of noise for the state of the robot
     Eigen::VectorXd getStateNoise();
 
-    /// \brief Generate a random noise based on the measurment varience
+    /// \brief Generate a random noise based on the measurment varience using the Cholesky decomposition
     /// \returns a vector of noise for the measurement of a landmark
     Eigen::VectorXd getMeasurementNoise();
 
     /// \brief Compute the range and bearing to a landmark given the robot state
     /// \param x landmark x position
     /// \param y landmark y position
+    /// \param noise noise vector sampled from a normal distribution
     /// \returns a vector containing the range and bearing
     Eigen::Vector2d sensorModel(double x, double y, Eigen::VectorXd noise);
 
@@ -100,8 +101,8 @@ namespace ekf_slam
     int tot_landmarks = 0; // max allowable number of landmarks
     int created_landmarks = 0; // number of landmarks created in state vector
     int state_size = 0; // state vector size
-    double deadband_min = 500.; // mah: 3000, euc: 10 cm
-    double deadband_max = 10000.; // mah: 10000, euc: 20 cm
+    double deadband_min = 100.; // mah: 3000, euc: 10 cm
+    double deadband_max = 500.; // mah: 10000, euc: 20 cm
 
     double robot_pose_threshold = 0.1; // distance threshold for landmark culling, 10 cm
     double time_threshold = 15.0; // time threshold for landmark culling, 15 seconds

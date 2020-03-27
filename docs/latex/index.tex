@@ -2,9 +2,17 @@
 
 This repository contains files that that implements odometry and E\+KF S\+L\+AM for a differential drive robot, as well as various supporting libraries and testing nodes. Currently, there is no path planning implementation. The currently repository also contains files to run everything on the Turtle\+Bot3 Burger.
 
+\subsubsection*{Summary Videos\+:}
+
+
+\begin{DoxyItemize}
+\item \href{https://www.youtube.com/watch?v=SxR_UP2P1BQ}{\tt S\+L\+AM Demo}
+\item \href{https://www.youtube.com/watch?v=V_Ljk7B5whE}{\tt Odometry Demo}
+\end{DoxyItemize}
+
 \subsection*{Packages}
 
-Here is a high level description of each package, more details for the nodes and libraries can be found in the A\+PI.
+Here is a high level description of each package, more details for the nodes and libraries can be found in the \href{https://rencheckyoself.github.io/turtlebot3-navigation/index.html}{\tt A\+PI}.
 
 
 \begin{DoxyItemize}
@@ -32,7 +40,7 @@ Use the nuturtle.\+rosinstall file to clone this repo as well a peripheral one t
 
 
 \begin{DoxyItemize}
-\item {\ttfamily nuslam/slam.\+launch}\+: This file will run the full S\+L\+AM implementation along side a comparison to only odometry. It currently uses the keyboard teleop control to send velocity commands to the turtlebot. Check out demo videos here.
+\item {\ttfamily nuslam/slam.\+launch}\+: This file will run the full S\+L\+AM implementation along side a comparison to only odometry. It currently uses the keyboard teleop control to send velocity commands to the turtlebot.
 \end{DoxyItemize}
 
 \subparagraph*{Parameters\+:}
@@ -43,7 +51,7 @@ Use the nuturtle.\+rosinstall file to clone this repo as well a peripheral one t
 \item debug\+: Use 1 to feed the S\+L\+AM node groundtruth data to do the pose estimation. Use 0 to feed S\+L\+AM the slam node data from the actual laser scanner.
 \end{DoxyItemize}
 
-{\ttfamily nuturtle\+\_\+robot/follow\+\_\+waypoints.\+launch}\+: This file will run a waypoint following script that uses only odometry to estimate the robot pose as it follows a list of waypoints and compares the pose to the \textquotesingle{}perfect\textquotesingle{} robot (nodes in the {\ttfamily fake} namespace). Once launched, call the {\ttfamily /start} service to actually start sending velocity commands. Once the path has been completed, call {\ttfamily /start} again to complete another loop. Currently only proportional control is used to follow the waypoints. Check out a demo video \href{https://www.youtube.com/watch?v=V_Ljk7B5whE}{\tt here}.
+{\ttfamily nuturtle\+\_\+robot/follow\+\_\+waypoints.\+launch}\+: This file will run a waypoint following script that uses only odometry to estimate the robot pose as it follows a list of waypoints and compares the pose to the \textquotesingle{}perfect\textquotesingle{} robot (nodes in the {\ttfamily fake} namespace). Once launched, call the {\ttfamily /start} service to actually start sending velocity commands. Once the path has been completed, call {\ttfamily /start} again to complete another loop. Currently only proportional control is used to follow the waypoints.
 
 To use this file with the simulated robot, just launch {\ttfamily nuturtle\+\_\+gazebo/gazebo\+\_\+waypoints.\+launch}. No need to pass any arguments.
 
@@ -80,7 +88,7 @@ To use this file with the simulated robot, just launch {\ttfamily nuturtle\+\_\+
 \begin{DoxyItemize}
 \item {\ttfamily trect.\+launch}\+: uses turtle sim to test the rigid2d and diff drive libraries with feed-\/forward control.
 \item {\ttfamily turtle\+\_\+odom.\+launch}\+: uses turtle sim to test the odometer and encoder simulation node.
-\item {\ttfamily turtle\+\_\+pent.\+launch}\+: uses turtle sim to test waypoiont following library.
+\item {\ttfamily turtle\+\_\+pent.\+launch}\+: uses turtle sim to test waypoint following library.
 \end{DoxyItemize}
 
 \subsection*{Under the hood\+:}
@@ -89,6 +97,24 @@ All of the odometry calculations are built on the conversions from the desired b
 
 This S\+L\+AM implementation is using an E\+KF to perform the pose estimation for the robot and each landmark. \href{https://nu-msr.github.io/navigation_site/slam.pdf}{\tt Here} is a detailed resource for practically implementing the E\+KF.
 
-This implementation has the constraint that all of the landmarks it expects to see are cylindrical pillars of a uniform radius. The landmarks are identified using laser scan data reported by the simulation/real robot. First the laser scan data is divided into clusters based on the range values reported by the scanner. If a cluster has more than 3 data points it is then processed using a circle fitting algorithm based on this \href{https://nu-msr.github.io/navigation_site/circle_fit.html}{\tt practical guide} to identify the center and estimated radius. For more information on the circle fitting see this \href{https://projecteuclid.org/euclid.ejs/1251119958}{\tt paper} and related \href{https://people.cas.uab.edu/~mosya/cl/CPPcircle.html}{\tt website}. After fitting the circle any fit with a radius greater than the threshold parameter is discarded. Initially, a \href{http://miarn.sourceforge.net/pdf/a1738b.pdf}{\tt classification algorithm} based on this paper was also implemented, but it yielded worse results than screening by radius in this application.
+Simulation results using the groundtruth data from gazebo\+:
 
- In order to associate incoming data with the current estimation of the landmark states, Euclidean distance was used. If the the distance between a data point and an estimated landmark is under a minimum threshold it is considered a match to an existing landmark. If the distance between a data point and all estimated landmarks is greater than a maximum threshold it is considered a new landmark. An alternative option for associating data points is using the Mahalanobis distance. While this method is more complex, it has the advantage of taking into account the covarience of the estimated pose. See this \href{https://nu-msr.github.io/navigation_site/data_assoc.html}{\tt resource} for how to implement this type of data association. 
+ Since there in no noise on from the groundtruth data, the landmark position estimates stay virutally still. This results in a near perfect robot pose estimate from the E\+KF S\+L\+AM algorithm.
+
+Simulation results using the laser scan data from the simulated sensor\+:
+
+ Due to sensor noise, the landmark detection now experience variance in the data fed to the S\+L\+AM measurement update. Also, the laser scan data is not being adjusted based on the robot\textquotesingle{}s movement while the scan is taking place. This also contributes to the shifting of the map.
+
+This implementation has the constraint that all of the landmarks it expects to see are cylindrical pillars of a uniform radius. The landmarks are identified using laser scan data reported by the simulation/real robot. First the laser scan data is divided into clusters based on the range values reported by the scanner. If a cluster has more than 3 data points it is then processed using a circle fitting algorithm based on this \href{https://nu-msr.github.io/navigation_site/circle_fit.html}{\tt practical guide} to identify the center and estimated radius. For more information on the circle fitting see this \href{https://projecteuclid.org/euclid.ejs/1251119958}{\tt paper} and related \href{https://people.cas.uab.edu/~mosya/cl/CPPcircle.html}{\tt website}. After fitting the circle any fit with a radius greater than the threshold parameter is discarded. Initially, a \href{http://miarn.sourceforge.net/pdf/a1738b.pdf}{\tt classification algorithm} based on this paper was also implemented, but it yielded worse results than screening by radius in this application since the approximate size of each landmark is known. A more advanced classification scheme would be more useful when running the robot in a real world as seen by all of the false positive readings in summary video.
+
+ In order to associate incoming data with the current estimation of the landmark states, the Mahalanobis distance was used. While this method is more complex than just comparing the physical distance, it has the advantage of taking into account the covariance of the estimated pose. See this \href{https://nu-msr.github.io/navigation_site/data_assoc.html}{\tt resource} for how to implement this type of data association. If the distance between a data point and an estimated landmark is under a minimum threshold it is considered a match to an existing landmark. If the distance between a data point and all estimated landmarks is greater than a maximum threshold it is considered a new landmark. These parameters will likely change based on the environment the robot is operating in to yield optimal results.
+
+\subsection*{Future Development}
+
+
+\begin{DoxyItemize}
+\item Further testing for landmark culling to reliably remove false positive landmarks from the state vector.
+\item Implement a more robust method for adding landmarks to the state vector. E.\+g. require the potential new landmark to be seen three consecutive times before officially adding it to the state vector.
+\item Change driving functionality to waypoint-\/based navigation goals.
+\item Implement a global planner so the robot can operate autonomously and avoid obstacles while moving to waypoints. 
+\end{DoxyItemize}

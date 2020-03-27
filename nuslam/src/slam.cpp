@@ -155,8 +155,8 @@ int main(int argc, char** argv)
               0, 0, 1e-5;
 
     Eigen::Matrix2d Rnoise;
-    Rnoise << 1e-5, 0,
-              0, 1e-5;
+    Rnoise << 1e-3, 0,
+              0, 1e-3;
 
     ROS_INFO_STREAM("SLAM: Got number of landmarks: " << num_landmarks);
     ROS_INFO_STREAM("SLAM: Got map frame id: " << map_frame_id);

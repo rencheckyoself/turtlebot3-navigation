@@ -14,5 +14,6 @@ var searchData=
   ['callback_5ftimer',['callback_timer',['../da/d0e/rotation_8cpp.html#a6f56faf21488465a1fc832f74a795952',1,'rotation.cpp']]],
   ['callback_5ftwist',['callback_twist',['../d3/dee/turtle__interface_8cpp.html#a44c94965143735655ba35b308a070518',1,'callback_twist(geometry_msgs::Twist::ConstPtr data):&#160;turtle_interface.cpp'],['../d1/d45/fake__diff__encoders_8cpp.html#a44c94965143735655ba35b308a070518',1,'callback_twist(geometry_msgs::Twist::ConstPtr data):&#160;fake_diff_encoders.cpp']]],
   ['callback_5fwheels',['callback_wheels',['../d9/d2b/test__turtle__interface_8cpp.html#aba35a82eceda5d601d138e18c85739c4',1,'test_turtle_interface.cpp']]],
-  ['cylinder_5fdetect_2ehpp',['cylinder_detect.hpp',['../dd/d66/cylinder__detect_8hpp.html',1,'']]]
+  ['cylinder_5fdetect_2ehpp',['cylinder_detect.hpp',['../dd/d66/cylinder__detect_8hpp.html',1,'']]],
+  ['custom_20messages',['Custom Messages',['../d3/d79/md_MSG_SRV_TYPES.html',1,'']]]
 ];

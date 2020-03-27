@@ -3,6 +3,10 @@
 ## Description
 This repository contains files that that implements odometry and EKF SLAM for a differential drive robot, as well as various supporting libraries and testing nodes. Currently, there is no path planning implementation. The currently repository also contains files to run everything on the TurtleBot3 Burger.
 
+### Summary Videos:
+- [SLAM Demo](https://www.youtube.com/watch?v=SxR_UP2P1BQ)
+- [Odometry Demo](https://www.youtube.com/watch?v=V_Ljk7B5whE)
+
 ## Packages
 Here is a high level description of each package, more details for the nodes and libraries can be found in the [API](https://rencheckyoself.github.io/turtlebot3-navigation/index.html).
 
@@ -26,14 +30,13 @@ Use the nuturtle.rosinstall file to clone this repo as well a peripheral one tha
 
 #### The main launch files:
 
-- `nuslam/slam.launch`: This file will run the full SLAM implementation along side a comparison to only odometry. It currently uses the keyboard teleop control to send velocity commands to the turtlebot. Check out demo videos here.
+- `nuslam/slam.launch`: This file will run the full SLAM implementation along side a comparison to only odometry. It currently uses the keyboard teleop control to send velocity commands to the turtlebot.
 
   ##### Parameters:
   - robot: Use a value of -1 to launch everything based on a gazebo simulation. Using a number > 0 will launch everything using a robot in the real world.
   - debug: Use 1 to feed the SLAM node groundtruth data to do the pose estimation. Use 0 to feed SLAM the slam node data from the actual laser scanner.  
 
-
-- `nuturtle_robot/follow_waypoints.launch`: This file will run a waypoint following script that uses only odometry to estimate the robot pose as it follows a list of waypoints and compares the pose to the 'perfect' robot (nodes in the `fake` namespace). Once launched, call the `/start` service to actually start sending velocity commands. Once the path has been completed, call `/start` again to complete another loop. Currently only proportional control is used to follow the waypoints. Check out a demo video [here](https://www.youtube.com/watch?v=V_Ljk7B5whE).
+- `nuturtle_robot/follow_waypoints.launch`: This file will run a waypoint following script that uses only odometry to estimate the robot pose as it follows a list of waypoints and compares the pose to the 'perfect' robot (nodes in the `fake` namespace). Once launched, call the `/start` service to actually start sending velocity commands. Once the path has been completed, call `/start` again to complete another loop. Currently only proportional control is used to follow the waypoints.
 
   To use this file with the simulated robot, just launch `nuturtle_gazebo/gazebo_waypoints.launch`. No need to pass any arguments.
 
@@ -60,7 +63,7 @@ Use the nuturtle.rosinstall file to clone this repo as well a peripheral one tha
 `tsim`:
   - `trect.launch`: uses turtle sim to test the rigid2d and diff drive libraries with feed-forward control.
   - `turtle_odom.launch`: uses turtle sim to test the odometer and encoder simulation node.
-  - `turtle_pent.launch`: uses turtle sim to test waypoiont following library.
+  - `turtle_pent.launch`: uses turtle sim to test waypoint following library.
 
 ## Under the hood:
 
@@ -68,8 +71,30 @@ All of the odometry calculations are built on the conversions from the desired b
 
 This SLAM implementation is using an EKF to perform the pose estimation for the robot and each landmark. [Here](https://nu-msr.github.io/navigation_site/slam.pdf) is a detailed resource for practically implementing the EKF.  
 
-This implementation has the constraint that all of the landmarks it expects to see are cylindrical pillars of a uniform radius. The landmarks are identified using laser scan data reported by the simulation/real robot. First the laser scan data is divided into clusters based on the range values reported by the scanner. If a cluster has more than 3 data points it is then processed using a circle fitting algorithm based on this [practical guide](https://nu-msr.github.io/navigation_site/circle_fit.html) to identify the center and estimated radius. For more information on the circle fitting see this [paper](https://projecteuclid.org/euclid.ejs/1251119958) and related [website](https://people.cas.uab.edu/~mosya/cl/CPPcircle.html). After fitting the circle any fit with a radius greater than the threshold parameter is discarded. Initially, a [classification algorithm](http://miarn.sourceforge.net/pdf/a1738b.pdf) based on this paper was also implemented, but it yielded worse results than screening by radius in this application.
+Simulation results using the groundtruth data from gazebo:
+
+![gt_data_slam](nuslam/doc/GT_data.gif)
+
+Since there in no noise on from the groundtruth data, the landmark position estimates stay virutally still. This results in a near perfect robot pose estimate from the EKF SLAM algorithm.
+
+Simulation results using the laser scan data from the simulated sensor:
+
+![sim_data_slam](nuslam/doc/RSim_data.gif)
+
+Due to sensor noise, the landmark detection now experience variance in the data fed to the SLAM measurement update. Also, the laser scan data is not being adjusted based on the robot's movement while the scan is taking place. This also contributes to the shifting of the map.
+
+This implementation has the constraint that all of the landmarks it expects to see are cylindrical pillars of a uniform radius. The landmarks are identified using laser scan data reported by the simulation/real robot. First the laser scan data is divided into clusters based on the range values reported by the scanner. If a cluster has more than 3 data points it is then processed using a circle fitting algorithm based on this [practical guide](https://nu-msr.github.io/navigation_site/circle_fit.html) to identify the center and estimated radius. For more information on the circle fitting see this [paper](https://projecteuclid.org/euclid.ejs/1251119958) and related [website](https://people.cas.uab.edu/~mosya/cl/CPPcircle.html). After fitting the circle any fit with a radius greater than the threshold parameter is discarded. Initially, a [classification algorithm](http://miarn.sourceforge.net/pdf/a1738b.pdf) based on this paper was also implemented, but it yielded worse results than screening by radius in this application since the approximate size of each landmark is known. A more advanced classification scheme would be more useful when running the robot in a real world as seen by all of the false positive readings in summary video.
 
 ![landmark_fitting](nuslam/doc/landmark_fitting.gif)
 
-In order to associate incoming data with the current estimation of the landmark states, Euclidean distance was used. If the the distance between a data point and an estimated landmark is under a minimum threshold it is considered a match to an existing landmark. If the distance between a data point and all estimated landmarks is greater than a maximum threshold it is considered a new landmark. An alternative option for associating data points is using the Mahalanobis distance. While this method is more complex, it has the advantage of taking into account the covarience of the estimated pose. See this [resource](https://nu-msr.github.io/navigation_site/data_assoc.html) for how to implement this type of data association.
+In order to associate incoming data with the current estimation of the landmark states, the Mahalanobis distance was used. While this method is more complex than just comparing the physical distance, it has the advantage of taking into account the covariance of the estimated pose. See this [resource](https://nu-msr.github.io/navigation_site/data_assoc.html) for how to implement this type of data association. If the distance between a data point and an estimated landmark is under a minimum threshold it is considered a match to an existing landmark. If the distance between a data point and all estimated landmarks is greater than a maximum threshold it is considered a new landmark. These parameters will likely change based on the environment the robot is operating in to yield optimal results.
+
+## Future Development
+
+- Further testing for landmark culling to reliably remove false positive landmarks from the state vector.
+
+- Implement a more robust method for adding landmarks to the state vector. E.g. require the potential new landmark to be seen three consecutive times before officially adding it to the state vector.
+
+- Change driving functionality to waypoint-based navigation goals.
+
+- Implement a global planner so the robot can operate autonomously and avoid obstacles while moving to waypoints.

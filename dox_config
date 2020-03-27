@@ -817,7 +817,9 @@ INPUT_ENCODING         = UTF-8
 
 FILE_PATTERNS          = *.cpp \
                          *.hpp \
-                         README.md
+                         README.md \
+                         SLAM_RESULTS.md \
+                         MSG_SRV_TYPES.md
 
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should

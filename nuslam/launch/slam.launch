@@ -60,17 +60,17 @@
   </node>
 
   <!-- Launch SLAM node -->
-  <!-- <node name="slam" pkg="nuslam" type="slam" output="screen">
+  <node name="slam" pkg="nuslam" type="slam" output="screen">
     <remap from="landmark_data" to="real/landmark_data" if="$(eval debug == 1)"/>
 
     <param name="map_frame_id" value="map"/>
-    <param name="num_landmarks" value="12"/>
+    <param name="num_landmarks" value="20"/>
 
     <param name="odom_frame_id" value="odom"/>
     <param name="base_frame_id" value="base_link"/>
     <param name="left_wheel_joint" value="left_wheel_axel"/>
     <param name="right_wheel_joint" value="right_wheel_axel"/>
-  </node> -->
+  </node>
 
   <!-- Publish slam landmark states -->
   <node name="draw_map_slam" pkg="nuslam" type="draw_map" output="screen">
