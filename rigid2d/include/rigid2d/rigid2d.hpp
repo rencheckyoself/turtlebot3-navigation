@@ -134,6 +134,11 @@ namespace rigid2d
         /// \return the angle of this vector in degrees
         double angle() const;
 
+        /// \brief calculate the dot product between this vector and another
+        /// \vec another Vector2D
+        /// \returns the dot product
+        double dot(Vector2D vec) const;
+
         /// \brief calculate the distance between this vector and another
         /// \param vec - vector to find the distance to
         /// \return the distance between the two vectors

@@ -177,10 +177,9 @@ add_dependencies(${PROJECT_NAME}_slam ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_analysis
-${PROJECT_NAME}
-${rigid2d_LIBRARIES}
-${catkin_LIBRARIES})
-
+	${PROJECT_NAME}
+	${rigid2d_LIBRARIES}
+	${catkin_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME}_draw_map
 	${PROJECT_NAME}

@@ -10,14 +10,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-	gazebo_ros
-	nuturtlebot
-	rigid2d
-  roscpp
-)
+# find_package(catkin REQUIRED COMPONENTS
+# 	gazebo_ros
+# 	nuturtlebot
+# 	rigid2d
+#   roscpp
+# ) UNCOMMENT
 
-find_package(gazebo REQUIRED)
+# find_package(gazebo REQUIRED) UNCOMMENT
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -108,12 +108,12 @@ find_package(gazebo REQUIRED)
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
+# catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES nuturtle_gazebo
- CATKIN_DEPENDS gazebo_ros roscpp
+ # CATKIN_DEPENDS gazebo_ros roscpp UNCOMMENT
 #  DEPENDS system_lib
-)
+# )
 
 ###########
 ## Build ##
@@ -122,20 +122,20 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-	${GAZEBO_INCLUDE_DIRS}
-)
+# include_directories(
+# # include
+#   ${catkin_INCLUDE_DIRS}
+# 	${GAZEBO_INCLUDE_DIRS}
+# )UNCOMMENT
 
 # Declare a C++ library
-add_library(${PROJECT_NAME}_plugin SHARED src/turtle_drive_plugin.cpp)
+# add_library(${PROJECT_NAME}_plugin SHARED src/turtle_drive_plugin.cpp) UNCOMMENT
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(${PROJECT_NAME}_plugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+# add_dependencies(${PROJECT_NAME}_plugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}) UNCOMMENT
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -153,7 +153,7 @@ add_dependencies(${PROJECT_NAME}_plugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${ca
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} ${rigid2d_LIBRARIES})
+# target_link_libraries(${PROJECT_NAME}_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} ${rigid2d_LIBRARIES}) UNCOMMENT
 
 # target_include_directories(${PROJECT_NAME}_plugin PUBLIC ${GAZEBO_INCLUDE_DIRS})
 

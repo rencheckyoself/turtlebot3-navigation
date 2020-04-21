@@ -134,6 +134,11 @@ namespace rigid2d
     return rad2deg(std::atan(y/x));
   }
 
+  double Vector2D::dot(Vector2D vec) const
+  {
+    return (x*vec.x + y*vec.y);
+  }
+
   double Vector2D::distance(Vector2D vec) const
   {
     double xdiff, ydiff;
