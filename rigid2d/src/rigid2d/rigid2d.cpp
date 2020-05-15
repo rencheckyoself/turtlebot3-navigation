@@ -173,6 +173,18 @@ namespace rigid2d
     return *this;
   }
 
+  bool Vector2D::operator==(const Vector2D & rhs)
+  {
+    if(almost_equal(x,rhs.x) && almost_equal(y,rhs.y)) return true;
+    else return false;
+  }
+
+  bool Vector2D::operator!=(const Vector2D & rhs)
+  {
+    if(almost_equal(x,rhs.x) && almost_equal(y,rhs.y)) return false;
+    else return true;
+  }
+
   Vector2D operator+(Vector2D lhs, const Vector2D & rhs)
   {
     lhs += rhs ;

@@ -161,6 +161,16 @@ namespace rigid2d
         /// \param rhs - the vector to multiply by
         /// \returns a reference to the newly transformed operator
         Vector2D & operator*=(const Vector2D & rhs);
+
+        /// \brief evaluate if two vectors are the same
+        /// \param rhs - the vector to compare with
+        /// \returns True if both x and y are the same
+        bool operator==(const Vector2D & rhs);
+
+        /// \brief evaluate if two vectors are the not the same
+        /// \param rhs - the vector to compare with
+        /// \returns True if both x and y are the same
+        bool operator!=(const Vector2D & rhs);
     };
 
     /// \brief add two vectors together, returning their composition
