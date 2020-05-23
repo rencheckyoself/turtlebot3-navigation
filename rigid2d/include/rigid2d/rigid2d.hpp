@@ -191,6 +191,30 @@ namespace rigid2d
     /// \return the composition of the two vectors
     Vector2D operator*(Vector2D lhs, const Vector2D & rhs);
 
+    /// \brief multiply A vector and a double together
+    /// \param lhs - the vector
+    /// \param d - the double
+    /// \return the composition of the two vectors
+    Vector2D operator*(const double & d, Vector2D lhs);
+
+    /// \brief multiply A vector and a double together
+    /// \param lhs - the vector
+    /// \param d - the double
+    /// \return the composition of the two vectors
+    Vector2D operator*(Vector2D lhs, const double & d);
+
+    /// \brief divide A vector by a double
+    /// \param lhs - the vector
+    /// \param d - the double
+    /// \return the composition of the two vectors
+    Vector2D operator/(Vector2D lhs, const double & d);
+
+    /// \brief divide A vector by a double
+    /// \param lhs - the vector
+    /// \param d - the double
+    /// \return the composition of the two vectors
+    Vector2D operator/(const double & d, Vector2D lhs);
+
     /// \brief output a 2 dimensional vector as [xcomponent ycomponent]
     /// os - stream to output to
     /// v - the vector to print

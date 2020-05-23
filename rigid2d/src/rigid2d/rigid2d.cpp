@@ -203,6 +203,36 @@ namespace rigid2d
     return lhs;
   }
 
+  Vector2D operator*(const double & d, Vector2D lhs)
+  {
+    lhs.x *= d;
+    lhs.y *= d;
+    return lhs;
+  }
+
+  Vector2D operator*(Vector2D lhs, const double & d)
+  {
+    lhs.x *= d;
+    lhs.y *= d;
+
+    return lhs;
+  }
+
+  Vector2D operator/(const double & d, Vector2D lhs)
+  {
+    lhs.x /= d;
+    lhs.y /= d;
+    return lhs;
+  }
+
+  Vector2D operator/(Vector2D lhs, const double & d)
+  {
+    lhs.x /= d;
+    lhs.y /= d;
+
+    return lhs;
+  }
+
   // Twist2D Methods ===========================================================
   Twist2D::Twist2D()
   {
