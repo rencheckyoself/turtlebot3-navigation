@@ -20,7 +20,8 @@ Here is a high level description of each package, more details for the nodes and
 Select libraries and functions also have accompanying test files usings `gtest` and `rostest`.
 
 ## Outside Software
-
+ROS Melodic (desktop-full)
+Eigen3 (v 3.3.4)
 
 ## How to use this repo:
 If you only want to use the simulation options instead of the real world options, everything will be functional as long as you have `ROS Melodic`. In order to also run everything on the turtlebot, you will need to install [this](https://github.com/ME495-Navigation/OpenCR) custom firmware on your turtlebot. In order to run wirelessly, follow these [instructions](https://nu-msr.github.io/navigation_site/homework02.html#task-f.001-a-new-workspace) for connecting and cross compiling.
